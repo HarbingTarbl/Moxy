@@ -132,8 +132,10 @@
     <Compile Include="Map\TileMap.cs" />
     <Compile Include="Map\TileMap.Editor.cs" />
     <Compile Include="Moxy.cs" />
-    <Compile Include="Particle.cs" />
-    <Compile Include="ParticleManager.cs" />
+    <Compile Include="ParticleSystems\EnergyPacketEmitter.cs" />
+    <Compile Include="ParticleSystems\FireballEmitter.cs" />
+    <Compile Include="ParticleSystems\Particle.cs" />
+    <Compile Include="ParticleSystems\ParticleManager.cs" />
     <Compile Include="EntityType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

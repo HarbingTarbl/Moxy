@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Moxy.Entities;
 using Moxy.Map;
+using Moxy.ParticleSystems;
 
 namespace Moxy.GameStates
 {
@@ -18,7 +19,8 @@ namespace Moxy.GameStates
 			players = new List<Player> (4);
 			lights = new List<Light>();
 			monsters = new List<Monster>();
-			particleManager = new ParticleManager();
+			redPacketEmitter = new EnergyPacketEmitter();
+			FireballEmitter = new FireballEmitter();
 		}
 
 		public override void Update(GameTime gameTime)
@@ -32,11 +34,12 @@ namespace Moxy.GameStates
 			foreach (var monster in monsters)
 				monster.Update (gameTime);
 
-			CalculateEnergyRate();
+			redPacketEmitter.CalculateEnergyRate(gameTime);
 			//GenerateEnergy (gameTime);
-			GenerateParticles (gameTime);
+			redPacketEmitter.GenerateParticles(gameTime);
 			FindMonsterTargets (gameTime);
-			particleManager.Update (gameTime);
+			redPacketEmitter.Update (gameTime);
+			FireballEmitter.Update(gameTime);
 
 			// Spawn Monsters
 			foreach (var spawner in map.MonsterSpawners)
@@ -79,7 +82,7 @@ namespace Moxy.GameStates
 			lightingEffect = Moxy.ContentManager.Load<Effect> ("lighting");
 			lightTexture = Moxy.ContentManager.Load<Texture2D> ("light");
 			radiusTexture = Moxy.ContentManager.Load<Texture2D> ("Radius");
-			particleTexture = Moxy.ContentManager.Load<Texture2D> ("EnergyParticle");
+			particleTexture = Moxy.ContentManager.Load<Texture2D> ("powerparticle");
 			texture = new Texture2D (Moxy.Graphics, 1, 1);
 			texture.SetData (new [] { new Color(0, 0, 0, map.AmbientLight.A) });
 
@@ -107,6 +110,7 @@ namespace Moxy.GameStates
 		}
 
 		private Gunner gunner1;
+		private FireballEmitter FireballEmitter;
 		private Gunner gunner2;
 		private PowerGenerator powerGenerator1;
 		private PowerGenerator powerGenerator2;
@@ -123,18 +127,10 @@ namespace Moxy.GameStates
 		private RenderTarget2D lightTarget;
 		private Effect lightingEffect;
 		private Vector2 radiusOrigin;
-		private ParticleManager particleManager;
+		private EnergyPacketEmitter redPacketEmitter;
 		private UIOverlay uiOverlay;
 
-		// Energy generation
-		private float maxParticleDelay = 0.6f;
-		private float minParticleDelay = 0.24f;
-		private float maxPowerGeneration = 20;
-		private float minPowerGeneration = 0;
-		private float minPowerRange = 100;
-		private float maxPowerRange = 342;
-		private float powerGenerateInterval = 1f;
-		private float powerGeneratePassed = 0;
+
 		
 		private void DrawGame (SpriteBatch batch)
 		{
@@ -148,7 +144,7 @@ namespace Moxy.GameStates
 			batch.End();
 			batch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None,
 				RasterizerState.CullCounterClockwise, null, camera.GetTransformation(Moxy.Graphics));
-			batch.Draw (radiusTexture, gunner1.Location, null, Color.White, 0f, radiusOrigin, 1f, SpriteEffects.None, 1f);
+			
 
 			foreach (Player player in players)
 				player.Draw (batch);
@@ -156,7 +152,8 @@ namespace Moxy.GameStates
 			foreach (Monster monster in monsters)
 				monster.Draw (batch);
 
-			particleManager.Draw (batch);
+			redPacketEmitter.Draw (batch);
+			FireballEmitter.Draw(batch);
 
 			batch.End ();
 		}
@@ -192,6 +189,7 @@ namespace Moxy.GameStates
 				Speed = gunnerSpeed,
 				Light = new Light (Color.White, lightTexture),
 				Team = Team.Red,
+				FireballEmitter = FireballEmitter
 			};
 
 			powerGenerator1 = new PowerGenerator
@@ -203,45 +201,16 @@ namespace Moxy.GameStates
 				Light = new Light (Color.White, lightTexture),
 				Team = Team.Red,
 			};
+
+			redPacketEmitter.Target = gunner1;
+			redPacketEmitter.Source = powerGenerator1;
 		}
 
-		private void CalculateEnergyRate()
-		{
-			float distance = Vector2.Distance (gunner1.Location, powerGenerator1.Location);
-			float lerp = MathHelper.Clamp ((distance - minPowerRange) / maxPowerRange, 0, 1);
-
-			gunner1.EnergyRate = MathHelper.Lerp(maxPowerGeneration, minPowerGeneration, lerp);
-			powerGenerator1.ParticleDelay = MathHelper.SmoothStep (minParticleDelay, maxParticleDelay, lerp);
-			powerGenerator1.PowerDisabled = distance > maxPowerRange;
-		}
-
-		private void GenerateParticles(GameTime gameTime)
-		{
-			powerGenerator1.ParticleTimePassed += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-			if (powerGenerator1.ParticleTimePassed > powerGenerator1.ParticleDelay && !powerGenerator1.PowerDisabled)
-			{
-				var particle = new Particle (powerGenerator1.Location, particleTexture, 1f, 1f) { Target = gunner1 };
-				particleManager.StartParticle (particle);
-				powerGenerator1.ParticleTimePassed = 0;
-			}
-		}
 
 		private void FindMonsterTargets(GameTime gameTime)
 		{
 			foreach (Monster monster in monsters)
 				monster.Target = gunner1;
 		}
-
-		//private void GenerateEnergy(GameTime gameTime)
-		//{
-		//    powerGeneratePassed += (float)gameTime.TotalGameTime.TotalSeconds;
-
-		//    if (powerGeneratePassed > powerGenerateInterval && !powerGenerator1.PowerDisabled)
-		//    {
-		//        gunner1.Energy += gunner1.EnergyRate * (float)gameTime.ElapsedGameTime.TotalSeconds;
-		//        powerGeneratePassed = 0;
-		//    }
-		//}
 	}
 }

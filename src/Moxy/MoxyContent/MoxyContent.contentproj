@@ -76,6 +76,11 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+    <Compile Include="Fireball.png">
+      <Name>Fireball</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Content Include="map.bin">
       <Name>map</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -87,6 +92,11 @@
     </Compile>
     <Compile Include="powerbarspritesheet.png">
       <Name>powerbarspritesheet</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="powerparticle.png">
+      <Name>powerparticle</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

@@ -141,7 +141,7 @@ namespace Moxy.GameStates
 		{
 			Location = UI.OwningState.camera.WorldToScreen(Player.Location);
 			Location.X -= 40;
-			Location.Y -= 30;
+			Location.Y -= 40;
 			var outerRect = new Rectangle((int)Location.X, (int)Location.Y, BarSize.Width, BarSize.Height);
 			var innerRect = new Rectangle((int)Location.X + 3, (int)Location.Y + 3, (int)((BarSize.Width - 6) * (Player.Health / Player.MaxHealth)), BarSize.Height - 6);
 			batch.Draw(Pixel, outerRect, Color.DarkGray);
