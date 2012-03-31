@@ -112,8 +112,12 @@
     <Compile Include="Entities\Animation.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Gunner.cs" />
+    <Compile Include="Entities\Monster.cs" />
+    <Compile Include="Entities\MonsterSpawner.cs" />
+    <Compile Include="Entities\MonsterSpawnerOptions.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\PowerGenerator.cs" />
+    <Compile Include="Entities\Slime.cs" />
     <Compile Include="EventHandlers\GenericEventArgs.cs" />
     <Compile Include="GameStates\BaseGameState.cs" />
     <Compile Include="GameStates\ColorTransition.cs" />

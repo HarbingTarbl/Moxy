@@ -61,6 +61,11 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+    <Compile Include="EnemySpriteSheet.png">
+      <Name>EnemySpriteSheet</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Content Include="map.bin">
       <Name>map</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

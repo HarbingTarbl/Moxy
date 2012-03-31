@@ -5,6 +5,8 @@ using System.Text;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Graphics;
+using Moxy.Entities;
 
 namespace Moxy.Map
 {
@@ -94,25 +96,49 @@ namespace Moxy.Map
 					key = 8;
 
 				if (state.IsKeyDown(Keys.A))
-					Camera.Location -= new Vector2(10, 0) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+					Camera.Location -= new Vector2(200, 0) * (float)gameTime.ElapsedGameTime.TotalSeconds;
 				else if (state.IsKeyDown(Keys.D))
-					Camera.Location += new Vector2(10, 0) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+					Camera.Location += new Vector2(200, 0) * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
 				if (state.IsKeyDown(Keys.W))
-					Camera.Location -= new Vector2(0, 10) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+					Camera.Location -= new Vector2(0, 200) * (float)gameTime.ElapsedGameTime.TotalSeconds;
 				else if (state.IsKeyDown(Keys.S))
-					Camera.Location += new Vector2(0, 10) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+					Camera.Location += new Vector2(0, 200) * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
 				if (state.IsKeyDown(Keys.Up))
 					Camera.Scale -= (float)(0.1 * gameTime.ElapsedGameTime.TotalSeconds);
 				else if (state.IsKeyDown(Keys.Down))
 					Camera.Scale += (float)(0.1 * gameTime.ElapsedGameTime.TotalSeconds);
-				
+
+				if (state.IsKeyDown(Keys.Back) && old.IsKeyUp(Keys.Back) && MonsterSpawners.Count > 0
+					
+					
+					)
+					MonsterSpawners.RemoveAt(MonsterSpawners.Count - 1);
+
 
 				if (mouseState.LeftButton == ButtonState.Pressed)
 					SetTileAtPoint(new Vector2(mouseState.X, mouseState.Y), key);
+				else if (mouseState.RightButton == ButtonState.Pressed && oldMouse.RightButton == ButtonState.Released)
+					MonsterSpawners.Add(new MonsterSpawner(this)
+					{
+						Location = Camera.ScreenToWorld(new Vector2(mouseState.X, mouseState.Y)),
+						MonsterType = "Slime"
+					});
+				oldMouse = mouseState;
+				old = state;
 
 			}
+		}
+
+		public void DrawEditor(SpriteBatch batch)
+		{
+			foreach (var spawner in MonsterSpawners)
+			{
+				spawner.Draw(batch);
+
+			}
+
 		}
 
 		public void Deactivate()
@@ -126,5 +152,7 @@ namespace Moxy.Map
 		}
 
 		private float defaultScale;
+		private KeyboardState old;
+		private MouseState oldMouse;
 	}
 }
