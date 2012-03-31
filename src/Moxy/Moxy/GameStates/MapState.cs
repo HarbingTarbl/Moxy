@@ -30,14 +30,18 @@ namespace Moxy.GameStates
 			batch.End();
 		}
 
-		public override void Load()
+		public override void OnFocus()
 		{
 			derp.Texture = Moxy.ContentManager.Load<Texture2D>("lofi_tiles");
 			derp.MapSize = new Vector2(5, 5);
 			derp.TileSize = new Vector2(8, 8);
 
-			//derp.CreateTiles();
 			derp.CreateTiles("map.bin");
+		}
+
+		public override void Load()
+		{
+
 		}
 
 
