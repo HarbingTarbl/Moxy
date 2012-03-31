@@ -1,0 +1,8 @@
+bin/
+obj/
+*.user
+*.suo
+_*
+*.Cache
+*.cachefile
+Thumbs.db
