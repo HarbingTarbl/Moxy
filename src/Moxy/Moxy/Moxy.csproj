@@ -117,6 +117,7 @@
     <Compile Include="EventHandlers\GenericEventArgs.cs" />
     <Compile Include="GameStates\BaseGameState.cs" />
     <Compile Include="GameStates\ColorTransition.cs" />
+    <Compile Include="GameStates\GameState.cs" />
     <Compile Include="GameStates\GameStateManager.cs" />
     <Compile Include="GameStates\ITransition.cs" />
     <Compile Include="GameStates\MapPlayerState.cs" />

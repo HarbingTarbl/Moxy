@@ -5,33 +5,34 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Moxy.Entities;
+using Moxy.Map;
 
 namespace Moxy.GameStates
 {
-	public class TestGameState
+	public class GameState
 		: BaseGameState
 	{
-		public TestGameState()
-			: base ("Test", isOverlay: false, acceptsInput: true)
+		public GameState()
+			: base ("Game", isOverlay: false, acceptsInput: true)
 		{
 			players = new List<Player> (4);
 		}
 
 		public override void Update(GameTime gameTime)
 		{
-			camera.ViewTargets.Clear();
-			camera.ViewTargets.Add (gunner1);
-			camera.ViewTargets.Add (gunner2);
 			camera.Update (Moxy.Graphics);
-
+			map.Update (gameTime);
+			
 			foreach (Player player in players)
 				player.Update (gameTime);
 		}
 
 		public override void Draw(SpriteBatch batch)
 		{
-			batch.Begin (SpriteSortMode.Texture, BlendState.NonPremultiplied, SamplerState.LinearWrap, DepthStencilState.None,
+			batch.Begin (SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None,
 				RasterizerState.CullCounterClockwise, null, camera.GetTransformation(Moxy.Graphics));
+
+			map.Draw (batch);
 
 			foreach (Player player in players)
 				player.Draw (batch);
@@ -65,7 +66,10 @@ namespace Moxy.GameStates
 
 			Size screenSize = new Size (Moxy.ScreenWidth, Moxy.ScreenHeight);
 			camera = new DynamicCamera ();
-			//camera.Targets.AddRange (new Player[] {gunner1, gunner2});
+			camera.ViewTargets.AddRange (new Player[] {gunner1, gunner2});
+
+			map = new TileMap ();
+			map.CreateTiles ("Content/map.bin");
 		}
 
 		private Gunner gunner1;
@@ -74,5 +78,6 @@ namespace Moxy.GameStates
 		private PowerGenerator powerGenerator2;
 		private List<Player> players;
 		private DynamicCamera camera;
+		private TileMap map;
 	}
 }
