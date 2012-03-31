@@ -264,6 +264,9 @@ namespace Moxy.GameStates
 			}
 
 			foreach (var state in stateMap.Values)
+				state.Load();
+
+			foreach (var state in stateMap.Values)
 				state.PostLoad();
 		}
 	}

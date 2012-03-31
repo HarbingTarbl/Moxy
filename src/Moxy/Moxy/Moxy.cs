@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Moxy.GameStates;
+using System.Reflection;
 
 namespace Moxy
 {
@@ -37,11 +38,6 @@ namespace Moxy
 
 		protected override void Initialize()
 		{
-			Moxy.ScreenHeight = graphics.PreferredBackBufferHeight;
-			Moxy.ScreenWidth = graphics.PreferredBackBufferWidth;
-			Moxy.StateManager = new GameStateManager();
-			Moxy.ContentManager = Content;
-			Moxy.Graphics = GraphicsDevice;
 
 			base.Initialize();
 		}
@@ -49,8 +45,16 @@ namespace Moxy
 		protected override void LoadContent()
 		{
 			spriteBatch = new SpriteBatch(GraphicsDevice);
-
+			IsMouseVisible = true;
+			Moxy.ContentManager = Content;
+			Moxy.ScreenHeight = graphics.PreferredBackBufferHeight;
+			Moxy.ScreenWidth = graphics.PreferredBackBufferWidth;
+			Moxy.StateManager = new GameStateManager();
+			Moxy.StateManager.Load(Assembly.GetExecutingAssembly());
+			Moxy.Graphics = GraphicsDevice;
 			Moxy.StateManager.Load();
+
+			Moxy.StateManager.Push("MenuState");
 		}
 
 		protected override void UnloadContent()
@@ -60,7 +64,8 @@ namespace Moxy
 
 		protected override void Update(GameTime gameTime)
 		{
-			
+
+			Moxy.StateManager.Update(gameTime);
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
 				this.Exit();
 
@@ -70,6 +75,9 @@ namespace Moxy
 		protected override void Draw(GameTime gameTime)
 		{
 			GraphicsDevice.Clear(Color.CornflowerBlue);
+			spriteBatch.Begin();
+			Moxy.StateManager.Draw(spriteBatch);
+			spriteBatch.End();
 
 			// TODO: Add your drawing code here
 

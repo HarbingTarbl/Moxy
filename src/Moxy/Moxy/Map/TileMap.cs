@@ -15,25 +15,65 @@ namespace Moxy.Map
 	public partial class TileMap
 	{
 		public Texture2D Texture;
-		public Rectangle[] Tiles;
+		public Vector2 PositionOffset;
+		public Rectangle[] TilesSources;
+		public int[,] Tiles;
 		public Vector2 TileSize;
 		public Vector2 MapSize;
+		public Color AmbientLight;
+
+		public TileMap()
+		{
+			AmbientLight = Color.White;
+
+		}
+
+		public void Update(GameTime gameTime)
+		{
+			UpdateEditor(gameTime);
+		}
 
 
+		public void SetTileAtPoint(Vector2 Location, int Value)
+		{
+			var xTile = Location.X / TileSize.X;
+			var yTile = Location.Y / TileSize.Y;
+			if(xTile < MapSize.X && yTile < MapSize.Y)
+				Tiles[(int)xTile, (int)yTile] = Value;
+		}
+
+		public void Draw(SpriteBatch batch)
+		{
+			var drawLocation = PositionOffset;
+			for (var y = 0; y < MapSize.Y; y++)
+			{
+				drawLocation.X = PositionOffset.X;
+				for (var x = 0; x < MapSize.X; x++)
+				{
+
+					batch.Draw(Texture, drawLocation, TilesSources[Tiles[x, y]], AmbientLight);
+					drawLocation.X += TileSize.X;
+				}
+				drawLocation.Y += TileSize.Y;
+
+			}
+		}
 
 		public void CreateTiles()
 		{
 			var xTiles = (int)(Texture.Width / TileSize.X);
 			var yTiles = (int)(Texture.Height / TileSize.Y);
 
+			TilesSources = new Rectangle[xTiles * yTiles];
 			for (var y = 0; y < yTiles; y++)
 			{
 				for (var x = 0; x < xTiles; x++)
 				{
-					Tiles[(int)(x + (y * TileSize.X))] = new Rectangle((int)(x * TileSize.X), (int)(y * TileSize.Y), (int)TileSize.X, (int)TileSize.Y);
+					TilesSources[(int)(x + (y * xTiles))] = new Rectangle((int)(x * TileSize.X), (int)(y * TileSize.Y), (int)TileSize.X, (int)TileSize.Y);
 				}
 			}
 
+			Tiles = new int[(int)MapSize.X, (int)MapSize.Y];
 		}
 	}
 }

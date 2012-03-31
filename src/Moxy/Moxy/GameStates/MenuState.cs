@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Moxy.Map;
 
 namespace Moxy.GameStates
 {
@@ -13,25 +14,30 @@ namespace Moxy.GameStates
 		public MenuState()
 			: base("MenuState", isOverlay:false, acceptsInput:true)
 		{
-
+			derp = new TileMap();
 		
 		}
 	
 		public override void Update(GameTime gameTime)
 		{
- 			throw new NotImplementedException();
+			derp.Update(gameTime);
 		}
 
 		public override void Draw (SpriteBatch batch)
 		{
- 			throw new NotImplementedException();
+			derp.Draw(batch);
 		}
 
 		public override void Load()
 		{
-			textureTest = Moxy.ContentManager.Load<Texture2D>("SomeTexture");
+			derp.Texture = Moxy.ContentManager.Load<Texture2D>("lofi_tiles");
+			derp.MapSize = new Vector2(25, 25);
+			derp.TileSize = new Vector2(8, 8);
+			derp.CreateTiles();
 		}
 
+
+		TileMap derp;
 		Texture2D textureTest;
 	}
 }
