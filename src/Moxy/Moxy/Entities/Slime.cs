@@ -37,7 +37,7 @@ namespace Moxy.Entities
 			});
 			Animations.SetAnimation("Idle_Ice");
 			Health = 20;
-			TurnSpeed = 1f;
+			TurnSpeed = MathHelper.Pi/14f;
 			MovementSpeed = 30f;
 		}
 	}

@@ -43,7 +43,7 @@ namespace Moxy
 				Rectangle rect = new Rectangle ((int)min.X, (int)min.Y,
 					(int)(max.X - min.X), (int)(max.Y - min.Y));
 
-				rect.Inflate (100, 100);
+				rect.Inflate (125, 125);
 
 				desiredPosition = new Vector2 (rect.Center.X, rect.Center.Y);
 
@@ -52,8 +52,8 @@ namespace Moxy
 				desiredZoom = Math.Min (widthdiff, heightdiff);
 			}
 
-			Position = Vector2.Lerp (Position, desiredPosition, 0.05f);
-			Zoom = MathHelper.Lerp (Zoom, desiredZoom, 0.05f);
+			Position = Vector2.Lerp (Position, desiredPosition, 0.1f);
+			Zoom = MathHelper.Lerp (Zoom, desiredZoom, 0.1f);
 		}
 
 		private float desiredZoom;

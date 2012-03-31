@@ -17,6 +17,7 @@ namespace Moxy.GameStates
 		{
 			players = new List<Player> (4);
 			lights = new List<Light>();
+			monsters = new List<Monster>();
 			particleManager = new ParticleManager();
 		}
 
@@ -28,10 +29,22 @@ namespace Moxy.GameStates
 			foreach (Player player in players)
 				player.Update (gameTime);
 
+			foreach (var monster in monsters)
+				monster.Update (gameTime);
+
 			CalculateEnergyRate();
 			GenerateEnergy (gameTime);
 			GenerateParticles (gameTime);
+			FindMonsterTargets (gameTime);
 			particleManager.Update (gameTime);
+
+			// Spawn Monsters
+			foreach (var spawner in map.MonsterSpawners)
+			{
+				var monster = spawner.Spawn (gameTime);
+				if (monster != null)
+					monsters.Add (monster);
+			}
 		}
 
 		public override void Draw(SpriteBatch batch)
@@ -94,6 +107,7 @@ namespace Moxy.GameStates
 		private Texture2D radiusTexture;
 		private Texture2D particleTexture; 
 		private List<Light> lights;
+		private List<Monster> monsters;
 		private RenderTarget2D gameTarget;
 		private RenderTarget2D lightTarget;
 		private Effect lightingEffect;
@@ -123,6 +137,9 @@ namespace Moxy.GameStates
 
 			foreach (Player player in players)
 				player.Draw (batch);
+
+			foreach (Monster monster in monsters)
+				monster.Draw (batch);
 
 			particleManager.Draw (batch);
 
@@ -191,6 +208,12 @@ namespace Moxy.GameStates
 				particleManager.StartParticle (particle);
 				powerGenerator1.ParticleTimePassed = 0;
 			}
+		}
+
+		private void FindMonsterTargets(GameTime gameTime)
+		{
+			foreach (Monster monster in monsters)
+				monster.Target = gunner1;
 		}
 
 		private void GenerateEnergy(GameTime gameTime)
