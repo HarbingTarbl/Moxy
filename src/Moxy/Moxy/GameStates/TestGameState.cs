@@ -19,28 +19,49 @@ namespace Moxy.GameStates
 
 		public override void Update(GameTime gameTime)
 		{
+			camera.Update();
+
 			foreach (Player player in players)
 				player.Update (gameTime);
 		}
 
 		public override void Draw(SpriteBatch batch)
 		{
+			batch.Begin (SpriteSortMode.Texture, BlendState.NonPremultiplied, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, camera.Transformation);
+
 			foreach (Player player in players)
 				player.Draw (batch);
+
+			batch.End();
 		}
 
 		public override void Load()
 		{
-			gunner1 = new Gunner();
-			gunner2 = new Gunner();
+			gunner1 = new Gunner
+			{
+				PadIndex = PlayerIndex.One,
+				Color = Color.Red,
+				Location = new Vector2(200, 200),
+				Speed = 0.5f
+			};
+
+			gunner2 = new Gunner
+			{
+				PadIndex = PlayerIndex.Two,
+				Color = Color.Blue,
+				Location = new Vector2(800, 800),
+				Speed = 0.5f
+			};
+
 			powerGenerator1 = new PowerGenerator();
 			powerGenerator2 = new PowerGenerator();
 
-			gunner1.PadIndex = PlayerIndex.One;
-			gunner1.Color = Color.Red;
+			players.Add (gunner1);
+			players.Add (gunner2);
 
-			camera = new Camera (Moxy.ScreenWidth, Moxy.ScreenHeight);
-			camera.Targets.AddRange (new Player[] {gunner1});//, gunner2, powerGenerator1, powerGenerator2});
+			Size screenSize = new Size (Moxy.ScreenWidth, Moxy.ScreenHeight);
+			camera = new DynamicCamera (screenSize, screenSize, new Size(Moxy.ScreenWidth + 400, Moxy.ScreenHeight + 400));
+			camera.Targets.AddRange (new Player[] {gunner1, gunner2});
 		}
 
 		private Gunner gunner1;
@@ -48,6 +69,6 @@ namespace Moxy.GameStates
 		private PowerGenerator powerGenerator1;
 		private PowerGenerator powerGenerator2;
 		private List<Player> players;
-		private Camera camera;
+		private DynamicCamera camera;
 	}
 }

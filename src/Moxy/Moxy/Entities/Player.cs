@@ -24,7 +24,7 @@ namespace Moxy.Entities
 
 		public override void Update (GameTime gameTime)
 		{
-			HandleInput();
+			HandleInput (gameTime);
 		}
 
 		public override void Draw (SpriteBatch batch)
@@ -32,7 +32,7 @@ namespace Moxy.Entities
 			batch.Draw (texture, new Rectangle((int)Location.X, (int)Location.Y, 64, 64), null, Color);
 		}
 
-		private void HandleInput()
+		private void HandleInput (GameTime gameTime)
 		{
 			GamePadState currentPad = GamePad.GetState (PadIndex);
 
@@ -40,7 +40,9 @@ namespace Moxy.Entities
 			if (moveVector.Length() > 0)
 				moveVector.Normalize();
 
-			base.Location += moveVector * Speed;
+			moveVector.Y *= -1;
+
+			base.Location += moveVector * Speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 			base.Rotation = (float)Math.Atan2 (moveVector.Y, moveVector.X);
 
 			oldPad = currentPad;
