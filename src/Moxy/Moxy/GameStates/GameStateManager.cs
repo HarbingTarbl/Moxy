@@ -75,7 +75,7 @@ namespace Moxy.GameStates
 		{
 			// TODO: Find a better way to handle this
 			latestInputReceiver = FindInputReceiver();
-			if (latestInputReceiver != null && Mocha.IsActive)
+			if (latestInputReceiver != null)
 				latestInputReceiver.HandleInput (gameTime);
 
 			foreach (var state in states)

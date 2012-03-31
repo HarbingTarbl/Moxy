@@ -26,6 +26,7 @@ namespace Moxy
 		public static int ScreenHeight;
 		public static GameStateManager StateManager;
 		public static ContentManager ContentManager;
+		public static GraphicsDevice Graphics;
 
 		public Moxy()
 		{
@@ -40,6 +41,7 @@ namespace Moxy
 			Moxy.ScreenWidth = graphics.PreferredBackBufferWidth;
 			Moxy.StateManager = new GameStateManager();
 			Moxy.ContentManager = Content;
+			Moxy.Graphics = GraphicsDevice;
 
 			base.Initialize();
 		}
