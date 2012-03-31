@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -10,17 +11,51 @@ namespace Moxy.Map
 	public partial class TileMap
 	{
 		public bool EditActive = false;
+
 		public void Activate()
 		{
 			if (EditActive == false)
 			{
 				EditActive = true;
-
-
-
-
 			}
 
+		}
+
+		public void SaveFile()
+		{
+			BinaryWriter writer = new BinaryWriter(File.Create("map.bin"));
+			using(writer)
+			{
+				writer.Write(Texture.Width);
+				writer.Write(Texture.Height);
+				
+				Color[] cData = new Color[Texture.Width * Texture.Height];
+				Texture.GetData<Color>(cData);
+				for (var i = 0; i < cData.Length; i++)
+				{
+					writer.Write(cData[i].B);
+					writer.Write(cData[i].G);
+					writer.Write(cData[i].R);
+					writer.Write(cData[i].A);
+				}
+
+				writer.Write(TileSize.X);
+				writer.Write(TileSize.Y);
+
+				writer.Write(MapSize.X);
+				writer.Write(MapSize.Y);
+
+				writer.Write(Tiles.GetLength(0));
+				writer.Write(Tiles.GetLength(1));
+				for (var x = 0; x < Tiles.GetLength(0); x++)
+				{
+					for (var y = 0; y < Tiles.GetLength(1); y++)
+					{
+						writer.Write(Tiles[x, y]);
+					}
+				}
+				writer.Close();
+			}
 		}
 
 		private void UpdateEditor(GameTime gameTime)
@@ -54,6 +89,8 @@ namespace Moxy.Map
 					key = 7;
 				else if (state.IsKeyDown(Keys.NumPad8))
 					key = 8;
+				
+				
 
 				if (mouseState.LeftButton == ButtonState.Pressed)
 					SetTileAtPoint(new Vector2(mouseState.X, mouseState.Y), key);
@@ -66,11 +103,7 @@ namespace Moxy.Map
 			if (EditActive == true)
 			{
 				EditActive = false;
-
-
-
-
-
+				SaveFile();
 			}
 		}
 
