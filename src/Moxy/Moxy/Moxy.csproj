@@ -117,7 +117,7 @@
     <Compile Include="GameStates\ColorTransition.cs" />
     <Compile Include="GameStates\GameStateManager.cs" />
     <Compile Include="GameStates\ITransition.cs" />
-    <Compile Include="GameStates\MenuState.cs" />
+    <Compile Include="GameStates\MapState.cs" />
     <Compile Include="GameStates\TestGameState.cs" />
     <Compile Include="Map\TileMap.cs" />
     <Compile Include="Map\TileMap.Editor.cs" />

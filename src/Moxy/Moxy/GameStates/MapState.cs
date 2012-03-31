@@ -8,10 +8,10 @@ using Moxy.Map;
 
 namespace Moxy.GameStates
 {
-	public class MenuState
+	public class MapState
 		: BaseGameState
 	{
-		public MenuState()
+		public MapState()
 			: base("MenuState", isOverlay:false, acceptsInput:true)
 		{
 			derp = new TileMap();
@@ -25,19 +25,23 @@ namespace Moxy.GameStates
 
 		public override void Draw (SpriteBatch batch)
 		{
+			batch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullCounterClockwise);
 			derp.Draw(batch);
+			batch.End();
 		}
 
 		public override void Load()
 		{
 			derp.Texture = Moxy.ContentManager.Load<Texture2D>("lofi_tiles");
-			derp.MapSize = new Vector2(25, 25);
+			derp.MapSize = new Vector2(5, 5);
 			derp.TileSize = new Vector2(8, 8);
-			derp.CreateTiles();
+
+			//derp.CreateTiles();
+			derp.CreateTiles("map.bin");
 		}
 
 
-		TileMap derp;
+		public TileMap derp;
 		Texture2D textureTest;
 	}
 }
