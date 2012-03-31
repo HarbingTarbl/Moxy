@@ -41,6 +41,7 @@ namespace Moxy.Entities
 
 				});
 			Animations.SetAnimation("Idle");
+			EntityType = global::Moxy.EntityType.Generator;
 			Health = 100;
 		}
 

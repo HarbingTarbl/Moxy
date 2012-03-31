@@ -33,7 +33,7 @@ namespace Moxy.GameStates
 				monster.Update (gameTime);
 
 			CalculateEnergyRate();
-			GenerateEnergy (gameTime);
+			//GenerateEnergy (gameTime);
 			GenerateParticles (gameTime);
 			FindMonsterTargets (gameTime);
 			particleManager.Update (gameTime);
@@ -56,11 +56,10 @@ namespace Moxy.GameStates
 
 			// Draw composite
 			batch.Begin (SpriteSortMode.Immediate, BlendState.AlphaBlend);
-
+			
 			lightingEffect.Parameters["lightMask"].SetValue (lightTarget);
 			lightingEffect.CurrentTechnique.Passes[0].Apply ();
 			batch.Draw (gameTarget, Vector2.Zero, Color.White);
-			
 			batch.End();
 		}
 
@@ -130,7 +129,7 @@ namespace Moxy.GameStates
 		// Energy generation
 		private float maxParticleDelay = 0.6f;
 		private float minParticleDelay = 0.24f;
-		private float maxPowerGeneration = 7;
+		private float maxPowerGeneration = 20;
 		private float minPowerGeneration = 0;
 		private float minPowerRange = 100;
 		private float maxPowerRange = 342;
@@ -191,7 +190,8 @@ namespace Moxy.GameStates
 				Color = Color.White,
 				Location = new Vector2 (200, 0),
 				Speed = gunnerSpeed,
-				Light = new Light (Color.White, lightTexture)
+				Light = new Light (Color.White, lightTexture),
+				Team = Team.Red,
 			};
 
 			powerGenerator1 = new PowerGenerator
@@ -200,7 +200,8 @@ namespace Moxy.GameStates
 				Color = Color.White,
 				Location = new Vector2 (400, 0),
 				Speed = enchanterSpeed,
-				Light = new Light (Color.White, lightTexture)
+				Light = new Light (Color.White, lightTexture),
+				Team = Team.Red,
 			};
 		}
 
@@ -209,7 +210,7 @@ namespace Moxy.GameStates
 			float distance = Vector2.Distance (gunner1.Location, powerGenerator1.Location);
 			float lerp = MathHelper.Clamp ((distance - minPowerRange) / maxPowerRange, 0, 1);
 
-			gunner1.EnergyRate = MathHelper.Lerp (minPowerGeneration, maxPowerGeneration, lerp);
+			gunner1.EnergyRate = MathHelper.Lerp(maxPowerGeneration, minPowerGeneration, lerp);
 			powerGenerator1.ParticleDelay = MathHelper.SmoothStep (minParticleDelay, maxParticleDelay, lerp);
 			powerGenerator1.PowerDisabled = distance > maxPowerRange;
 		}
@@ -232,15 +233,15 @@ namespace Moxy.GameStates
 				monster.Target = gunner1;
 		}
 
-		private void GenerateEnergy(GameTime gameTime)
-		{
-			powerGeneratePassed += (float)gameTime.TotalGameTime.TotalSeconds;
+		//private void GenerateEnergy(GameTime gameTime)
+		//{
+		//    powerGeneratePassed += (float)gameTime.TotalGameTime.TotalSeconds;
 
-			if (powerGeneratePassed > powerGenerateInterval && !powerGenerator1.PowerDisabled)
-			{
-				gunner1.Energy += gunner1.EnergyRate;
-				powerGeneratePassed = 0;
-			}
-		}
+		//    if (powerGeneratePassed > powerGenerateInterval && !powerGenerator1.PowerDisabled)
+		//    {
+		//        gunner1.Energy += gunner1.EnergyRate * (float)gameTime.ElapsedGameTime.TotalSeconds;
+		//        powerGeneratePassed = 0;
+		//    }
+		//}
 	}
 }

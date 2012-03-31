@@ -39,6 +39,7 @@ namespace Moxy.Entities
 			Health = 20;
 			TurnSpeed = MathHelper.Pi/14f;
 			MovementSpeed = 100f;
+			EntityType = global::Moxy.EntityType.Slime;
 		}
 	}
 }

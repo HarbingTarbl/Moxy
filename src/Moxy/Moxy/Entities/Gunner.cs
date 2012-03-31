@@ -40,11 +40,13 @@ namespace Moxy.Entities
 					}, new TimeSpan(0, 0, 0, 0, 200))
 
 				});
+			EntityType = global::Moxy.EntityType.Gunner;
 			Animations.SetAnimation("Walk_1");
 			Health = 100;
 		}
 
 		public float Energy;
+		public float MaxEnergy = 500;
 		public float EnergyRate;
 
 		public override void Draw(SpriteBatch batch)
@@ -55,6 +57,8 @@ namespace Moxy.Entities
 
 		public override void Update(GameTime gameTime)
 		{
+			Energy += EnergyRate * (float)gameTime.ElapsedGameTime.TotalSeconds;
+			Energy = Math.Min(Energy, MaxEnergy);
 			Health = (Health - (20 * (float)gameTime.ElapsedGameTime.TotalSeconds)) % 100;
 			Animations.Update(gameTime);
 			base.Update(gameTime);

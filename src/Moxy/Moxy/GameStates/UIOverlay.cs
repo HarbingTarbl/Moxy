@@ -17,6 +17,8 @@ namespace Moxy.GameStates
 			StatusBar.UI = this;
 			StatusBar.Pixel = new Texture2D(Moxy.Graphics, 1, 1, false, SurfaceFormat.Color);
 			StatusBar.Pixel.SetData<Color>(new Color[] { Color.White });
+
+			EnergyBar.UI = this;
 			StatusBars = new List<StatusBar>();
 			ActivePlayers = new List<Player>();
 			this.OwningState = OwningState;
@@ -31,26 +33,40 @@ namespace Moxy.GameStates
 			{
 				bar.Draw(batch);
 			}
+			if (RedEnergyBar != null)
+				RedEnergyBar.Draw(batch);
 			batch.End();
 		}
 
 		public override void Update(GameTime gameTime)
 		{
+			if (RedEnergyBar != null)
+				RedEnergyBar.Update(gameTime);
+
+
 			foreach (var player in ActivePlayers)
 			{
+				if (player.EntityType == EntityType.Gunner)
+				{
+					switch (player.Team)
+					{
+						case Team.Red:
+							if (RedEnergyBar == null)
+							{
+								RedEnergyBar = new EnergyBar()
+								{
+									Player = (Gunner)player,
+									Location = new Vector2(30, 60),
+								};
+							}
+							break;
+					}
+				}
+
 				if (!StatusBars.Any(bar => bar.Player == player))
 				{
 					var bar = new StatusBar();
 					bar.Player = player;
-					switch (player.playerIndex)
-					{
-						case PlayerIndex.One:
-							bar.Location = new Vector2(30, 30);
-							break;
-						case PlayerIndex.Two:
-							bar.Location = new Vector2(Moxy.ScreenWidth - 120, 30);
-							break;
-					}
 					StatusBars.Add(bar);
 				}
 			}
@@ -58,9 +74,59 @@ namespace Moxy.GameStates
 
 		public GameState OwningState;
 		public List<StatusBar> StatusBars;
+		public EnergyBar BlueEnergyBar;
+		public EnergyBar RedEnergyBar;
 		public List<Player> ActivePlayers;
 	}
 
+	public class EnergyBar
+	{
+		public static Rectangle BarSize = new Rectangle(0, 0, 64, 256);
+		public static Rectangle BarFrame = new Rectangle(0, 2, 31, 158);
+		public static Texture2D Texture = Moxy.ContentManager.Load<Texture2D>("powerbarspritesheet");
+		public static UIOverlay UI;
+
+		public Gunner Player;
+		public Vector2 Location;
+
+		public AnimationManager BubbleAnimation;
+
+		public EnergyBar()
+		{
+			BubbleAnimation = new AnimationManager(Texture, new Animation[]
+			{
+				new Animation("Bubbles!", new Rectangle[]
+				{
+					new Rectangle(36, 14, 24, 143),
+					new Rectangle(100, 14, 24, 143),
+					new Rectangle(68, 14, 24, 143),
+					
+				}, new TimeSpan(0, 0, 0, 0, 300))
+			});
+			BubbleAnimation.SetAnimation("Bubbles!");
+		}
+
+
+		public void Update(GameTime gameTime)
+		{
+			BubbleAnimation.Update(gameTime);
+			
+		}
+
+		public void Draw(SpriteBatch batch)
+		{
+			var outer = new Rectangle((int)Location.X, (int)Location.Y, BarSize.Width, BarSize.Height);
+			var height = Math.Min(BarSize.Height, BarSize.Height * Player.Energy / Player.MaxEnergy);
+			var inner = new Rectangle((int)Location.X + 1, (int)(Location.Y + (BarSize.Height - height)), BarSize.Width - 2 , ((int)height));
+			var innerBound = BubbleAnimation.Bounding;
+			innerBound.Height = (int)(inner.Height * (143f /BarSize.Height));
+			batch.Draw(Texture, inner, innerBound, Color.White);
+			batch.Draw(Texture, outer, BarFrame, Color.White);
+
+		}
+
+
+	}
 
 	public class StatusBar
 	{
@@ -77,7 +143,7 @@ namespace Moxy.GameStates
 			Location.X -= 40;
 			Location.Y -= 30;
 			var outerRect = new Rectangle((int)Location.X, (int)Location.Y, BarSize.Width, BarSize.Height);
-			var innerRect = new Rectangle((int)Location.X + 3, (int)Location.Y + 3, (int)((BarSize.Width - 6) * (Player.Health / 100f)), BarSize.Height - 6);
+			var innerRect = new Rectangle((int)Location.X + 3, (int)Location.Y + 3, (int)((BarSize.Width - 6) * (Player.Health / Player.MaxHealth)), BarSize.Height - 6);
 			batch.Draw(Pixel, outerRect, Color.DarkGray);
 			batch.Draw(Pixel, innerRect, Color.PaleVioletRed);
 		}
