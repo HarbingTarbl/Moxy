@@ -112,11 +112,13 @@
     <Compile Include="Entities\Animation.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Gunner.cs" />
+    <Compile Include="Entities\Item.cs" />
     <Compile Include="Entities\Monster.cs" />
     <Compile Include="Entities\MonsterSpawner.cs" />
     <Compile Include="Entities\MonsterSpawnerOptions.cs" />
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\PowerGenerator.cs" />
+    <Compile Include="Entities\SkillUpItems.cs" />
     <Compile Include="Entities\Slime.cs" />
     <Compile Include="EventHandlers\GenericEventArgs.cs" />
     <Compile Include="GameStates\BaseGameState.cs" />
@@ -135,11 +137,15 @@
     <Compile Include="Map\TileMap.cs" />
     <Compile Include="Map\TileMap.Editor.cs" />
     <Compile Include="Moxy.cs" />
-    <Compile Include="Particle.cs" />
-    <Compile Include="ParticleManager.cs" />
+    <Compile Include="ParticleSystems\EnergyPacketEmitter.cs" />
+    <Compile Include="ParticleSystems\FireballEmitter.cs" />
+    <Compile Include="ParticleSystems\Particle.cs" />
+    <Compile Include="ParticleSystems\ParticleManager.cs" />
+    <Compile Include="EntityType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Size.cs" />
+    <Compile Include="Skills\GeneratorSkill.cs" />
     <Compile Include="Team.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -29,10 +29,11 @@ namespace Moxy.Entities
 
 
 			///SOMETHING WITH STUFF
+			lastSpawn += gameTime.ElapsedGameTime;
 			if (MonsterCount < MonsterSpawnerOptions.MaxSpawns && MonsterSpawnerOptions.SpawnRange[0] < range && MonsterSpawnerOptions.SpawnRange[1] > range
-				&& (gameTime.TotalGameTime - ((lastSpawn == null)?TimeSpan.Zero:lastSpawn.TotalGameTime)) > MonsterSpawnerOptions.SpawnRate)
+				&& (lastSpawn > MonsterSpawnerOptions.SpawnRate))
 			{
-				lastSpawn = gameTime;
+				lastSpawn = TimeSpan.Zero;
 				switch (MonsterType)
 				{
 					case "Slime":
@@ -67,7 +68,7 @@ namespace Moxy.Entities
 			MonsterCount--;
 		}
 
-		private GameTime lastSpawn;
+		private TimeSpan lastSpawn;
 
 	}
 }

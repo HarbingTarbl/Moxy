@@ -15,12 +15,12 @@ namespace Moxy
 			removeQueue = new Queue<Particle>();
 		}
 
-		public void StartParticle (Particle particle)
+		public virtual void StartParticle (Particle particle)
 		{
 			particles.Add (particle);
 		}
 
-		public void Update (GameTime gameTime)
+		public virtual void Update (GameTime gameTime)
 		{
 			foreach (Particle particle in particles)
 			{
@@ -46,7 +46,7 @@ namespace Moxy
 				particle.Draw (batch);
 		}
 
-		private List<Particle> particles;
-		private Queue<Particle> removeQueue; 
+		protected List<Particle> particles;
+		protected Queue<Particle> removeQueue; 
 	}
 }

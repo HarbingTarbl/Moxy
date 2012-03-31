@@ -118,6 +118,12 @@
     </Compile>
     <Compile Include="cspanel.png">
       <Name>cspanel</Name>
+      <Name>cspanel</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Fireball.png">
+      <Name>Fireball</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -137,6 +143,21 @@
     </Compile>
     <Compile Include="titlescreen.png">
       <Name>titlescreen</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="powerbarspritesheet.png">
+      <Name>powerbarspritesheet</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="powerparticle.png">
+      <Name>powerparticle</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Orb.png">
+      <Name>Orb</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

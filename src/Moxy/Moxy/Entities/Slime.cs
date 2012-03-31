@@ -38,7 +38,21 @@ namespace Moxy.Entities
 			Animations.SetAnimation("Idle_Ice");
 			Health = 20;
 			TurnSpeed = MathHelper.Pi/14f;
-			MovementSpeed = 30f;
+			MovementSpeed = 100f;
+			Collision = new Rectangle(0, 0, 96, 96);
+			Origin = new Vector2(42, 54);
+			CollisionRadius = 48;
+			
+
+			EntityType = global::Moxy.EntityType.Slime;
+			OnCollisionWithPlayer += new EventHandler<Events.GenericEventArgs<Player>>(Slime_OnCollisionWithPlayer);
+		}
+
+		public float SlimeDamage = 10f;
+
+		private void Slime_OnCollisionWithPlayer(object sender, Events.GenericEventArgs<Player> e)
+		{
+			e.Data.Health -= SlimeDamage;
 		}
 	}
 }

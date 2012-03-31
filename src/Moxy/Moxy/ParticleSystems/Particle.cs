@@ -27,12 +27,14 @@ namespace Moxy
 
 		public Vector2 Original;
 		public Vector2 CurrentLocation;
+		public float Size;
 		public Texture2D Texture;
 		public float Scale;
 		public Color Color;
 		public float Time;
 		public float TimePassed;
 		public Player Target;
+		public Vector2 EndLocation;
 
 		public void Draw(SpriteBatch batch)
 		{

@@ -18,6 +18,20 @@ namespace Moxy
 		public bool UseBounds;
 		public Size MinimumSize;
 
+		public Vector2 ScreenToWorld(Vector2 ScreenPos)
+		{
+			Matrix inverse = Matrix.Invert(GetTransformation(Moxy.Graphics));
+			Vector2 mousePos = Vector2.Transform(ScreenPos, inverse);
+
+			return mousePos;
+		}
+
+		public Vector2 WorldToScreen(Vector2 WorldPos)
+		{
+			return Vector2.Transform(WorldPos, GetTransformation(Moxy.Graphics));
+		}
+
+
 		public Matrix GetTransformation(GraphicsDevice graphicsdevice)
 		{
 			return Matrix.CreateTranslation (new Vector3 (-Position.X, -Position.Y, 0)) *

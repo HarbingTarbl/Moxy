@@ -29,6 +29,10 @@ namespace Moxy.Entities
 			HandleInput (gameTime);
 
 			Light.Location = Location + new Vector2(32, 32);
+
+			CollisionCenter = Location;
+			Collision = new Rectangle((int)CollisionCenter.X, (int)CollisionCenter.Y, 1, 1);
+			Collision.Inflate((int)CollisionRadius, (int)CollisionRadius);
 		}
 
 		public override void Draw (SpriteBatch batch)
@@ -50,7 +54,12 @@ namespace Moxy.Entities
 				Animations.SetAnimation("Walk_1");
 			else if (moveVector == Vector2.Zero)
 				Animations.SetAnimation("Idle");
-				
+
+			Health = MathHelper.Clamp(Health, 0, MaxHealth);
+
+			if (Health <= 0 && OnDeath != null)
+				OnDeath(this, null);
+
 
 			base.Location += moveVector * Speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 			base.Rotation = (float)Math.Atan2 (moveVector.Y, moveVector.X);
@@ -58,6 +67,8 @@ namespace Moxy.Entities
 			lastMovement = moveVector;
 			oldPad = currentPad;
 		}
+
+		public event EventHandler OnDeath;
 
 		private Vector2 lastMovement;
 		private GamePadState oldPad;
