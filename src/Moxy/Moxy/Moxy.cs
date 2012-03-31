@@ -51,7 +51,7 @@ namespace Moxy
 			Moxy.Graphics = GraphicsDevice;
 
 			Moxy.StateManager.Load (Assembly.GetExecutingAssembly());
-			Moxy.StateManager.Set ("MenuState");
+			Moxy.StateManager.Set ("Test");
 		}
 
 		protected override void UnloadContent()
