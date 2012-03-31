@@ -64,58 +64,66 @@ namespace Moxy.Map
 
 		public void CreateTiles(string Filename)
 		{
-			BinaryReader reader = new BinaryReader(File.Open(Filename, FileMode.Open));
-			using (reader)
+			if (!File.Exists(Filename))
+				CreateTiles();
+			else
 			{
-				var xTex = reader.ReadInt32();
-				var yTex = reader.ReadInt32();
 
-				Color[] cData = new Color[xTex * yTex];
-				for (var i = 0; i < cData.Length; i++)
+
+
+				BinaryReader reader = new BinaryReader(File.Open(Filename, FileMode.Open));
+				using (reader)
 				{
-					cData[i].B = reader.ReadByte();
-					cData[i].G = reader.ReadByte();
-					cData[i].R = reader.ReadByte();
-					cData[i].A = reader.ReadByte();
-				}
+					var xTex = reader.ReadInt32();
+					var yTex = reader.ReadInt32();
 
-				Texture = new Texture2D(Moxy.Graphics, xTex, yTex, false, SurfaceFormat.Color);
-				Texture.SetData<Color>(cData);
-
-				var xTile = reader.ReadSingle();
-				var yTile = reader.ReadSingle();
-
-				TileSize.X = xTile;
-				TileSize.Y = yTile;
-
-				var xMap = reader.ReadSingle();
-				var yMap = reader.ReadSingle();
-
-				MapSize.X = xMap;
-				MapSize.Y = yMap;
-
-				var xSize = reader.ReadInt32();
-				var ySize = reader.ReadInt32();
-				Tiles = new int[xSize, ySize];
-				for (var x = 0; x < xSize; x++)
-				{
-					for (var y = 0; y < ySize; y++)
+					Color[] cData = new Color[xTex * yTex];
+					for (var i = 0; i < cData.Length; i++)
 					{
-						Tiles[x, y] = reader.ReadInt32();
+						cData[i].B = reader.ReadByte();
+						cData[i].G = reader.ReadByte();
+						cData[i].R = reader.ReadByte();
+						cData[i].A = reader.ReadByte();
 					}
+
+					Texture = new Texture2D(Moxy.Graphics, xTex, yTex, false, SurfaceFormat.Color);
+					Texture.SetData<Color>(cData);
+
+					var xTile = reader.ReadSingle();
+					var yTile = reader.ReadSingle();
+
+					TileSize.X = xTile;
+					TileSize.Y = yTile;
+
+					var xMap = reader.ReadSingle();
+					var yMap = reader.ReadSingle();
+
+					MapSize.X = xMap;
+					MapSize.Y = yMap;
+
+					var xSize = reader.ReadInt32();
+					var ySize = reader.ReadInt32();
+					Tiles = new int[xSize, ySize];
+					for (var x = 0; x < xSize; x++)
+					{
+						for (var y = 0; y < ySize; y++)
+						{
+							Tiles[x, y] = reader.ReadInt32();
+						}
+					}
+					reader.Close();
 				}
-				reader.Close();
-			}
 
-			var xTiles = (int)(Texture.Width / TileSize.X);
-			var yTiles = (int)(Texture.Height / TileSize.Y);
+				var xTiles = (int)(Texture.Width / TileSize.X);
+				var yTiles = (int)(Texture.Height / TileSize.Y);
 
-			TilesSources = new Rectangle[xTiles * yTiles];
-			for (var y = 0; y < yTiles; y++)
-			{
-				for (var x = 0; x < xTiles; x++)
+				TilesSources = new Rectangle[xTiles * yTiles];
+				for (var y = 0; y < yTiles; y++)
 				{
-					TilesSources[(int)(x + (y * xTiles))] = new Rectangle((int)(x * TileSize.X), (int)(y * TileSize.Y), (int)TileSize.X, (int)TileSize.Y);
+					for (var x = 0; x < xTiles; x++)
+					{
+						TilesSources[(int)(x + (y * xTiles))] = new Rectangle((int)(x * TileSize.X), (int)(y * TileSize.Y), (int)TileSize.X, (int)TileSize.Y);
+					}
 				}
 			}
 		}
