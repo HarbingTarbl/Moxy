@@ -22,9 +22,9 @@ namespace Moxy.Map
 
 		}
 
-		public void SaveFile()
+		public void SaveFile(string FileName = "map.bin")
 		{
-			BinaryWriter writer = new BinaryWriter(File.Create("map.bin"));
+			BinaryWriter writer = new BinaryWriter(File.Create(FileName);
 			using(writer)
 			{
 				writer.Write(Texture.Width);
@@ -69,16 +69,7 @@ namespace Moxy.Map
 			if (EditActive)
 			{
 				var mouseState = Mouse.GetState();
-				if (mouseState.X < 40)
-					Camera.Location -= new Vector2(10, 0);
-				else if (mouseState.X > Moxy.ScreenWidth - 40)
-					Camera.Location += new Vector2(10, 0);
-
-				if (mouseState.Y < 40)
-					Camera.Location -= new Vector2(0, 10);
-				else if (mouseState.Y > Moxy.ScreenHeight - 40)
-					Camera.Location += new Vector2(0, 10);
-
+				
 
 				var state = Keyboard.GetState();
 				var key = 0;
@@ -101,6 +92,16 @@ namespace Moxy.Map
 					key = 7;
 				else if (state.IsKeyDown(Keys.NumPad8))
 					key = 8;
+
+				if (state.IsKeyDown(Keys.A))
+					Camera.Location -= new Vector2(10, 0) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+				else if (state.IsKeyDown(Keys.D))
+					Camera.Location += new Vector2(10, 0) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+				if (state.IsKeyDown(Keys.W))
+					Camera.Location -= new Vector2(0, 10) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+				else if (state.IsKeyDown(Keys.S))
+					Camera.Location += new Vector2(0, 10) * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
 				if (state.IsKeyDown(Keys.Up))
 					Camera.Scale -= (float)(0.1 * gameTime.ElapsedGameTime.TotalSeconds);
