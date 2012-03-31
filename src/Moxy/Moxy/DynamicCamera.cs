@@ -12,8 +12,6 @@ namespace Moxy
 		public DynamicCamera (Size originalSize, Size minSize, Size maxSize)
 		{
 			this.originalSize = originalSize;
-			this.minSize = minSize;
-			this.maxSize = maxSize;
 			this.Targets = new List<Entity>();
 		}
 
@@ -30,8 +28,8 @@ namespace Moxy
 		{
 			calculateProperties ();
 
-			Location = Vector2.Lerp (Location, desiredLocation, 0.1f);
-			Scale = MathHelper.Lerp (Scale, desiredScale, 0.1f);
+			//Location = Vector2.Lerp (Location, desiredLocation, 0.01f);
+			//Scale = MathHelper.Lerp (Scale, desiredScale, 0.01f);
 		}
 
 		public Vector2 ScreenToWorld(Vector2 screenVector)
@@ -56,9 +54,9 @@ namespace Moxy
 		}
 
 		private Size originalSize;
-		private Size minSize;
-		private Size maxSize;
 		private Size currentSize;
+		private float minScale = 1;
+		private float maxScale = 0.1f;
 
 		private Vector2 screenHalf;
 		private bool updateTransform = false;
@@ -84,9 +82,15 @@ namespace Moxy
 					highY = target.Location.Y;
 			}
 
-			desiredLocation = new Vector2((highX - lowX), (highY - lowY));
-			desiredScale = (highX - lowX) / originalSize.Width;
+			Size screenSize = originalSize;//new Size(highX - lowX, highY - lowY);
+			
+			var centerPoint = new Vector2 (((highX + lowX) / 2), ((highY + lowY) / 2));
+			var origin = new Vector2 (centerPoint.X - (screenSize.Width / 2), centerPoint.Y - (screenSize.Height / 2));
 
+			Location = origin;
+			Scale = MathHelper.Clamp (originalSize.Height / (screenSize.Height + 64), minScale, maxScale);
+			//currentSize = new Size(screenSize.Width * Scale, screenSize.Height * Scale);
+			
 			updateTransform = true;
 		}
 

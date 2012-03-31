@@ -49,7 +49,7 @@ namespace Moxy.GameStates
 			{
 				PadIndex = PlayerIndex.Two,
 				Color = Color.Blue,
-				Location = new Vector2(800, 800),
+				Location = new Vector2(400, 400),
 				Speed = 0.5f
 			};
 
