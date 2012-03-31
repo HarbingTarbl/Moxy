@@ -26,6 +26,7 @@ namespace Moxy.GameStates
 				PadIndex = PlayerIndex.One
 			});
 			Camera = new Camera(Moxy.ScreenWidth, Moxy.ScreenHeight);
+			Monsters = new List<Monster>();
 			Map.Camera = Camera;
 			//Camera.UseBounds = true;
 			Camera.Bounds = new Rectangle(0, 0, 1600, 1600);
@@ -39,6 +40,22 @@ namespace Moxy.GameStates
 			Dudes.ForEach(dude => dude.Update(gameTime));
 			if (!Map.EditActive)
 				Camera.CenterOnPoint(Dudes[0].Location);
+			foreach (var spawner in Map.MonsterSpawners)
+			{
+				var monster = spawner.Spawn(gameTime);
+				if(monster != null)
+					Monsters.Add(monster);
+			}
+
+			foreach (var monster in Monsters)
+			{
+				monster.Rotation = (float)Math.Atan2(Dudes[0].Location.Y - monster.Location.Y, Dudes[0].Location.X - monster.Location.X);
+				if(Dudes[0].Location.Y - monster.Location.Y < 0 || Dudes[0].Location.X - monster.Location.X < 0)
+					monster.Rotation = -monster.Rotation;
+
+
+				monster.Update(gameTime);
+			}
 		}
 
 		public override void Draw(SpriteBatch batch)
@@ -48,6 +65,9 @@ namespace Moxy.GameStates
 			batch.End();
 			batch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullCounterClockwise, null, Camera.Transformation);
 			Dudes.ForEach(dude => dude.Draw(batch));
+			Monsters.ForEach(monster => monster.Draw(batch));
+			if (Map.EditActive)
+				Map.DrawEditor(batch);
 			batch.End();
 		}
 
@@ -67,6 +87,7 @@ namespace Moxy.GameStates
 			UI.ActivePlayers = Dudes;
 		}
 
+		public List<Monster> Monsters;
 		public UIOverlay UI;
 		public TileMap Map;
 		public List<Player> Dudes;

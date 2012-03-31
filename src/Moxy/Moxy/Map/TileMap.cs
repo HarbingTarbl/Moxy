@@ -10,6 +10,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System.IO;
+using Moxy.GameStates;
+using Moxy.Entities;
 
 namespace Moxy.Map
 {
@@ -18,6 +20,8 @@ namespace Moxy.Map
 		public Texture2D Texture;
 		public Vector2 PositionOffset;
 		public Rectangle[] TilesSources;
+		public List<MonsterSpawner> MonsterSpawners;
+		public GameState State;
 		public int[,] Tiles;
 		public Vector2 TileSize;
 		public Vector2 MapSize;
@@ -27,6 +31,8 @@ namespace Moxy.Map
 		public TileMap()
 		{
 			AmbientLight = Color.White;
+			MonsterSpawners = new List<MonsterSpawner>();
+			MonsterSpawners.Add(new MonsterSpawner(this) { Location = new Vector2(10, 10), MonsterType = "Slime" });
 
 		}
 
@@ -47,6 +53,7 @@ namespace Moxy.Map
 
 		public void Draw(SpriteBatch batch)
 		{
+
 			var drawLocation = new Rectangle((int)PositionOffset.X, (int)PositionOffset.Y, 64, 64);
 			for (var y = 0; y < MapSize.Y; y++)
 			{
