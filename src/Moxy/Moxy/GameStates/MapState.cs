@@ -39,13 +39,6 @@ namespace Moxy.GameStates
 			derp.CreateTiles("map.bin");
 		}
 
-		public override void Load()
-		{
-
-		}
-
-
 		public TileMap derp;
-		Texture2D textureTest;
 	}
 }

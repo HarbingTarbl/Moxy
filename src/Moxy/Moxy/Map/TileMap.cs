@@ -22,6 +22,7 @@ namespace Moxy.Map
 		public Vector2 TileSize;
 		public Vector2 MapSize;
 		public Color AmbientLight;
+		public Camera Camera;
 
 		public TileMap()
 		{
@@ -37,13 +38,11 @@ namespace Moxy.Map
 
 		public void SetTileAtPoint(Vector2 Location, int Value)
 		{
-			if (Location.X > 0 && Location.X < Moxy.ScreenWidth && Location.Y > 0 && Location.Y < Moxy.ScreenWidth)
+			if (Location.X > 0 && Location.X < Moxy.ScreenWidth && Location.Y > 0 && Location.Y < Moxy.ScreenHeight)
 			{
-				var xTile = Location.X / 64;
-				var yTile = Location.Y / 64;
-				if (xTile < MapSize.X && yTile < MapSize.Y && Value < TilesSources.Length)
-					Tiles[(int)xTile, (int)yTile] = Value;
-			}
+				var worldVec = Camera.ScreenToWorld(Location);
+				Tiles[(int)worldVec.X / 64, (int)worldVec.Y / 64] = Value;
+			}	
 		}
 
 		public void Draw(SpriteBatch batch)
@@ -54,7 +53,7 @@ namespace Moxy.Map
 				drawLocation.X = (int)PositionOffset.X;
 				for (var x = 0; x < MapSize.X; x++)
 				{
-					batch.Draw(Texture, drawLocation, TilesSources[Tiles[x, y]], AmbientLight);
+					batch.Draw(Texture, drawLocation, TilesSources[Tiles[x, y]], AmbientLight, 0, Vector2.Zero, SpriteEffects.None, 0);
 					drawLocation.X += drawLocation.Width;
 				}
 				drawLocation.Y += drawLocation.Height;
@@ -68,9 +67,6 @@ namespace Moxy.Map
 				CreateTiles();
 			else
 			{
-
-
-
 				BinaryReader reader = new BinaryReader(File.Open(Filename, FileMode.Open));
 				using (reader)
 				{
@@ -130,8 +126,6 @@ namespace Moxy.Map
 
 		public void CreateTiles()
 		{
-			
-
 			var xTiles = (int)(Texture.Width / TileSize.X);
 			var yTiles = (int)(Texture.Height / TileSize.Y);
 

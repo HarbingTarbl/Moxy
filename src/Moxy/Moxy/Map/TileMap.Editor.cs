@@ -17,6 +17,7 @@ namespace Moxy.Map
 			if (EditActive == false)
 			{
 				EditActive = true;
+				defaultScale = Camera.Scale;
 			}
 
 		}
@@ -68,6 +69,17 @@ namespace Moxy.Map
 			if (EditActive)
 			{
 				var mouseState = Mouse.GetState();
+				if (mouseState.X < 40)
+					Camera.Location -= new Vector2(10, 0);
+				else if (mouseState.X > Moxy.ScreenWidth - 40)
+					Camera.Location += new Vector2(10, 0);
+
+				if (mouseState.Y < 40)
+					Camera.Location -= new Vector2(0, 10);
+				else if (mouseState.Y > Moxy.ScreenHeight - 40)
+					Camera.Location += new Vector2(0, 10);
+
+
 				var state = Keyboard.GetState();
 				var key = 0;
 
@@ -89,7 +101,11 @@ namespace Moxy.Map
 					key = 7;
 				else if (state.IsKeyDown(Keys.NumPad8))
 					key = 8;
-				
+
+				if (state.IsKeyDown(Keys.Up))
+					Camera.Scale -= (float)(0.1 * gameTime.ElapsedGameTime.TotalSeconds);
+				else if (state.IsKeyDown(Keys.Down))
+					Camera.Scale += (float)(0.1 * gameTime.ElapsedGameTime.TotalSeconds);
 				
 
 				if (mouseState.LeftButton == ButtonState.Pressed)
@@ -104,9 +120,10 @@ namespace Moxy.Map
 			{
 				EditActive = false;
 				SaveFile();
+				Camera.Scale = defaultScale;
 			}
 		}
 
-
+		private float defaultScale;
 	}
 }

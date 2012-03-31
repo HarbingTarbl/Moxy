@@ -107,7 +107,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Camera2D.cs" />
     <Compile Include="DynamicCamera.cs" />
+    <Compile Include="Entities\Animation.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Gunner.cs" />
     <Compile Include="Entities\Player.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="GameStates\ColorTransition.cs" />
     <Compile Include="GameStates\GameStateManager.cs" />
     <Compile Include="GameStates\ITransition.cs" />
+    <Compile Include="GameStates\MapPlayerState.cs" />
     <Compile Include="GameStates\MapState.cs" />
     <Compile Include="GameStates\TestGameState.cs" />
     <Compile Include="Map\TileMap.cs" />

@@ -42,9 +42,12 @@ namespace Moxy
 			updateTransform = true;
 		}
 
-		public Vector2 ScreenToWorld(Vector2 screenVector)
+		public Vector2 ScreenToWorld (Vector2 screenVector)
 		{
-			return new Vector2 ((screenVector.X * Scale) + Location.X, (screenVector.Y + Location.Y) * Scale);
+			Matrix inverse = Matrix.Invert(Transformation);
+			Vector2 mousePos = Vector2.Transform(screenVector, inverse);
+
+			return mousePos;
 		}
 
 		public Vector2 Origin
@@ -71,12 +74,9 @@ namespace Moxy
 
 		private void generateTransformation()
 		{
-			//Vector2 origin = screenHalf / Scale;
-
 			transformation = Matrix.Identity
-							 * Matrix.CreateTranslation (-Location.X, -Location.Y, 0f)
-				//* Matrix.CreateTranslation (origin.X, origin.Y, 0f)
-							 * Matrix.CreateScale (Scale);
+				* Matrix.CreateScale(Scale)
+				* Matrix.CreateTranslation(-Location.X, -Location.Y, 0f);
 		}
 	}
 }

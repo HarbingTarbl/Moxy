@@ -51,7 +51,7 @@ namespace Moxy
 			Moxy.Graphics = GraphicsDevice;
 
 			Moxy.StateManager.Load (Assembly.GetExecutingAssembly());
-			Moxy.StateManager.Set ("Test");
+			Moxy.StateManager.Set("MapPlayerState");
 		}
 
 		protected override void UnloadContent()
