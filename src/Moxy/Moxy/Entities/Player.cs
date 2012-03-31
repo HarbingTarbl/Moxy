@@ -22,10 +22,13 @@ namespace Moxy.Entities
 		public float Speed;
 		public Color Color;
 		public Team Team;
+		public Light Light;
 
 		public override void Update (GameTime gameTime)
 		{
 			HandleInput (gameTime);
+
+			Light.Location = Location + new Vector2(32, 32);
 		}
 
 		public override void Draw (SpriteBatch batch)

@@ -60,7 +60,7 @@ namespace Moxy.Map
 				drawLocation.X = (int)PositionOffset.X;
 				for (var x = 0; x < MapSize.X; x++)
 				{
-					batch.Draw(Texture, drawLocation, TilesSources[Tiles[x, y]], AmbientLight, 0, Vector2.Zero, SpriteEffects.None, 0);
+					batch.Draw(Texture, drawLocation, TilesSources[Tiles[x, y]], Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
 					drawLocation.X += drawLocation.Width;
 				}
 				drawLocation.Y += drawLocation.Height;

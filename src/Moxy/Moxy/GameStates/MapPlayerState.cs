@@ -50,7 +50,7 @@ namespace Moxy.GameStates
 			foreach (var monster in Monsters)
 			{
 				monster.Rotation = (float)Math.Atan2(Dudes[0].Location.Y - monster.Location.Y, Dudes[0].Location.X - monster.Location.X);
-				if (Dudes[0].Location.Y - monster.Location.Y < 0 || Dudes[0].Location.X - monster.Location.X < 0)
+				if(Dudes[0].Location.Y - monster.Location.Y < 0 || Dudes[0].Location.X - monster.Location.X < 0)
 					monster.Rotation = -monster.Rotation;
 
 
