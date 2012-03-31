@@ -44,10 +44,14 @@ namespace Moxy.Entities
 			Health = 100;
 		}
 
+		public float ParticleDelay;
+		public float ParticleTimePassed;
+		public bool PowerDisabled;
+
 		public override void Draw(SpriteBatch batch)
 		{
-
-			batch.Draw(Texture, new Rectangle((int)Location.X, (int)Location.Y, 64, 64), Animations.Bounding, Color, Rotation - MathHelper.PiOver2, new Vector2(32, 32), SpriteEffects.None, 0);
+			batch.Draw(Texture, new Rectangle((int)Location.X, (int)Location.Y, 64, 64), Animations.Bounding,
+				Color, Rotation - MathHelper.PiOver2, new Vector2(32, 32), SpriteEffects.None, 0);
 		}
 
 		public override void Update(GameTime gameTime)

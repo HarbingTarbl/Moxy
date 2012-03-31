@@ -44,6 +44,9 @@ namespace Moxy.Entities
 			Health = 100;
 		}
 
+		public float Energy;
+		public float EnergyRate;
+
 		public override void Draw(SpriteBatch batch)
 		{
 

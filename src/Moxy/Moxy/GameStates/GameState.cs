@@ -17,6 +17,7 @@ namespace Moxy.GameStates
 		{
 			players = new List<Player> (4);
 			lights = new List<Light>();
+			particleManager = new ParticleManager();
 		}
 
 		public override void Update(GameTime gameTime)
@@ -26,6 +27,11 @@ namespace Moxy.GameStates
 			
 			foreach (Player player in players)
 				player.Update (gameTime);
+
+			CalculateEnergyRate();
+			GenerateEnergy (gameTime);
+			GenerateParticles (gameTime);
+			particleManager.Update (gameTime);
 		}
 
 		public override void Draw(SpriteBatch batch)
@@ -47,18 +53,22 @@ namespace Moxy.GameStates
 
 		public override void Load()
 		{
+			camera = new DynamicCamera();
+			map = new TileMap ();
+			map.AmbientLight = new Color (255, 255, 255, 10);
+			map.CreateTiles ("Content/map.bin");
+
 			gameTarget = new RenderTarget2D (Moxy.Graphics, Moxy.ScreenWidth, Moxy.ScreenHeight);
 			lightTarget = new RenderTarget2D (Moxy.Graphics, Moxy.ScreenWidth, Moxy.ScreenHeight);
 
 			lightingEffect = Moxy.ContentManager.Load<Effect> ("lighting");
 			lightTexture = Moxy.ContentManager.Load<Texture2D> ("light");
+			radiusTexture = Moxy.ContentManager.Load<Texture2D> ("Radius");
+			particleTexture = Moxy.ContentManager.Load<Texture2D> ("EnergyParticle");
 			texture = new Texture2D (Moxy.Graphics, 1, 1);
-			texture.SetData (new [] { new Color(0, 0, 0, 200) });
+			texture.SetData (new [] { new Color(0, 0, 0, map.AmbientLight.A) });
 
-			camera = new DynamicCamera ();
-			map = new TileMap ();
-			map.AmbientLight = new Color(255, 255, 255, 50);
-			map.CreateTiles ("Content/map.bin");
+			radiusOrigin = new Vector2 (radiusTexture.Width / 2, radiusTexture.Height / 2);
 
 			LoadPlayers();
 
@@ -81,11 +91,25 @@ namespace Moxy.GameStates
 		private TileMap map;
 		private Texture2D lightTexture;
 		private Texture2D texture;
+		private Texture2D radiusTexture;
+		private Texture2D particleTexture; 
 		private List<Light> lights;
 		private RenderTarget2D gameTarget;
 		private RenderTarget2D lightTarget;
 		private Effect lightingEffect;
+		private Vector2 radiusOrigin;
+		private ParticleManager particleManager;
 
+		// Energy generation
+		private float maxParticleDelay = 0.6f;
+		private float minParticleDelay = 0.24f;
+		private float maxPowerGeneration = 7;
+		private float minPowerGeneration = 0;
+		private float minPowerRange = 100;
+		private float maxPowerRange = 342;
+		private float powerGenerateInterval = 1f;
+		private float powerGeneratePassed = 0;
+		
 		private void DrawGame (SpriteBatch batch)
 		{
 			Moxy.Graphics.SetRenderTarget (gameTarget);
@@ -95,9 +119,12 @@ namespace Moxy.GameStates
 				RasterizerState.CullCounterClockwise, null, camera.GetTransformation (Moxy.Graphics));
 
 			map.Draw (batch);
+			batch.Draw (radiusTexture, gunner1.Location, null, Color.White, 0f, radiusOrigin, 1f, SpriteEffects.None, 1f);
 
 			foreach (Player player in players)
 				player.Draw (batch);
+
+			particleManager.Draw (batch);
 
 			batch.End ();
 		}
@@ -128,20 +155,53 @@ namespace Moxy.GameStates
 			gunner1 = new Gunner
 			{
 				PadIndex = PlayerIndex.One,
-				Color = Color.Red,
+				Color = Color.White,
 				Location = new Vector2 (200, 0),
 				Speed = gunnerSpeed,
-				Light = new Light (Color.Red, lightTexture)
+				Light = new Light (Color.White, lightTexture)
 			};
 
 			powerGenerator1 = new PowerGenerator
 			{
 				PadIndex = PlayerIndex.Two,
-				Color = Color.Red,
+				Color = Color.White,
 				Location = new Vector2 (400, 0),
 				Speed = enchanterSpeed,
-				Light = new Light (Color.Red, lightTexture)
+				Light = new Light (Color.White, lightTexture)
 			};
+		}
+
+		private void CalculateEnergyRate()
+		{
+			float distance = Vector2.Distance (gunner1.Location, powerGenerator1.Location);
+			float lerp = MathHelper.Clamp ((distance - minPowerRange) / maxPowerRange, 0, 1);
+
+			gunner1.EnergyRate = MathHelper.Lerp (minPowerGeneration, maxPowerGeneration, lerp);
+			powerGenerator1.ParticleDelay = MathHelper.SmoothStep (minParticleDelay, maxParticleDelay, lerp);
+			powerGenerator1.PowerDisabled = distance > maxPowerRange;
+		}
+
+		private void GenerateParticles(GameTime gameTime)
+		{
+			powerGenerator1.ParticleTimePassed += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+			if (powerGenerator1.ParticleTimePassed > powerGenerator1.ParticleDelay && !powerGenerator1.PowerDisabled)
+			{
+				var particle = new Particle (powerGenerator1.Location, particleTexture, 1f, 1f) { Target = gunner1 };
+				particleManager.StartParticle (particle);
+				powerGenerator1.ParticleTimePassed = 0;
+			}
+		}
+
+		private void GenerateEnergy(GameTime gameTime)
+		{
+			powerGeneratePassed += (float)gameTime.TotalGameTime.TotalSeconds;
+
+			if (powerGeneratePassed > powerGenerateInterval && !powerGenerator1.PowerDisabled)
+			{
+				gunner1.Energy += gunner1.EnergyRate;
+				powerGeneratePassed = 0;
+			}
 		}
 	}
 }
