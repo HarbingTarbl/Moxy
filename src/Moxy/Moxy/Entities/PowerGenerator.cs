@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Moxy.Skills;
 
 namespace Moxy.Entities
 {
@@ -43,11 +44,23 @@ namespace Moxy.Entities
 			Animations.SetAnimation("Idle");
 			EntityType = global::Moxy.EntityType.Generator;
 			Health = 100;
+			ItemBelt = new List<Item>();
 		}
 
+		public List<Item> ItemBelt;
+		public List<GeneratorSkill> Skills;
+		public int CurrentItem;
 		public float ParticleDelay;
 		public float ParticleTimePassed;
 		public bool PowerDisabled;
+
+		public void ApplyPowerup(Item item)
+		{
+			if (item.IsPowerup == false)
+				ItemBelt.Insert(CurrentItem = (CurrentItem + 1) % 4, item);
+			//else
+
+		}
 
 		public override void Draw(SpriteBatch batch)
 		{
@@ -57,7 +70,6 @@ namespace Moxy.Entities
 
 		public override void Update(GameTime gameTime)
 		{
-			Health = (Health - (1 * (float)gameTime.ElapsedGameTime.TotalSeconds)) % 100;
 			Animations.Update(gameTime);
 			base.Update(gameTime);
 		}

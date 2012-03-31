@@ -20,6 +20,9 @@ namespace Moxy.GameStates
 			players = new List<Player> (4);
 			lights = new List<Light>();
 			monsters = new List<Monster>();
+			monsterPurgeList = new List<Monster>();
+			items = new List<Item>();
+			itemPurgeList = new List<Item>();
 			redPacketEmitter = new EnergyPacketEmitter();
 			FireballEmitter = new FireballEmitter();
 			FireballEmitter.OnParticleMonsterCollision += OnBulletCollision;
@@ -32,6 +35,26 @@ namespace Moxy.GameStates
 			
 			foreach (Player player in players)
 				player.Update (gameTime);
+
+
+			foreach (var item in itemPurgeList)
+			{
+				items.Remove(item);
+			}
+			itemPurgeList.Clear();
+
+			foreach(var item in items)
+			{
+				item.Update(gameTime);
+				item.CheckCollision(gunner1);
+				item.CheckCollision(powerGenerator1);
+			}
+
+			foreach (var monster in monsterPurgeList)
+			{
+				monsters.Remove(monster);
+			}
+			monsterPurgeList.Clear();
 
 			foreach (var monster in monsters)
 			{
@@ -53,11 +76,39 @@ namespace Moxy.GameStates
 			{
 				var monster = spawner.Spawn (gameTime);
 				if (monster != null)
-					monsters.Add (monster);
+				{
+					monster.OnDeath += new EventHandler(monster_OnDeath);
+					monsters.Add(monster);
+				}
 			}
 		}
 
-		public override void Draw(SpriteBatch batch)
+		public void monster_OnDeath(object sender, EventArgs e)
+		{
+			var monster = sender as Monster;
+			monster.OnDeath -= monster_OnDeath;
+			monsterPurgeList.Add(monster);
+			var item = monster.DropItem();
+			if (item != null)
+			{
+				item.OnPickup += new EventHandler<GenericEventArgs<Player>>(item_OnPickup);
+				items.Add(item);
+			}
+		}
+
+		public void item_OnPickup(object sender, GenericEventArgs<Player> e)
+		{
+			var item = sender as Item;
+			if (item != null)
+			{
+				item.OnPickup -= item_OnPickup;
+				itemPurgeList.Add(item);
+
+			}
+
+		}
+
+		public  override void Draw(SpriteBatch batch)
 		{
 			DrawGame (batch);
 			DrawLights (batch);
@@ -129,6 +180,9 @@ namespace Moxy.GameStates
 		private Texture2D radiusTexture;
 		private Texture2D particleTexture; 
 		private List<Light> lights;
+		private List<Item> itemPurgeList;
+		private List<Item> items;
+		private List<Monster> monsterPurgeList;
 		private List<Monster> monsters;
 		private RenderTarget2D gameTarget;
 		private RenderTarget2D lightTarget;
@@ -158,6 +212,9 @@ namespace Moxy.GameStates
 
 			foreach (Monster monster in monsters)
 				monster.Draw (batch);
+
+			foreach (var item in items)
+				item.Draw(batch);
 
 			redPacketEmitter.Draw (batch);
 			FireballEmitter.Draw(batch);

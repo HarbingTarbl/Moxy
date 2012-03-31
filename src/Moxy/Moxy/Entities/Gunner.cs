@@ -90,7 +90,7 @@ namespace Moxy.Entities
 				OnOverLoadExeeded(this, null);
 			Energy += EnergyRate * (float)gameTime.ElapsedGameTime.TotalSeconds;
 			Energy = Math.Min(Energy, MaxEnergy);
-			Health = (Health - (20 * (float)gameTime.ElapsedGameTime.TotalSeconds)) % 100;
+
 			Animations.Update(gameTime);
 			base.Update(gameTime);
 		}

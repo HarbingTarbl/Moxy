@@ -79,6 +79,27 @@ namespace Moxy.GameStates
 		public List<Player> ActivePlayers;
 	}
 
+
+	public class RuneBar
+	{
+		public static Rectangle BarSize = new Rectangle(0, 0, 32, 256);
+		public static Texture2D FireRune = Moxy.ContentManager.Load<Texture2D>("FireRune");
+		public static Texture2D EarthRune = Moxy.ContentManager.Load<Texture2D>("EarthRune");
+		public static Texture2D WaterRune = Moxy.ContentManager.Load<Texture2D>("WaterRune");
+		public static Texture2D 
+		public static Animation[] Runes = new Animation[] 
+		{
+			new Animation("Fire", new Rectangle(
+
+
+		}
+		public static AnimationManager FirstRune = new AnimationManager
+
+
+
+
+	}
+
 	public class EnergyBar
 	{
 		public static Rectangle BarSize = new Rectangle(0, 0, 64, 256);

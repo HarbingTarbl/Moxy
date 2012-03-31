@@ -46,7 +46,7 @@ namespace Moxy.ParticleSystems
 
 			if (Source.ParticleTimePassed > Source.ParticleDelay && !Source.PowerDisabled)
 			{
-				var particle = new Particle(Source.Location, ParticleTexture, 1f, 1f) { Target = Target };
+				var particle = new Particle(Source.Location, ParticleTexture, 2f, 1f) { Target = Target };
 				base.StartParticle(particle);
 				Source.ParticleTimePassed = 0;
 			}

@@ -43,7 +43,16 @@ namespace Moxy.Entities
 			Origin = new Vector2(42, 54);
 			CollisionRadius = 48;
 			
+
 			EntityType = global::Moxy.EntityType.Slime;
+			OnCollisionWithPlayer += new EventHandler<Events.GenericEventArgs<Player>>(Slime_OnCollisionWithPlayer);
+		}
+
+		public float SlimeDamage = 10f;
+
+		private void Slime_OnCollisionWithPlayer(object sender, Events.GenericEventArgs<Player> e)
+		{
+			e.Data.Health -= SlimeDamage;
 		}
 	}
 }

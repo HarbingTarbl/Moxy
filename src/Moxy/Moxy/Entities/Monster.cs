@@ -48,8 +48,7 @@ namespace Moxy.Entities
 			var minAngle2 = Math.Abs(Math.Min(oppositeAngle - destAngle, destAngle - oppositeAngle)) % MathHelper.TwoPi;
 
 			float newRotation = Rotation + ((minAngle1 < minAngle2) ? TurnSpeed : -TurnSpeed);
-			//if (Math.Abs(minAngle1 - minAngle2) < MathHelper.PiOver4 / 4)
-			//    newRotation = Rotation;
+
 			if (minAngle1 < minAngle2 && newRotation > destAngle)
 				newRotation = destAngle;
 			else if (minAngle1 > minAngle2 && newRotation < destAngle)
@@ -75,6 +74,52 @@ namespace Moxy.Entities
 			batch.Draw(StatusBar.Pixel, Collision, Color.Red);
 			batch.Draw(Texture, Location, Animations.Bounding, Color.White, Rotation - MathHelper.PiOver2, Origin, 1, SpriteEffects.None, 0);
 		}
+
+		public virtual Item DropItem()
+		{
+			var rand = new Random();
+
+			var num = rand.Next(0, DropTable.Length);
+			var id = DropTable[num];
+
+			Item item = null;
+			if (rand.Next(0, 10) < 5)
+			{
+				switch (id)
+				{
+					case ItemID.HealthPowerup:
+						item = new HealthItem();
+						break;
+					case ItemID.GreenPowerup:
+						item = new GreenSkillUp();
+						break;
+					case ItemID.RedPowerup:
+						item = new RedSkillUp();
+						break;
+					case ItemID.YellowPowerup:
+						item = new YellowSkillUp();
+						break;
+					case ItemID.BluePowerup:
+						item = new BlueSkillUp();
+						break;
+				}
+				if (item != null)
+				{
+					item.Location = Location;
+				}
+			}
+			return item;
+		}
+
+		public static ItemID[] DropTable = new ItemID[] 
+		{
+			ItemID.HealthPowerup,
+			ItemID.GreenPowerup,
+			ItemID.BluePowerup,
+			ItemID.YellowPowerup,
+			ItemID.RedPowerup
+		};
+
 
 		public event EventHandler OnDeath;
 		public event EventHandler<GenericEventArgs<Player>> OnCollisionWithPlayer;
