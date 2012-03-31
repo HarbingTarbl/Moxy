@@ -17,5 +17,8 @@ namespace Moxy.Entities
 
 		public abstract void Update(GameTime gameTime);
 		public abstract void Draw(SpriteBatch batch);
+
+
+		public AnimationManager Animations;
 	}
 }

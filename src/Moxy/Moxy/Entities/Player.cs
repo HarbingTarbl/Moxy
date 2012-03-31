@@ -46,12 +46,20 @@ namespace Moxy.Entities
 
 			moveVector.Y *= -1;
 
+			if (lastMovement == Vector2.Zero && moveVector != Vector2.Zero)
+				Animations.SetAnimation("Walk_1");
+			else if (moveVector == Vector2.Zero)
+				Animations.SetAnimation("Idle");
+				
+
 			base.Location += moveVector * Speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 			base.Rotation = (float)Math.Atan2 (moveVector.Y, moveVector.X);
 
+			lastMovement = moveVector;
 			oldPad = currentPad;
 		}
 
+		private Vector2 lastMovement;
 		private GamePadState oldPad;
 		private Texture2D texture;
 	}
