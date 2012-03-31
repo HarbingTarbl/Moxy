@@ -67,6 +67,9 @@ namespace Moxy.GameStates
 		public override void Load()
 		{
 			camera = new DynamicCamera();
+			camera.MinimumSize = new Size(600, 600);
+			camera.UseBounds = true;
+
 			map = new TileMap ();
 			map.AmbientLight = new Color (255, 255, 255, 10);
 			map.CreateTiles ("Content/map.bin");

@@ -15,6 +15,9 @@ namespace Moxy
 		public float Rotation = 0;
 		public List<Player> ViewTargets = new List<Player> ();
 
+		public bool UseBounds;
+		public Size MinimumSize;
+
 		public Matrix GetTransformation(GraphicsDevice graphicsdevice)
 		{
 			return Matrix.CreateTranslation (new Vector3 (-Position.X, -Position.Y, 0)) *
@@ -43,7 +46,16 @@ namespace Moxy
 				Rectangle rect = new Rectangle ((int)min.X, (int)min.Y,
 					(int)(max.X - min.X), (int)(max.Y - min.Y));
 
-				rect.Inflate (125, 125);
+				if (UseBounds)
+				{
+					if (rect.Width < MinimumSize.Width)
+						rect.Inflate ((int)(MinimumSize.Width - rect.Width) / 2, 0);
+					
+					if (rect.Height < MinimumSize.Height)
+						rect.Inflate (0, (int)(MinimumSize.Height - rect.Height) / 2);
+				}
+				
+				rect.Inflate (100, 100);
 
 				desiredPosition = new Vector2 (rect.Center.X, rect.Center.Y);
 

@@ -31,5 +31,7 @@ namespace Moxy
 
 		private float width;
 		private float height;
+
+		public readonly static Size Zero = new Size(0, 0);
 	}
 }
