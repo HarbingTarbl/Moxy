@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moxy", "Moxy\Moxy\Moxy.csproj", "{3A6C3F9A-70F8-40BB-AFC4-D989C47E1B9E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moxy", "src\Moxy\Moxy\Moxy.csproj", "{3A6C3F9A-70F8-40BB-AFC4-D989C47E1B9E}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "MoxyContent", "Moxy\MoxyContent\MoxyContent.contentproj", "{E696E5CB-67BC-4716-81F4-362A6ADE73F9}"
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "MoxyContent", "src\Moxy\MoxyContent\MoxyContent.contentproj", "{E696E5CB-67BC-4716-81F4-362A6ADE73F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
