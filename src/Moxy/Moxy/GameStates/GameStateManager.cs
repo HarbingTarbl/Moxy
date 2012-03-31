@@ -128,7 +128,6 @@ namespace Moxy.GameStates
 
 		public void Load (params Assembly[] assemblies)
 		{
-			Logger.LogDebug ("Loading game states");
 			LoadAssemblies (assemblies);
 		}
 
@@ -262,12 +261,6 @@ namespace Moxy.GameStates
 					BaseGameState state = (BaseGameState)Activator.CreateInstance (type);
 					stateMap.Add (state.Name, state);
 				}
-			}
-
-			foreach (var state in stateMap.Values)
-			{
-				state.Load();
-				Logger.LogInfo ("State " + state.Name + " loaded.");
 			}
 
 			foreach (var state in stateMap.Values)

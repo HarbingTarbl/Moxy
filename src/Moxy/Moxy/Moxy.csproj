@@ -107,6 +107,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventHandlers\GenericEventArgs.cs" />
+    <Compile Include="GameStates\BaseGameState.cs" />
+    <Compile Include="GameStates\ColorTransition.cs" />
+    <Compile Include="GameStates\GameStateManager.cs" />
+    <Compile Include="GameStates\ITransition.cs" />
     <Compile Include="Moxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

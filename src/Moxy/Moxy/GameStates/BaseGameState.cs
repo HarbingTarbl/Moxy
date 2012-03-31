@@ -41,8 +41,9 @@ namespace Moxy.GameStates
 		{
 		}
 
-		public virtual void HandleInput(GameTime gameTime)
+		public virtual bool HandleInput(GameTime gameTime)
 		{
+			return true;
 		}
 
 		public virtual void OnFocus()

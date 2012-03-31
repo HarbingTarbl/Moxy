@@ -27,7 +27,7 @@ namespace Moxy.GameStates
             
 			texture = new Texture2D(Moxy.Instance.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             texture.SetData(new[] { Color.White });
-            screenArea = new Rectangle(0, 0, (int)Moxy.ScreenSize.X, (int)Moxy.ScreenSize.Y);
+			screenArea = new Rectangle(0, 0, Moxy.ScreenWidth, Moxy.ScreenHeight);
         }
 
         public event EventHandler  OnTransitionStart;
