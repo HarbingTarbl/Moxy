@@ -74,8 +74,6 @@ namespace Moxy
 
 		protected override void Draw(GameTime gameTime)
 		{
-			GraphicsDevice.Clear (Color.CornflowerBlue);
-
 			Moxy.StateManager.Draw (spriteBatch);
 
 			base.Draw(gameTime);

@@ -25,7 +25,7 @@ namespace Moxy.Entities
 					}, new TimeSpan(0, 0, 0, 0, 200))
 
 				});
-			Animations.SetAnimation("Idle");
+			Animations.SetAnimation("Walk_1");
 			Health = 100;
 		}
 
