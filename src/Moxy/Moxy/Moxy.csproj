@@ -123,6 +123,7 @@
     <Compile Include="GameStates\MapPlayerState.cs" />
     <Compile Include="GameStates\MapState.cs" />
     <Compile Include="GameStates\TestGameState.cs" />
+    <Compile Include="GameStates\UIOverlay.cs" />
     <Compile Include="Map\TileMap.cs" />
     <Compile Include="Map\TileMap.Editor.cs" />
     <Compile Include="Moxy.cs" />

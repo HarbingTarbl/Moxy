@@ -24,7 +24,7 @@ namespace Moxy.Map
 
 		public void SaveFile(string FileName = "map.bin")
 		{
-			BinaryWriter writer = new BinaryWriter(File.Create(FileName);
+			BinaryWriter writer = new BinaryWriter(File.Create(FileName));
 			using(writer)
 			{
 				writer.Write(Texture.Width);

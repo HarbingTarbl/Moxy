@@ -18,6 +18,7 @@ namespace Moxy.Entities
 		}
 
 		public PlayerIndex PadIndex;
+		public float PlayerScore;
 		public float Speed;
 		public Color Color;
 		public Team Team;

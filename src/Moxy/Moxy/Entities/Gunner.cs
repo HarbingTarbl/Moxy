@@ -26,6 +26,7 @@ namespace Moxy.Entities
 
 				});
 			Animations.SetAnimation("Idle");
+			Health = 100;
 		}
 
 		public override void Draw(SpriteBatch batch)
@@ -36,6 +37,7 @@ namespace Moxy.Entities
 
 		public override void Update(GameTime gameTime)
 		{
+			Health = (Health - (20 * (float)gameTime.ElapsedGameTime.TotalSeconds)) % 100;
 			Animations.Update(gameTime);
 			base.Update(gameTime);
 		}

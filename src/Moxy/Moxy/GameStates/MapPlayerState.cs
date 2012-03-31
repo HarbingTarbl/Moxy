@@ -28,7 +28,7 @@ namespace Moxy.GameStates
 			Camera = new Camera(Moxy.ScreenWidth, Moxy.ScreenHeight);
 			Map.Camera = Camera;
 			//Camera.UseBounds = true;
-			//Camera.Bounds = new Rectangle(0, 0, 1600, 1600);
+			Camera.Bounds = new Rectangle(0, 0, 1600, 1600);
 			
 		}
 
@@ -49,9 +49,12 @@ namespace Moxy.GameStates
 			batch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullCounterClockwise, null, Camera.Transformation);
 			Dudes.ForEach(dude => dude.Draw(batch));
 			batch.End();
-	
+		}
 
-
+		public override void OnFocus()
+		{
+			Moxy.StateManager.Push(UI);
+			base.OnFocus();
 		}
 
 		public override void Load()
@@ -60,8 +63,11 @@ namespace Moxy.GameStates
 			Map.MapSize = new Vector2(50, 50);
 			Map.TileSize = new Vector2(8, 8);
 			Map.CreateTiles();
+			UI = (UIOverlay)Moxy.StateManager["UIOverlay"];
+			UI.ActivePlayers = Dudes;
 		}
 
+		public UIOverlay UI;
 		public TileMap Map;
 		public List<Player> Dudes;
 		public Camera Camera;
