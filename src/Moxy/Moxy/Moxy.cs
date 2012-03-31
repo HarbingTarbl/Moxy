@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -28,6 +29,8 @@ namespace Moxy
 		public static GameStateManager StateManager;
 		public static ContentManager ContentManager;
 		public static GraphicsDevice Graphics;
+		public static GamePadState CurrentGamePad;
+		public static GamePadState OldGamePad;
 
 		public Moxy()
 		{
@@ -45,6 +48,7 @@ namespace Moxy
 		protected override void LoadContent()
 		{
 			spriteBatch = new SpriteBatch(GraphicsDevice);
+<<<<<<< Updated upstream
 			IsMouseVisible = true;
 			Moxy.ContentManager = Content;
 			Moxy.ScreenHeight = graphics.PreferredBackBufferHeight;
@@ -55,6 +59,11 @@ namespace Moxy
 			Moxy.StateManager.Load();
 
 			Moxy.StateManager.Push("MenuState");
+=======
+
+			Moxy.StateManager.Load (Assembly.GetExecutingAssembly());
+			Moxy.StateManager.Set ("Test");
+>>>>>>> Stashed changes
 		}
 
 		protected override void UnloadContent()
@@ -64,10 +73,15 @@ namespace Moxy
 
 		protected override void Update(GameTime gameTime)
 		{
+<<<<<<< Updated upstream
 
 			Moxy.StateManager.Update(gameTime);
+=======
+>>>>>>> Stashed changes
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
 				this.Exit();
+
+			Moxy.StateManager.Update (gameTime);
 
 			base.Update(gameTime);
 		}
@@ -79,7 +93,7 @@ namespace Moxy
 			Moxy.StateManager.Draw(spriteBatch);
 			spriteBatch.End();
 
-			// TODO: Add your drawing code here
+			Moxy.StateManager.Draw (spriteBatch);
 
 			base.Draw(gameTime);
 		}
