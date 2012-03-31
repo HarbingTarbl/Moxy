@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -24,6 +25,7 @@ namespace Moxy.GameStates
 				|| PollPadForStart (PlayerIndex.Four))
 			{
 				Moxy.StateManager.Set ("CharacterSelect");
+				acceptSound.Play();
 			}
 
 			if (Moxy.CurrentPadStates[PlayerIndex.One].Buttons.Back.WasButtonPressed (Moxy.LastPadStates[PlayerIndex.One].Buttons.Back))
@@ -40,9 +42,11 @@ namespace Moxy.GameStates
 		public override void Load()
 		{
 			titleTexture = Moxy.ContentManager.Load<Texture2D> ("titlescreen");
+			acceptSound = Moxy.ContentManager.Load<SoundEffect> ("Sounds\\accept");
 		}
 
 		private Texture2D titleTexture;
+		private SoundEffect acceptSound;
 		
 		private bool PollPadForStart(PlayerIndex playerIndex)
 		{

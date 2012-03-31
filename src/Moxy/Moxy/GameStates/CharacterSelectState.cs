@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -27,15 +28,18 @@ namespace Moxy.GameStates
 				Moxy.StateManager.Set ("MainMenu");
 
 			bool allReady = true;
+			int readyCount = 0;
 			foreach (var selecter in selecters)
 			{
 				selecter.Update (gameTime);
 
 				if (!selecter.IsReady && selecter.IsConnected)
 					allReady = false;
+				else if (selecter.IsReady)
+					readyCount++;
 			}
 
-			if (allReady)
+			if (allReady && readyCount >= 2)
 				Moxy.StateManager.Set ("Game");
 		}
 
@@ -65,6 +69,9 @@ namespace Moxy.GameStates
 			checkTexture = Moxy.ContentManager.Load<Texture2D> ("checkmark");
 			panelTexture = Moxy.ContentManager.Load<Texture2D> ("cspanel");
 
+			acceptSound = Moxy.ContentManager.Load<SoundEffect> ("Sounds//accept");
+			declineSound = Moxy.ContentManager.Load<SoundEffect> ("Sounds//decline");
+
 			frames = new CharacterFrame[4];
 			selecters = new ControllerSelector[4];
 
@@ -80,7 +87,11 @@ namespace Moxy.GameStates
 			}
 
 			for (int i = 0; i < 4; i++)
-				selecters[i] = new ControllerSelector ((PlayerIndex)i, frames, selecters, 0);
+				selecters[i] = new ControllerSelector ((PlayerIndex)i, frames, selecters, 0)
+					{
+						AcceptSound = acceptSound,
+						DeclineSound = declineSound
+					};
 		}
 
 		private Texture2D frameTexture;
@@ -91,6 +102,8 @@ namespace Moxy.GameStates
 		private CharacterFrame[] frames;
 		private ControllerSelector[] selecters;
 		private GameState gameState;
+		private SoundEffect acceptSound;
+		private SoundEffect declineSound;
 
 		private class CharacterFrame
 		{
@@ -137,6 +150,8 @@ namespace Moxy.GameStates
 			public int SelectedIndex;
 			public bool IsConnected;
 			public bool IsReady;
+			public SoundEffect AcceptSound;
+			public SoundEffect DeclineSound;
 
 			public void Draw (SpriteBatch batch)
 			{
@@ -155,12 +170,14 @@ namespace Moxy.GameStates
 					frames[SelectedIndex].IsReady = true;
 					frames[SelectedIndex].Selecter = this;
 					IsReady = true;
+					AcceptSound.Play (0.8f, 0f, 0f);
 				}
 
 				if (padState.Buttons.B.WasButtonPressed (lastState.Buttons.B) && frames[SelectedIndex].IsReady)
 				{
 					frames[SelectedIndex].IsReady = false;
 					IsReady = false;
+					DeclineSound.Play (0.6f, 0f, 0f);
 				}
 
 				if (!IsReady)
