@@ -13,6 +13,8 @@ namespace Moxy.GameStates
 		public MenuState()
 			: base("MenuState", isOverlay:false, acceptsInput:true)
 		{
+
+		
 		}
 	
 		public override void Update(GameTime gameTime)
