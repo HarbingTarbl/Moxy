@@ -39,6 +39,10 @@ namespace Moxy.Entities
 			Health = 20;
 			TurnSpeed = MathHelper.Pi/14f;
 			MovementSpeed = 100f;
+			Collision = new Rectangle(0, 0, 96, 96);
+			Origin = new Vector2(42, 54);
+			CollisionRadius = 48;
+			
 			EntityType = global::Moxy.EntityType.Slime;
 		}
 	}

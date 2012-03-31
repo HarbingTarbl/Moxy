@@ -63,6 +63,7 @@ namespace Moxy.Entities
 			{
 				value.Gunner = this;
 				fireballEmitter = value;
+				fireballEmitter.OnParticleMonsterCollision += new EventHandler<Events.GenericEventArgs<Monster>>(fireballEmitter_OnParticleMonsterCollision);
 			}
 		}
 
@@ -108,8 +109,18 @@ namespace Moxy.Entities
 			}
 		}
 
+		
+
+		private void fireballEmitter_OnParticleMonsterCollision(object sender, Events.GenericEventArgs<Monster> e)
+		{
+			e.Data.Health -= FireballDamage;
+		}
+
+
 		private FireballEmitter fireballEmitter;
 		private TimeSpan FireballRate = new TimeSpan(0, 0, 0, 0,100);
+		private float FireballDamage = 10f;
+
 		private TimeSpan SkillRate;
 
 		public event EventHandler OnOverLoadExeeded;

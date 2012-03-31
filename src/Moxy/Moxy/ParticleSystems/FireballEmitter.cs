@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Moxy.Entities;
+using Moxy.Events;
 
 namespace Moxy.ParticleSystems
 {
@@ -19,6 +20,26 @@ namespace Moxy.ParticleSystems
 		public TimeSpan particleDelay = new TimeSpan(0, 0, 0, 0, 0);
 		public float particleDamage = 20;
 		public float maxParticleRange = 1000;
+
+		public event EventHandler<GenericEventArgs<Monster>> OnParticleMonsterCollision;
+
+		public void CheckCollision(Monster entity)
+		{
+			foreach (var particle in particles)
+			{
+				if (particle.IsDead)
+					continue;
+
+				if (Vector2.Distance(entity.CollisionCenter, particle.CurrentLocation) < (particle.Size + entity.CollisionRadius ))
+				{
+					if(OnParticleMonsterCollision != null)
+						OnParticleMonsterCollision(particle, new GenericEventArgs<Monster>(entity));
+					//KEEEL THE PARTICALLL
+					particle.TimePassed = particle.Time;
+
+				}
+			}
+		}
 
 		public override void Update(GameTime gameTime)
 		{
@@ -46,6 +67,7 @@ namespace Moxy.ParticleSystems
 				var particle = new Particle(Gunner.Location, ParticleTexture, 1f, 1f)
 				{
 					EndLocation = Gunner.Location + (Direction * maxParticleRange),
+					Size = 10f,
 				};
 				base.StartParticle(particle);
 			}

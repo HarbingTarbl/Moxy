@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Moxy.Entities;
 using Moxy.Map;
 using Moxy.ParticleSystems;
+using Moxy.Events;
 
 namespace Moxy.GameStates
 {
@@ -21,6 +22,7 @@ namespace Moxy.GameStates
 			monsters = new List<Monster>();
 			redPacketEmitter = new EnergyPacketEmitter();
 			FireballEmitter = new FireballEmitter();
+			FireballEmitter.OnParticleMonsterCollision += OnBulletCollision;
 		}
 
 		public override void Update(GameTime gameTime)
@@ -32,7 +34,12 @@ namespace Moxy.GameStates
 				player.Update (gameTime);
 
 			foreach (var monster in monsters)
-				monster.Update (gameTime);
+			{
+				monster.Update(gameTime);
+				FireballEmitter.CheckCollision(monster);
+				monster.CheckCollide(gunner1);
+				monster.CheckCollide(powerGenerator1);
+			}
 
 			redPacketEmitter.CalculateEnergyRate(gameTime);
 			//GenerateEnergy (gameTime);
@@ -178,7 +185,7 @@ namespace Moxy.GameStates
 
 		private void LoadPlayers()
 		{
-			float gunnerSpeed = 0.1f;
+			float gunnerSpeed = 0.5f;
 			float enchanterSpeed = 0.3f;
 
 			gunner1 = new Gunner
@@ -206,6 +213,10 @@ namespace Moxy.GameStates
 			redPacketEmitter.Source = powerGenerator1;
 		}
 
+		private void OnBulletCollision(object sender, GenericEventArgs<Monster> e)
+		{
+
+		}
 
 		private void FindMonsterTargets(GameTime gameTime)
 		{

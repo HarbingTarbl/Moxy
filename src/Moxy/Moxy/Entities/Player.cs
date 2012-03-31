@@ -29,6 +29,10 @@ namespace Moxy.Entities
 			HandleInput (gameTime);
 
 			Light.Location = Location + new Vector2(32, 32);
+
+			CollisionCenter = Location;
+			Collision = new Rectangle((int)CollisionCenter.X, (int)CollisionCenter.Y, 1, 1);
+			Collision.Inflate((int)CollisionRadius, (int)CollisionRadius);
 		}
 
 		public override void Draw (SpriteBatch batch)

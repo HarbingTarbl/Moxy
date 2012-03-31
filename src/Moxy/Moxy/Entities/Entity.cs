@@ -12,6 +12,9 @@ namespace Moxy.Entities
 		public float Health;
 		public float MaxHealth = 100;
 		public Vector2 Location;
+		public Rectangle Collision;
+		public Vector2 CollisionCenter;
+		public float CollisionRadius;
 		public Texture2D Texture;
 		public PlayerIndex playerIndex;
 		public EntityType EntityType;

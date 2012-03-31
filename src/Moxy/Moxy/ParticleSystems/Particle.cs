@@ -27,6 +27,7 @@ namespace Moxy
 
 		public Vector2 Original;
 		public Vector2 CurrentLocation;
+		public float Size;
 		public Texture2D Texture;
 		public float Scale;
 		public Color Color;
