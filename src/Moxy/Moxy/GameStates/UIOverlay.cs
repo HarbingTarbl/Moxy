@@ -11,7 +11,7 @@ namespace Moxy.GameStates
 	public class UIOverlay
 		: BaseGameState
 	{
-		public UIOverlay()
+		public UIOverlay(GameState OwningState)
 			: base("UIOverlay", isOverlay:true, acceptsInput:false)
 		{
 			StatusBar.UI = this;
@@ -19,12 +19,14 @@ namespace Moxy.GameStates
 			StatusBar.Pixel.SetData<Color>(new Color[] { Color.White });
 			StatusBars = new List<StatusBar>();
 			ActivePlayers = new List<Player>();
+			this.OwningState = OwningState;
 		}
 
 
 		public override void Draw(SpriteBatch batch)
 		{
-			batch.Begin();
+			batch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
+				DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Matrix.Identity);
 			foreach (var bar in StatusBars)
 			{
 				bar.Draw(batch);
@@ -54,6 +56,7 @@ namespace Moxy.GameStates
 			}
 		}
 
+		public GameState OwningState;
 		public List<StatusBar> StatusBars;
 		public List<Player> ActivePlayers;
 	}
@@ -61,7 +64,7 @@ namespace Moxy.GameStates
 
 	public class StatusBar
 	{
-		public static Rectangle BarSize = new Rectangle(0, 0, 120, 20);
+		public static Rectangle BarSize = new Rectangle(0, 0, 90, 20);
 		public static Texture2D Pixel;
 
 		public Player Player;
@@ -70,12 +73,13 @@ namespace Moxy.GameStates
 
 		public void Draw(SpriteBatch batch)
 		{
+			Location = UI.OwningState.camera.WorldToScreen(Player.Location);
+			Location.X -= 40;
+			Location.Y -= 30;
 			var outerRect = new Rectangle((int)Location.X, (int)Location.Y, BarSize.Width, BarSize.Height);
 			var innerRect = new Rectangle((int)Location.X + 3, (int)Location.Y + 3, (int)((BarSize.Width - 6) * (Player.Health / 100f)), BarSize.Height - 6);
-			var portret = new Rectangle(outerRect.X + outerRect.Width + 10, outerRect.Y, 20, 20);
 			batch.Draw(Pixel, outerRect, Color.DarkGray);
 			batch.Draw(Pixel, innerRect, Color.PaleVioletRed);
-			batch.Draw(Pixel, portret, Player is Gunner ? Color.Black : Color.White);
 		}
 	}
 }

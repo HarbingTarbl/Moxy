@@ -25,19 +25,24 @@ namespace Moxy.Entities
 			if (Target == null)
 				return;
 
-			// Calculate the best way to move
-			var destAngle = (float)Math.Atan2 (Target.Location.Y - Location.Y, Target.Location.X - Location.X);
-			var minAngle1 = Math.Abs (Math.Min (Rotation - destAngle, destAngle - Rotation));
+			// Calculate the best way to move and angle difference is high enough
+			if (Vector2.DistanceSquared(Target.Location, Location + new Vector2(16, 16)) < 10)
+				return;
+
+			var destAngle = (float)Math.Atan2 (Target.Location.Y - Location.Y - 16, Target.Location.X - Location.X - 16);
+			var minAngle1 = Math.Abs(Math.Min(Rotation - destAngle, destAngle - Rotation)) % MathHelper.TwoPi;
 			var oppositeAngle = (Rotation + MathHelper.Pi) % MathHelper.TwoPi;
-			var minAngle2 = Math.Abs (Math.Min (oppositeAngle - destAngle, destAngle - oppositeAngle));
+			var minAngle2 = Math.Abs(Math.Min(oppositeAngle - destAngle, destAngle - oppositeAngle)) % MathHelper.TwoPi;
 
 			float newRotation = Rotation + ((minAngle1 < minAngle2) ? TurnSpeed : -TurnSpeed);
+			//if (Math.Abs(minAngle1 - minAngle2) < MathHelper.PiOver4 / 4)
+			//    newRotation = Rotation;
 			if (minAngle1 < minAngle2 && newRotation > destAngle)
 				newRotation = destAngle;
 			else if (minAngle1 > minAngle2 && newRotation < destAngle)
 				newRotation = destAngle;
 
-			Rotation = newRotation;
+			Rotation = (float)Math.Round(newRotation, 2);
 
 			// Start moving
 			var lookVector = new Vector2 ((float)Math.Cos (Rotation), (float)Math.Sin (Rotation));
@@ -53,7 +58,7 @@ namespace Moxy.Entities
 
 		public override void Draw(SpriteBatch batch)
 		{
-			batch.Draw(Texture, Location, Animations.Bounding, Color.White);
+			batch.Draw(Texture, Location, Animations.Bounding, Color.White, Rotation - MathHelper.PiOver2, new Vector2(32, 32), 1, SpriteEffects.None, 0);
 		}
 
 		public EventHandler OnDeath;

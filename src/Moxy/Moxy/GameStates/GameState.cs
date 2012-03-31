@@ -96,6 +96,15 @@ namespace Moxy.GameStates
 
 			camera.ViewTargets.Add (gunner1);
 			camera.ViewTargets.Add (powerGenerator1);
+
+			uiOverlay = new UIOverlay(this);
+			uiOverlay.ActivePlayers = players;
+		}
+
+		public override void OnFocus()
+		{
+			Moxy.StateManager.Push(uiOverlay);
+
 		}
 
 		private Gunner gunner1;
@@ -103,7 +112,7 @@ namespace Moxy.GameStates
 		private PowerGenerator powerGenerator1;
 		private PowerGenerator powerGenerator2;
 		private List<Player> players;
-		private DynamicCamera camera;
+		public DynamicCamera camera;
 		private TileMap map;
 		private Texture2D lightTexture;
 		private Texture2D texture;
@@ -116,6 +125,7 @@ namespace Moxy.GameStates
 		private Effect lightingEffect;
 		private Vector2 radiusOrigin;
 		private ParticleManager particleManager;
+		private UIOverlay uiOverlay;
 
 		// Energy generation
 		private float maxParticleDelay = 0.6f;
@@ -132,10 +142,13 @@ namespace Moxy.GameStates
 			Moxy.Graphics.SetRenderTarget (gameTarget);
 			Moxy.Graphics.Clear (Color.CornflowerBlue);
 
-			batch.Begin (SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None,
+			batch.Begin (SpriteSortMode.Texture, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None,
 				RasterizerState.CullCounterClockwise, null, camera.GetTransformation (Moxy.Graphics));
 
 			map.Draw (batch);
+			batch.End();
+			batch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None,
+				RasterizerState.CullCounterClockwise, null, camera.GetTransformation(Moxy.Graphics));
 			batch.Draw (radiusTexture, gunner1.Location, null, Color.White, 0f, radiusOrigin, 1f, SpriteEffects.None, 1f);
 
 			foreach (Player player in players)

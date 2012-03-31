@@ -83,8 +83,8 @@ namespace Moxy.GameStates
 			Map.MapSize = new Vector2(50, 50);
 			Map.TileSize = new Vector2(8, 8);
 			Map.CreateTiles();
-			UI = (UIOverlay)Moxy.StateManager["UIOverlay"];
-			UI.ActivePlayers = Dudes;
+			//UI = (UIOverlay)Moxy.StateManager["UIOverlay"];
+			//UI.ActivePlayers = Dudes;
 		}
 
 		public List<Monster> Monsters;
