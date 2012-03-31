@@ -29,8 +29,8 @@ namespace Moxy
 		public static GameStateManager StateManager;
 		public static ContentManager ContentManager;
 		public static GraphicsDevice Graphics;
-		public static GamePadState CurrentGamePad;
-		public static GamePadState OldGamePad;
+		public static Dictionary<PlayerIndex, GamePadState> CurrentPadStates;
+		public static Dictionary<PlayerIndex, GamePadState> LastPadStates;
 
 		public Moxy()
 		{
@@ -40,11 +40,20 @@ namespace Moxy
 			graphics.ApplyChanges();
 
 			Content.RootDirectory = "Content";
-			Instance = this;
+
+			CurrentPadStates = new Dictionary<PlayerIndex, GamePadState>
+			{
+				{PlayerIndex.One, GamePad.GetState (PlayerIndex.One)},
+				{PlayerIndex.Two, GamePad.GetState (PlayerIndex.Two)},
+				{PlayerIndex.Three, GamePad.GetState (PlayerIndex.Three)},
+				{PlayerIndex.Four, GamePad.GetState (PlayerIndex.Four)}
+			};
+			LastPadStates = new Dictionary<PlayerIndex, GamePadState>();
 		}
 
 		protected override void LoadContent()
 		{
+			Instance = this;
 			IsMouseVisible = true;
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -54,7 +63,7 @@ namespace Moxy
 			Moxy.Graphics = GraphicsDevice;
 
 			Moxy.StateManager.Load (Assembly.GetExecutingAssembly());
-			Moxy.StateManager.Set("Game");
+			Moxy.StateManager.Set("MainMenu");
 		}
 
 		protected override void UnloadContent()
@@ -64,10 +73,13 @@ namespace Moxy
 
 		protected override void Update(GameTime gameTime)
 		{
-			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-				this.Exit();
+			foreach (PlayerIndex padIndex in CurrentPadStates.Keys.ToArray())
+				CurrentPadStates[padIndex] = GamePad.GetState (padIndex);
 
 			Moxy.StateManager.Update (gameTime);
+
+			foreach (PlayerIndex padIndex in CurrentPadStates.Keys.ToArray())
+				LastPadStates[padIndex] = CurrentPadStates[padIndex];
 
 			base.Update(gameTime);
 		}

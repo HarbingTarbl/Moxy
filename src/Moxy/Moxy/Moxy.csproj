@@ -120,14 +120,17 @@
     <Compile Include="Entities\Slime.cs" />
     <Compile Include="EventHandlers\GenericEventArgs.cs" />
     <Compile Include="GameStates\BaseGameState.cs" />
+    <Compile Include="GameStates\CharacterSelectState.cs" />
     <Compile Include="GameStates\ColorTransition.cs" />
     <Compile Include="GameStates\GameState.cs" />
     <Compile Include="GameStates\GameStateManager.cs" />
     <Compile Include="GameStates\ITransition.cs" />
+    <Compile Include="GameStates\MainMenuState.cs" />
     <Compile Include="GameStates\MapPlayerState.cs" />
     <Compile Include="GameStates\MapState.cs" />
     <Compile Include="GameStates\TestGameState.cs" />
     <Compile Include="GameStates\UIOverlay.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="Light.cs" />
     <Compile Include="Map\TileMap.cs" />
     <Compile Include="Map\TileMap.Editor.cs" />
