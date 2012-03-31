@@ -14,13 +14,14 @@ namespace Moxy
 			this.width = width;
 			this.height = height;
 			this.screenHalf = new Vector2 (width / 2, height / 2);
+			this.Targets = new List<Entity>();
 		}
 
 		public Vector2 Location = new Vector2 (0, 0);
 		public float Scale = 1f;
 		public bool UseBounds;
 		public Rectangle Bounds;
-		public List<Entity> targets; 
+		public List<Entity> Targets; 
 
 		public void CenterOnPoint(Vector2 loc)
 		{

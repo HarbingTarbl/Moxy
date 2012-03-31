@@ -40,7 +40,7 @@ namespace Moxy.GameStates
 			gunner1.Color = Color.Red;
 
 			camera = new Camera (Moxy.ScreenWidth, Moxy.ScreenHeight);
-			camera.targets.AddRange (new Player[] {gunner1});//, gunner2, powerGenerator1, powerGenerator2});
+			camera.Targets.AddRange (new Player[] {gunner1});//, gunner2, powerGenerator1, powerGenerator2});
 		}
 
 		private Gunner gunner1;

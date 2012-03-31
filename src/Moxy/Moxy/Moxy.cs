@@ -39,31 +39,19 @@ namespace Moxy
 			Instance = this;
 		}
 
-		protected override void Initialize()
-		{
-
-			base.Initialize();
-		}
-
 		protected override void LoadContent()
 		{
-			spriteBatch = new SpriteBatch(GraphicsDevice);
-<<<<<<< Updated upstream
 			IsMouseVisible = true;
+			spriteBatch = new SpriteBatch(GraphicsDevice);
+
 			Moxy.ContentManager = Content;
 			Moxy.ScreenHeight = graphics.PreferredBackBufferHeight;
 			Moxy.ScreenWidth = graphics.PreferredBackBufferWidth;
 			Moxy.StateManager = new GameStateManager();
-			Moxy.StateManager.Load(Assembly.GetExecutingAssembly());
 			Moxy.Graphics = GraphicsDevice;
-			Moxy.StateManager.Load();
-
-			Moxy.StateManager.Push("MenuState");
-=======
 
 			Moxy.StateManager.Load (Assembly.GetExecutingAssembly());
 			Moxy.StateManager.Set ("Test");
->>>>>>> Stashed changes
 		}
 
 		protected override void UnloadContent()
@@ -73,11 +61,6 @@ namespace Moxy
 
 		protected override void Update(GameTime gameTime)
 		{
-<<<<<<< Updated upstream
-
-			Moxy.StateManager.Update(gameTime);
-=======
->>>>>>> Stashed changes
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
 				this.Exit();
 
@@ -88,10 +71,7 @@ namespace Moxy
 
 		protected override void Draw(GameTime gameTime)
 		{
-			GraphicsDevice.Clear(Color.CornflowerBlue);
-			spriteBatch.Begin();
-			Moxy.StateManager.Draw(spriteBatch);
-			spriteBatch.End();
+			GraphicsDevice.Clear (Color.CornflowerBlue);
 
 			Moxy.StateManager.Draw (spriteBatch);
 
