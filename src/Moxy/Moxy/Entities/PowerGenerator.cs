@@ -16,12 +16,27 @@ namespace Moxy.Entities
 			Animations = new AnimationManager(Texture, 
 				new Animation[] 
 				{
-					new Animation("Idle", new Rectangle[] 
+					new Animation("Idle", new Rectangle[]
 					{
-						new Rectangle(0, 0, 64, 64),
-						new Rectangle(64, 0, 64, 64),
-						new Rectangle(128, 0, 64, 64),
-						new Rectangle(192, 0, 64, 64),
+						new Rectangle(0, 320, 64, 64)
+					}),
+					new Animation("Walk_1", new Rectangle[] 
+					{
+						new Rectangle(0, 320, 64, 64),
+						new Rectangle(64, 320, 64, 64),
+						new Rectangle(128, 320, 64, 64),
+					}, new TimeSpan(0, 0, 0, 0, 200)),
+					new Animation("Walk_2", new Rectangle[] 
+					{
+						new Rectangle(0, 384, 64, 64),
+						new Rectangle(64, 384, 64, 64),
+						new Rectangle(128, 384, 64, 64),
+					}, new TimeSpan(0, 0, 0, 0, 200)),
+					new Animation("Walk_3", new Rectangle[] 
+					{
+						new Rectangle(0, 448, 64, 64),
+						new Rectangle(64, 448, 64, 64),
+						new Rectangle(128, 448, 64, 64),
 					}, new TimeSpan(0, 0, 0, 0, 200))
 
 				});
@@ -41,8 +56,5 @@ namespace Moxy.Entities
 			Animations.Update(gameTime);
 			base.Update(gameTime);
 		}
-
-
-		public AnimationManager Animations;
 	}
 }

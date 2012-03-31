@@ -17,7 +17,7 @@ namespace Moxy.GameStates
 		{
 			Map = new TileMap();
 			Dudes = new List<Player>();
-			Dudes.Add(new PowerGenerator()
+			Dudes.Add(new Gunner()
 			{
 				Team = Team.Blue,
 				Location = new Vector2(0, 0),
