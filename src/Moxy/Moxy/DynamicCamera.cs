@@ -3,105 +3,61 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Moxy.Entities;
 
 namespace Moxy
 {
 	public class DynamicCamera
 	{
-		public DynamicCamera (Size originalSize, Size minSize, Size maxSize)
+		public Vector2 Position = Vector2.Zero;
+		public float Zoom = 1;
+		public float Rotation = 0;
+		public List<Player> ViewTargets = new List<Player> ();
+
+		public Matrix GetTransformation(GraphicsDevice graphicsdevice)
 		{
-			this.originalSize = originalSize;
-			this.Targets = new List<Entity>();
+			return Matrix.CreateTranslation (new Vector3 (-Position.X, -Position.Y, 0)) *
+				Matrix.CreateRotationZ (Rotation) *
+				Matrix.CreateScale (new Vector3 (Zoom, Zoom, 0)) *
+				Matrix.CreateTranslation (new Vector3 (
+				graphicsdevice.Viewport.Width * 0.5f,
+				graphicsdevice.Viewport.Height * 0.5f, 0));
 		}
 
-		public Vector2 Location = new Vector2 (0, 0);
-		public float Scale = 1f;
-		public bool UseBounds;
-		public Rectangle Bounds;
-		public List<Entity> Targets;
-
-		public float desiredScale;
-		public Vector2 desiredLocation;
-
-		public void Update()
+		public void Update(GraphicsDevice graphicsdevice)
 		{
-			calculateProperties ();
-
-			//Location = Vector2.Lerp (Location, desiredLocation, 0.01f);
-			//Scale = MathHelper.Lerp (Scale, desiredScale, 0.01f);
-		}
-
-		public Vector2 ScreenToWorld(Vector2 screenVector)
-		{
-			return new Vector2 ((screenVector.X * Scale) + Location.X, (screenVector.Y + Location.Y) * Scale);
-		}
-
-		public Vector2 Origin
-		{
-			get { return Location - screenHalf; }
-		}
-
-		public Matrix Transformation
-		{
-			get
+			if (ViewTargets.Count > 0)
 			{
-				if (updateTransform)
-					generateTransformation ();
+				Vector2 min = ViewTargets[0].Location;
+				Vector2 max = ViewTargets[0].Location;
 
-				return transformation;
-			}
-		}
+				for (int i = 1; i < ViewTargets.Count; i++)
+				{
+					if (ViewTargets[i].Location.X < min.X) min.X = ViewTargets[i].Location.X;
+					else if (ViewTargets[i].Location.X > max.X) max.X = ViewTargets[i].Location.X;
+					if (ViewTargets[i].Location.Y < min.Y) min.Y = ViewTargets[i].Location.Y;
+					else if (ViewTargets[i].Location.Y > max.Y) max.Y = ViewTargets[i].Location.Y;
+				}
 
-		private Size originalSize;
-		private Size currentSize;
-		private float minScale = 1;
-		private float maxScale = 0.1f;
+				Rectangle rect = new Rectangle ((int)min.X, (int)min.Y,
+					(int)(max.X - min.X), (int)(max.Y - min.Y));
 
-		private Vector2 screenHalf;
-		private bool updateTransform = false;
-		private Matrix transformation;
+				rect.Inflate (100, 100);
 
-		private void calculateProperties()
-		{
-			float lowX = float.MaxValue;
-			float highX = float.MinValue;
-			float lowY = float.MaxValue;
-			float highY = float.MinValue;
+				desiredPosition = new Vector2 (rect.Center.X, rect.Center.Y);
 
-			foreach (Entity target in Targets)
-			{
-				if (target.Location.X < lowX)
-					lowX = target.Location.X;
-				if (target.Location.X > highX)
-					highX = target.Location.X;
-
-				if (target.Location.Y < lowY)
-					lowY = target.Location.Y;
-				if (target.Location.Y > highY)
-					highY = target.Location.Y;
+				float widthdiff = ((float)graphicsdevice.Viewport.Width) / ((float)rect.Width);
+				float heightdiff = ((float)graphicsdevice.Viewport.Height) / ((float)rect.Height);
+				desiredZoom = Math.Min (widthdiff, heightdiff);
 			}
 
-			Size screenSize = originalSize;//new Size(highX - lowX, highY - lowY);
-			
-			var centerPoint = new Vector2 (((highX + lowX) / 2), ((highY + lowY) / 2));
-			var origin = new Vector2 (centerPoint.X - (screenSize.Width / 2), centerPoint.Y - (screenSize.Height / 2));
-
-			Location = origin;
-			Scale = MathHelper.Clamp (originalSize.Height / (screenSize.Height + 64), minScale, maxScale);
-			//currentSize = new Size(screenSize.Width * Scale, screenSize.Height * Scale);
-			
-			updateTransform = true;
+			Position = Vector2.Lerp (Position, desiredPosition, 0.05f);
+			Zoom = MathHelper.Lerp (Zoom, desiredZoom, 0.05f);
 		}
 
-		private void generateTransformation()
-		{
-			//Vector2 origin = screenHalf / Scale;
+		private float desiredZoom;
+		private Vector2 desiredPosition;
 
-			transformation = Matrix.Identity
-							 * Matrix.CreateTranslation (-Location.X, -Location.Y, 0f)
-				//* Matrix.CreateTranslation (origin.X, origin.Y, 0f)
-							 * Matrix.CreateScale (Scale);
-		}
 	}
 }

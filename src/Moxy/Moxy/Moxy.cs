@@ -24,8 +24,8 @@ namespace Moxy
 		SpriteBatch spriteBatch;
 
 		public static Moxy Instance;
-		public static int ScreenWidth;
-		public static int ScreenHeight;
+		public static int ScreenWidth = 800;
+		public static int ScreenHeight = 600;
 		public static GameStateManager StateManager;
 		public static ContentManager ContentManager;
 		public static GraphicsDevice Graphics;
@@ -35,6 +35,10 @@ namespace Moxy
 		public Moxy()
 		{
 			graphics = new GraphicsDeviceManager(this);
+			graphics.PreferredBackBufferWidth = Moxy.ScreenWidth;
+			graphics.PreferredBackBufferHeight = Moxy.ScreenHeight;
+			graphics.ApplyChanges();
+
 			Content.RootDirectory = "Content";
 			Instance = this;
 		}
@@ -44,14 +48,13 @@ namespace Moxy
 			IsMouseVisible = true;
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
+			Moxy.Instance = this;
 			Moxy.ContentManager = Content;
-			Moxy.ScreenHeight = graphics.PreferredBackBufferHeight;
-			Moxy.ScreenWidth = graphics.PreferredBackBufferWidth;
 			Moxy.StateManager = new GameStateManager();
 			Moxy.Graphics = GraphicsDevice;
 
 			Moxy.StateManager.Load (Assembly.GetExecutingAssembly());
-			Moxy.StateManager.Set("MapPlayerState");
+			Moxy.StateManager.Set("Game");
 		}
 
 		protected override void UnloadContent()
