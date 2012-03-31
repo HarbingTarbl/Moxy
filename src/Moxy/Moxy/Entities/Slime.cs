@@ -17,21 +17,21 @@ namespace Moxy.Entities
 			{
 				new Animation("Idle_Ice", new Rectangle[]
 				{
-					new Rectangle(0, 0, 64, 64),
-					new Rectangle(64, 0, 64, 64),
-					new Rectangle(128, 0, 64, 64)
+					new Rectangle(0, 0, 96, 96),
+					new Rectangle(96, 0, 96, 96),
+					new Rectangle(192, 0, 96, 96)
 				}),
 				new Animation("Idle_Fire", new Rectangle[]
 				{
-					new Rectangle(0, 64, 64, 64),
-					new Rectangle(64, 64, 64, 64),
-					new Rectangle(128, 64, 64, 64)
+					new Rectangle(0, 96, 96, 96),
+					new Rectangle(96, 96, 96, 96),
+					new Rectangle(192, 96, 96, 96)
 				}),
 				new Animation("Idle_Rock", new Rectangle[]
 				{
-					new Rectangle(0, 128, 64, 64),
-					new Rectangle(64, 128, 64, 64),
-					new Rectangle(128, 128, 64, 64)
+					new Rectangle(0, 192, 96, 96),
+					new Rectangle(96, 192, 96, 96),
+					new Rectangle(192, 192, 96, 96)
 				}),
 
 			});
