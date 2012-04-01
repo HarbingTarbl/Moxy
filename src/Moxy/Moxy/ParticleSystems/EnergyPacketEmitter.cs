@@ -28,8 +28,10 @@ namespace Moxy.ParticleSystems
 			float distance = Vector2.Distance(Target.Location, Source.Location);
 			if (distance < minPowerRange)
 			{
-				Target.OverloadLevel += (5 * Target.OverloadDecayRate * (float)gameTime.ElapsedGameTime.TotalSeconds);
+				Target.OverloadRate = MathHelper.Lerp(0, MathHelper.PiOver2, minPowerRange / distance);
 			}
+			else
+				Target.OverloadRate = 0;
 			float lerp = MathHelper.Clamp((distance - minPowerRange) / maxPowerRange, 0, 1);
 
 			Source.PowerDisabled = distance > maxPowerRange || OldLocation == Source.Location;

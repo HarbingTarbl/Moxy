@@ -28,7 +28,7 @@ namespace Moxy
 		public MapRoot(string File)
 		{
 			throw new NotImplementedException();
-		}
+		} 
 
 		public readonly Texture2D Texture;
 		public readonly MapLayer[] Layers;
@@ -63,7 +63,15 @@ namespace Moxy
 		public void Update(GameTime gameTime)
 		{
 
+		}
 
+		public Rectangle BuildCullingRectangle(float Scale, Vector2 TranlatedCameraLocation, Vector2 CameraLocation)
+		{
+			var rec = new Rectangle((int)Math.Floor(Math.Max(((TranlatedCameraLocation.X + CameraLocation.X)/ TileDimensions.Width), 0)),
+				(int)Math.Floor(Math.Max(((TranlatedCameraLocation.Y + CameraLocation.Y)/ TileDimensions.Height), 0)), 
+				(int)Math.Ceiling(Math.Min((Moxy.Graphics.Viewport.Width / (Scale * TileDimensions.Width)) + 3, Dimensions.Width)), 
+				(int)Math.Ceiling(Math.Min((Moxy.Graphics.Viewport.Height / (Scale * TileDimensions.Height)) + 3, Dimensions.Height)));
+			return rec;
 		}
 
 		public bool CheckCollision(int X, int Y)

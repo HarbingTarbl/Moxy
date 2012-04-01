@@ -36,7 +36,7 @@ namespace Moxy.GameStates
 			camera.Update (Moxy.Graphics);
 			map.Update (gameTime);
 
-			redPacketEmitter.minPowerRange = 200f / camera.Zoom;
+			
 			
 			foreach (Player player in players)
 				player.Update (gameTime);
@@ -192,7 +192,7 @@ namespace Moxy.GameStates
 			batch.Begin (SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None,
 				RasterizerState.CullCounterClockwise, null, camera.GetTransformation (Moxy.Graphics));
 
-			map.Draw (batch, Rectangle.Empty);
+			map.Draw(batch, new Rectangle(0, 0, 64, 64));
 			
 			foreach (Player player in players)
 				player.Draw (batch);
@@ -326,11 +326,11 @@ namespace Moxy.GameStates
 		private void LoadMap()
 		{
 			camera = new DynamicCamera ();
-			camera.MinimumSize = new Size (600, 600);
+			camera.MinimumSize = new Size (800, 600);
 			camera.UseBounds = true;
 
 			map = new MapRoot(128, 128, 64, 64, Moxy.ContentManager.Load<Texture2D>("tileset"));
-			//map = Moxy.Maps[Moxy.CurrentLevelIndex].Build ();
+			map = Moxy.Maps[Moxy.CurrentLevelIndex].Build ();
 
 			texture = new Texture2D (Moxy.Graphics, 1, 1);
 			texture.SetData (new[] { new Color (0, 0, 0, map.AmbientColor.A) });

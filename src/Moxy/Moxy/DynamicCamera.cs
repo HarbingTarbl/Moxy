@@ -20,10 +20,8 @@ namespace Moxy
 
 		public Vector2 ScreenToWorld(Vector2 ScreenPos)
 		{
-			Matrix inverse = Matrix.Invert(GetTransformation(Moxy.Graphics));
-			Vector2 mousePos = Vector2.Transform(ScreenPos, inverse);
-
-			return mousePos;
+			return new Vector2((ScreenPos.X / Zoom) + Position.X,
+				(ScreenPos.Y / Zoom) + Position.Y);
 		}
 
 		public Vector2 WorldToScreen(Vector2 WorldPos)

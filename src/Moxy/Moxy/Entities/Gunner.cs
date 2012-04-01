@@ -74,8 +74,8 @@ namespace Moxy.Entities
 
 
 		public float OverloadLevel = 0;
-		public float MaxOverloadLevel = 100;
-		public float OverloadDecayRate = 25;
+		public float MaxOverloadLevel = 1;
+		public float OverloadRate = 1;
 
 		public SoundEffect fireSound;
 
@@ -92,7 +92,7 @@ namespace Moxy.Entities
 		public override void Update(GameTime gameTime)
 		{
 			HandleInput(gameTime);
-			OverloadLevel -= OverloadDecayRate * (float)gameTime.ElapsedGameTime.TotalSeconds;
+			OverloadLevel = (float)Math.Sin(OverloadRate);// *(float)gameTime.ElapsedGameTime.TotalSeconds;
 			if (OverloadLevel >= MaxOverloadLevel && OnOverLoadExeeded != null)
 				OnOverLoadExeeded(this, null);
 			if (!Generator.PowerDisabled)
