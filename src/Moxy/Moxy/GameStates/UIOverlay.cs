@@ -116,7 +116,7 @@ namespace Moxy.GameStates
 		public static Texture2D WaterRune = Moxy.ContentManager.Load<Texture2D>("WaterRune");
 		public static Texture2D AirRune = Moxy.ContentManager.Load<Texture2D>("AirRune");
 		public static Color Active = Color.Transparent;
-		public static Color Inactive = Color.Red;
+		public static Color Inactive = Color.White;
 
 		public static Texture2D GetRuneInSlot(PowerGenerator Generator, int slot)
 		{
