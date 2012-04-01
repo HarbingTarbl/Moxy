@@ -478,8 +478,14 @@ namespace Moxy.GameStates
 
 		void Player_OnDeath(object sender, EventArgs e)
 		{
-			boss = new BigBadBoss(gunner1.Location);
-			boss.Animations.SetAnimation("Spawn");
+			if (boss == null)
+			{
+				gamePauseTimer.Change (Timeout.Infinite, Timeout.Infinite);
+				boss = new BigBadBoss (gunner1.Location);
+				boss.Animations.SetAnimation ("Spawn");
+
+				Moxy.Dialog.EnqueueMessageBox ("Boss", "Your deaths were\nin vain.", () => Moxy.StateManager.Set ("MainMenu"));
+			}
 			//Moxy.StateManager.Pop();
 		}
 
@@ -593,8 +599,6 @@ namespace Moxy.GameStates
 		private bool strongerMessage = false;
 		private void CheckPlayerLevels()
 		{
-			Team1Score += 9000;
-
 			if (gunner1 != null && gunner1.Level < ExperienceTable.Length && Team1Score >= ExperienceTable[gunner1.Level])
 			{
 				if (!strongerMessage)

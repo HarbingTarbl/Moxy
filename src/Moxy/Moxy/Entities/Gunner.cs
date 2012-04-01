@@ -68,7 +68,7 @@ namespace Moxy.Entities
 			Animations.SetAnimation("Walk_1");
 			fireSound = Moxy.ContentManager.Load<SoundEffect>("Sounds//Fire");
 			fireSoundInstance = fireSound.CreateInstance();
-			Health = 2;
+			Health = 100;
 			CircleOrigin = new Vector2(PowerCircleTexture.Width / 2f, PowerCircleTexture.Height / 2f);
 		}
 

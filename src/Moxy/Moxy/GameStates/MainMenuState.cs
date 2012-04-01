@@ -81,9 +81,10 @@ namespace Moxy.GameStates
 		private bool PollPadForStart(PlayerIndex playerIndex)
 		{
 			GamePadState padState = Moxy.CurrentPadStates[playerIndex];
+			GamePadState oldState = Moxy.LastPadStates[playerIndex];
 
-			return padState.Buttons.A == ButtonState.Pressed
-				|| padState.Buttons.Start == ButtonState.Pressed;
+			return (padState.Buttons.A == ButtonState.Pressed && oldState.Buttons.A == ButtonState.Released)
+				|| (padState.Buttons.Start == ButtonState.Pressed && oldState.Buttons.Start == ButtonState.Released);
 		}
 	}
 }
