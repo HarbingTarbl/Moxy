@@ -91,13 +91,16 @@ namespace Moxy.GameStates
 					}
 
 					Monster monster = Level.SpawnMonsterRandom ();
-					monster.Location = new Vector2 (x, y);
-					monsterCount++;
-					monster.OnDeath += monster_OnDeath;
-					monsters.Add (monster);
+					if (monster != null)
+					{
+						monster.Location = new Vector2(x, y);
+						monsterCount++;
+						monster.OnDeath += monster_OnDeath;
+						monsters.Add(monster);
 
-					Level.SpawnDelay = Moxy.Random.Next ((int)Level.SpawnIntervalLow, (int)Level.SpawnIntervalHigh);
-					spawnPassed = 0;
+						Level.SpawnDelay = Moxy.Random.Next((int)Level.SpawnIntervalLow, (int)Level.SpawnIntervalHigh);
+						spawnPassed = 0;
+					}
 				}
 			}
 

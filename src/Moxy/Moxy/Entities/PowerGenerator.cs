@@ -20,43 +20,43 @@ namespace Moxy.Entities
 				{
 					new Animation("Idle_1", new Rectangle[]
 					{
-						new Rectangle(0, 320, 64, 64),
+						new Rectangle(0, 256, 64, 64),
 					}),
 					new Animation("Idle_2", new Rectangle[]
 					{
-						new Rectangle(0, 384, 64,64 ),
+						new Rectangle(0, 320, 64,64 ),
 					}),
 					new Animation("Idle_3", new Rectangle[]
 					{
-						new Rectangle(0, 448, 64, 64),
+						new Rectangle(0, 384, 64, 64),
 					}),
 					new Animation("Idle_4", new Rectangle[]
 					{
-						new Rectangle(0, 512, 64, 64),
+						new Rectangle(0, 448, 64, 64),
 					}),
 					new Animation("Walk_1", new Rectangle[] 
+					{
+						new Rectangle(0, 256, 64, 64),
+						new Rectangle(64, 256, 64, 64),
+						new Rectangle(128, 256, 64, 64),
+					}, new TimeSpan(0, 0, 0, 0, 200)),
+					new Animation("Walk_2", new Rectangle[] 
 					{
 						new Rectangle(0, 320, 64, 64),
 						new Rectangle(64, 320, 64, 64),
 						new Rectangle(128, 320, 64, 64),
 					}, new TimeSpan(0, 0, 0, 0, 200)),
-					new Animation("Walk_2", new Rectangle[] 
+					new Animation("Walk_3", new Rectangle[] 
 					{
 						new Rectangle(0, 384, 64, 64),
 						new Rectangle(64, 384, 64, 64),
 						new Rectangle(128, 384, 64, 64),
 					}, new TimeSpan(0, 0, 0, 0, 200)),
-					new Animation("Walk_3", new Rectangle[] 
+					new Animation("Walk_4", new Rectangle[]
 					{
 						new Rectangle(0, 448, 64, 64),
 						new Rectangle(64, 448, 64, 64),
 						new Rectangle(128, 448, 64, 64),
-					}, new TimeSpan(0, 0, 0, 0, 200)),
-					new Animation("Walk_4", new Rectangle[]
-					{
-						new Rectangle(0, 512, 64, 64),
-						new Rectangle(64, 512, 64, 64),
-						new Rectangle(128, 512, 64, 64),
 					}, new TimeSpan(0, 0, 0, 0, 200))
 				});
 

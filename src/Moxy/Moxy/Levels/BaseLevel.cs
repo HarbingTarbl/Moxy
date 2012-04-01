@@ -32,6 +32,9 @@ namespace Moxy.Levels
 
 		public Monster SpawnMonsterRandom()
 		{
+			if (Monsters.Count == 0)
+				return null;
+
 			var random = Moxy.Random.NextDouble ();
 
 			foreach (var info in Monsters)
@@ -59,6 +62,9 @@ namespace Moxy.Levels
 					break;
 				case "AngryRock":
 					monster = new AngryRock();
+					break;
+				case "BigBadBoss":
+					monster = new BigBadBoss();
 					break;
 			}
 
