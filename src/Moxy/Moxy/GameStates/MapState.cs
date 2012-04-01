@@ -15,6 +15,8 @@ namespace Moxy.GameStates
 		public MapState()
 			: base("MapState", isOverlay:false, acceptsInput:true)
 		{
+
+			
 		}
 	
 		public override void Update(GameTime gameTime)
@@ -74,10 +76,16 @@ namespace Moxy.GameStates
 
 		public override void Draw (SpriteBatch batch)
 		{
-			batch.Begin (SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None,
+			batch.Begin (SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None,
 				RasterizerState.CullCounterClockwise, null, camera.Transformation);
 
-			map.Draw (batch, new Rectangle(0, 0, 128, 128));
+		
+			var offset = camera.ScreenToWorld(Vector2.Zero);
+			var rec = new Rectangle((int)Math.Floor(Math.Max((offset.X  / map.TileDimensions.Width), 0)), 
+				(int)Math.Floor(Math.Max((offset.Y / map.TileDimensions.Height), 0)), 
+				(int)Math.Ceiling(Math.Min((Moxy.Graphics.Viewport.Width / (camera.Scale * map.TileDimensions.Width)) + 3, map.Dimensions.Width)), 
+				(int)Math.Ceiling(Math.Min((Moxy.Graphics.Viewport.Height / (camera.Scale * map.TileDimensions.Height)) + 3, map.Dimensions.Height)));
+			map.Draw (batch, rec);
 
 			batch.End();
 
@@ -88,13 +96,14 @@ namespace Moxy.GameStates
 			batch.DrawString (font, "Tile At Cursor2: " + TileAtCursor.ToString (), new Vector2 (10, 10), Color.Red);
 			batch.DrawString (font, "Current TileID: " + currentTileID, new Vector2 (10, 30), Color.Red);
 			batch.DrawString (font, "Current Layer: " + Enum.GetName (typeof(MapLayerType), currentLayer), new Vector2 (10, 50), Color.Red);
+			batch.DrawString (font, "Showing " + (rec.Width * rec.Height).ToString() + " Tiles", new Vector2(10, 70), Color.Red);
 			batch.End();
 		}
 
 		public override void OnFocus()
 		{
 			MapBuilder builder = new Map1Builder ();
-			map = new MapRoot (96, 96, 64, 64, Moxy.ContentManager.Load<Texture2D> ("tileset"));//builder.Build ();
+			map = new MapRoot (256, 256, 64, 64, Moxy.ContentManager.Load<Texture2D> ("tileset"));//builder.Build ();
 			InitializeBaseLayer (16);
 			camera = new Camera2D (800, 600);
 		}
