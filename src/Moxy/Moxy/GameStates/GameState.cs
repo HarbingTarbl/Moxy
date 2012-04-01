@@ -122,6 +122,8 @@ namespace Moxy.GameStates
 			
 			lightingEffect.Parameters["lightMask"].SetValue (lightTarget);
 			lightingEffect.CurrentTechnique.Passes[0].Apply ();
+
+
 			batch.Draw (gameTarget, Vector2.Zero, Color.White);
 			batch.End();
 		}
@@ -225,11 +227,21 @@ namespace Moxy.GameStates
 			batch.Begin (SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None,
 				RasterizerState.CullCounterClockwise, null, camera.GetTransformation (Moxy.Graphics));
 
+			foreach (Particle part in FireballEmitter.particles)
+				part.Light.Draw(batch);
+
+			foreach (var monster in monsters)
+				if (monster.Light != null)
+					monster.Light.Draw(batch);
+
 			foreach (Light light in lights)
 				light.Draw (batch);
 
 			foreach (Light light in map.PointLights)
 				light.Draw (batch);
+
+			foreach (var part in redPacketEmitter.particles)
+				part.Light.Draw(batch);
 
 			batch.End ();
 		}
@@ -326,7 +338,7 @@ namespace Moxy.GameStates
 		private void LoadMap()
 		{
 			camera = new DynamicCamera ();
-			camera.MinimumSize = new Size (800, 600);
+			camera.MinimumSize = new Size (600, 600);
 			camera.UseBounds = true;
 
 			map = new MapRoot(128, 128, 64, 64, Moxy.ContentManager.Load<Texture2D>("tileset"));

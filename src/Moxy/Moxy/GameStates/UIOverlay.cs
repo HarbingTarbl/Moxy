@@ -150,7 +150,7 @@ namespace Moxy.GameStates
 		public UIOverlay UI;
 		public TimeSpan fadeTime, maxTime = new TimeSpan(0, 0, 1);
 		public Vector2 Location;
-		public bool IsShown;
+		public bool IsShown = false;
 
 		public void Draw(SpriteBatch batch)
 		{

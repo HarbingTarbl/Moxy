@@ -21,6 +21,7 @@ namespace Moxy.Entities
 		public Player Target;
 		public ElementalTypeEnum Element;
 		public Vector2 Origin;
+		public Light Light;
 
 		public void CheckCollide(Player player)
 		{
@@ -67,6 +68,9 @@ namespace Moxy.Entities
 			CollisionCenter = Location;
 			Collision = new Rectangle((int)CollisionCenter.X, (int)CollisionCenter.Y, 1, 1);
 			Collision.Inflate((int)CollisionRadius, (int)CollisionRadius);
+
+			if (Light != null)
+				Light.Location = Location;
 		}
 
 		public override void Draw(SpriteBatch batch)

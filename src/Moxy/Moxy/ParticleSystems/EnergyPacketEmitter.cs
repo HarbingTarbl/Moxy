@@ -28,7 +28,7 @@ namespace Moxy.ParticleSystems
 			float distance = Vector2.Distance(Target.Location, Source.Location);
 			if (distance < minPowerRange)
 			{
-				Target.OverloadRate = MathHelper.Lerp(0, MathHelper.PiOver2, minPowerRange / distance);
+				Target.OverloadRate += (MathHelper.Pi * (float)gameTime.ElapsedGameTime.TotalSeconds * (minPowerRange / distance));
 			}
 			else
 				Target.OverloadRate = 0;
@@ -47,7 +47,14 @@ namespace Moxy.ParticleSystems
 
 			if (Source.ParticleTimePassed > Source.ParticleDelay && !Source.PowerDisabled)
 			{
-				var particle = new Particle(Source.Location, ParticleTexture, 2f, 1f) { Target = Target };
+				var particle = new Particle(Source.Location, ParticleTexture, 2f, 1f)
+				{
+					Target = Target,
+					Light = new Light(Color.Teal)
+					{
+						Scale = 1f,
+					}
+				};
 				base.StartParticle(particle);
 				Source.ParticleTimePassed = 0;
 			}

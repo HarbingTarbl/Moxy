@@ -36,6 +36,7 @@ namespace Moxy
 		public float TimePassed;
 		public Player Target;
 		public Vector2 EndLocation;
+		public Light Light;
 
 		public void Draw(SpriteBatch batch)
 		{

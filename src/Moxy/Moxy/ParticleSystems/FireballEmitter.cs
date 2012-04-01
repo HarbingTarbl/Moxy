@@ -49,6 +49,7 @@ namespace Moxy.ParticleSystems
 
 				particle.CurrentLocation = Vector2.Lerp(particle.Original, particle.EndLocation,
 					MathHelper.Clamp(particle.TimePassed / particle.Time, 0, 1));
+				particle.Light.Location = particle.CurrentLocation;
 
 				if (particle.IsDead)
 					removeQueue.Enqueue(particle);
@@ -57,6 +58,7 @@ namespace Moxy.ParticleSystems
 			while (removeQueue.Count > 0)
 				particles.Remove(removeQueue.Dequeue());
 		}
+
 
 		public void GenerateParticles(GameTime gameTime, Vector2 Direction)
 		{	
@@ -69,7 +71,8 @@ namespace Moxy.ParticleSystems
 					EndLocation = Gunner.Location + (Direction * maxParticleRange),
 					Rotation = (float)Math.Atan2 (Direction.Y, Direction.X),
 					Size = 10f,
-					Scale = 0.35f
+					Scale = 0.35f,
+					Light = new Light(Color.OrangeRed)
 				};
 				base.StartParticle(particle);
 			}

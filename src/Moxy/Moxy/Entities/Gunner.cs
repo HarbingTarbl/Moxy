@@ -74,7 +74,7 @@ namespace Moxy.Entities
 
 
 		public float OverloadLevel = 0;
-		public float MaxOverloadLevel = 1;
+		public float MaxOverloadLevel = 500;
 		public float OverloadRate = 1;
 
 		public SoundEffect fireSound;
@@ -85,22 +85,36 @@ namespace Moxy.Entities
 
 		public override void Draw(SpriteBatch batch)
 		{
-			batch.Draw(PowerCircleTexture, this.Location, null, Color.Lerp(Color.White, Color.Red, OverloadLevel / MaxOverloadLevel), 0f, CircleOrigin, 1f, SpriteEffects.None, 0f);
+			var redVector = Color.Red.ToVector3();
+			var whiteVector = Color.White.ToVector3();
+			var interpol = Vector3.SmoothStep(whiteVector, redVector, (float)Math.Sin(OverloadRate));
+			var interpolColor = new Color(interpol);
+
+			batch.Draw(PowerCircleTexture, this.Location, null, interpolColor, baseRotation, CircleOrigin, 1f, SpriteEffects.None, 0f);
+
+
 			batch.Draw(Texture, new Rectangle((int)Location.X, (int)Location.Y, 64, 64), Animations.Bounding, Color, Rotation - MathHelper.PiOver2, new Vector2(32, 32), SpriteEffects.None, 0);
 		}
 
 		public override void Update(GameTime gameTime)
 		{
 			HandleInput(gameTime);
-			OverloadLevel = (float)Math.Sin(OverloadRate);// *(float)gameTime.ElapsedGameTime.TotalSeconds;
-			if (OverloadLevel >= MaxOverloadLevel && OnOverLoadExeeded != null)
-				OnOverLoadExeeded(this, null);
+			OverloadLevel += OverloadRate;
+			if (OverloadLevel >= MaxOverloadLevel)
+			{
+				Moxy.StateManager.Set("MainMenu");
+				MaxOverloadLevel = 0;
+				OverloadRate = 0;
+				if (OnOverLoadExeeded != null)
+					OnOverLoadExeeded(this, null);
+			}
 			if (!Generator.PowerDisabled)
 			{
 				Energy += EnergyRate * (float)gameTime.ElapsedGameTime.TotalSeconds;
 				Energy = Math.Min(Energy, MaxEnergy);
 			}
 
+			baseRotation += MathHelper.PiOver4 * (float)gameTime.ElapsedGameTime.TotalSeconds;
 			Animations.Update(gameTime);
 			base.Update(gameTime);
 		}
@@ -139,6 +153,7 @@ namespace Moxy.Entities
 		public PowerGenerator Generator;
 		SoundEffectInstance fireSoundInstance;
 		private TimeSpan SkillRate;
+		private float baseRotation;
 
 		public event EventHandler OnOverLoadExeeded;
 		public event EventHandler<GunnerFireEventArgs> OnCastFireball;

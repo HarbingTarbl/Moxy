@@ -17,6 +17,11 @@ namespace Moxy
 			this.Scale = 0.8f;
 		}
 
+		public Light(Color color)
+			: this(color, Moxy.ContentManager.Load<Texture2D>("light"))
+		{
+		}
+
 		public void Draw(SpriteBatch batch)
 		{
 			batch.Draw (Texture, Location, null, Color, 0f, Origin, Scale, SpriteEffects.None, 1f);

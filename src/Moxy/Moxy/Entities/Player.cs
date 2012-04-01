@@ -15,6 +15,12 @@ namespace Moxy.Entities
 		{
 			texture = new Texture2D (Moxy.Graphics, 1, 1);
 			texture.SetData (new [] { Color.White });
+			OnDeath += new EventHandler(Player_OnDeath);
+		}
+
+		void Player_OnDeath(object sender, EventArgs e)
+		{
+			Moxy.StateManager.Set("MainMenu");
 		}
 
 		public PlayerIndex PadIndex;
@@ -74,6 +80,8 @@ namespace Moxy.Entities
 			lastMovement = moveVector;
 			oldPad = currentPad;
 		}
+
+
 
 		public event EventHandler OnDeath;
 

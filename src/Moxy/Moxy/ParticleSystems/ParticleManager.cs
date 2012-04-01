@@ -30,6 +30,7 @@ namespace Moxy
 				{
 					particle.CurrentLocation = Vector2.SmoothStep (particle.Original, particle.Target.Location,
 						MathHelper.Clamp (particle.TimePassed / particle.Time, 0, 1));
+					particle.Light.Location = particle.CurrentLocation;
 				}
 
 				if (particle.IsDead)
@@ -46,7 +47,7 @@ namespace Moxy
 				particle.Draw (batch);
 		}
 
-		protected List<Particle> particles;
-		protected Queue<Particle> removeQueue; 
+		public List<Particle> particles;
+		public Queue<Particle> removeQueue; 
 	}
 }
