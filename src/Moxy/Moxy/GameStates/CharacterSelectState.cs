@@ -21,6 +21,7 @@ namespace Moxy.GameStates
 		public PlayerIndex Gunner2;
 		public PlayerIndex PowerGenerator1;
 		public PlayerIndex PowerGenerator2;
+		public bool CharactersSelected;
 
 		public override void Update (GameTime gameTime)
 		{
@@ -40,7 +41,15 @@ namespace Moxy.GameStates
 			}
 
 			if (allReady && readyCount >= 2)
+			{
+				Gunner1 = frames[0].PlayerIndex;
+				PowerGenerator1 = frames[1].PlayerIndex;
+				Gunner2 = frames[2].PlayerIndex;
+				PowerGenerator2 = frames[3].PlayerIndex;
+
+				CharactersSelected = true;
 				Moxy.StateManager.Set ("Game");
+			}
 		}
 
 		public override void Draw (SpriteBatch batch)
@@ -94,6 +103,14 @@ namespace Moxy.GameStates
 					};
 		}
 
+		public override void OnFocus()
+		{
+			Gunner1 = (PlayerIndex)5;
+			Gunner2 = (PlayerIndex)5;
+			PowerGenerator1 = (PlayerIndex)5;
+			PowerGenerator2 = (PlayerIndex)5;
+		}
+
 		private Texture2D frameTexture;
 		private Texture2D gunnerFrame;
 		private Texture2D powerFrame;
@@ -116,6 +133,11 @@ namespace Moxy.GameStates
 			public bool IsReady;
 			public ControllerSelector Selecter;
 
+			public PlayerIndex PlayerIndex
+			{
+				get { return Selecter != null ? Selecter.PlayerIndex : (PlayerIndex) 5; }
+			}
+
 			public void Draw(SpriteBatch batch)
 			{
 				Color color = IsReady ? Color.Gray : Color.White;
@@ -137,7 +159,7 @@ namespace Moxy.GameStates
 		{
 			public ControllerSelector (PlayerIndex index, CharacterFrame[] frames, ControllerSelector[] selecters, int defaultFrame)
 			{
-				this.playerIndex = index;
+				this.PlayerIndex = index;
 				this.frames = frames;
 				this.selecters = selecters;
 				this.texture = Moxy.ContentManager.Load<Texture2D> ("controller");
@@ -148,6 +170,7 @@ namespace Moxy.GameStates
 			}
 
 			public int SelectedIndex;
+			public PlayerIndex PlayerIndex;
 			public bool IsConnected;
 			public bool IsReady;
 			public SoundEffect AcceptSound;
@@ -161,8 +184,8 @@ namespace Moxy.GameStates
 
 			public void Update (GameTime gameTime)
 			{
-				GamePadState padState = Moxy.CurrentPadStates[playerIndex];
-				GamePadState lastState = Moxy.LastPadStates[playerIndex];
+				GamePadState padState = Moxy.CurrentPadStates[PlayerIndex];
+				GamePadState lastState = Moxy.LastPadStates[PlayerIndex];
 				IsConnected = padState.IsConnected;
 
 				if (padState.Buttons.A.WasButtonPressed (lastState.Buttons.A) && !frames[SelectedIndex].IsReady)
@@ -208,7 +231,6 @@ namespace Moxy.GameStates
 			private Texture2D texture;
 			private CharacterFrame[] frames;
 			private ControllerSelector[] selecters;
-			private PlayerIndex playerIndex;
 			private float scale = 1.2f;
 			private Vector2 origin;
 			private GamePadState lastPadState;
@@ -221,8 +243,8 @@ namespace Moxy.GameStates
 						count += selecter.SelectedIndex == SelectedIndex ? 1 : 0;
 
 				var frame = frames[SelectedIndex];
-				location = frame.Location + new Vector2(frame.FrameTexture.Width / 2, 
-					frame.Location.Y + frame.FrameTexture.Height + 25 + ((int)playerIndex * (texture.Height * scale)));
+				location = frame.Location + new Vector2(frame.FrameTexture.Width / 2,
+					frame.Location.Y + frame.FrameTexture.Height + 25 + ((int)PlayerIndex * (texture.Height * scale)));
 			}
 		}
 	}

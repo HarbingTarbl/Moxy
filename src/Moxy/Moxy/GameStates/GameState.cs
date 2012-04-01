@@ -22,7 +22,7 @@ namespace Moxy.GameStates
 			monsters = new List<Monster>();
 			monsterPurgeList = new List<Monster>();
 			items = new List<Item>();
-			itemPurgeList = new List<Item>();
+			itemPurgeQueue = new Queue<Item>();
 			redPacketEmitter = new EnergyPacketEmitter();
 			FireballEmitter = new FireballEmitter();
 			FireballEmitter.OnParticleMonsterCollision += OnBulletCollision;
@@ -30,18 +30,17 @@ namespace Moxy.GameStates
 
 		public override void Update(GameTime gameTime)
 		{
+			if (!isLoaded)
+				return;
+
 			camera.Update (Moxy.Graphics);
 			map.Update (gameTime);
 			
 			foreach (Player player in players)
 				player.Update (gameTime);
 
-
-			foreach (var item in itemPurgeList)
-			{
-				items.Remove(item);
-			}
-			itemPurgeList.Clear();
+			while (itemPurgeQueue.Count > 0)
+				items.Remove (itemPurgeQueue.Dequeue ());
 
 			foreach(var item in items)
 			{
@@ -102,14 +101,15 @@ namespace Moxy.GameStates
 			if (item != null)
 			{
 				item.OnPickup -= item_OnPickup;
-				itemPurgeList.Add(item);
-
+				itemPurgeQueue.Enqueue (item);
 			}
-
 		}
 
-		public  override void Draw(SpriteBatch batch)
+		public override void Draw(SpriteBatch batch)
 		{
+			if (!isLoaded)
+				return;
+			
 			DrawGame (batch);
 			DrawLights (batch);
 
@@ -126,14 +126,6 @@ namespace Moxy.GameStates
 
 		public override void Load()
 		{
-			camera = new DynamicCamera();
-			camera.MinimumSize = new Size(600, 600);
-			camera.UseBounds = true;
-
-			map = new TileMap ();
-			map.AmbientLight = new Color (255, 255, 255, 10);
-			map.CreateTiles ("Content/map.bin");
-
 			gameTarget = new RenderTarget2D (Moxy.Graphics, Moxy.ScreenWidth, Moxy.ScreenHeight);
 			lightTarget = new RenderTarget2D (Moxy.Graphics, Moxy.ScreenWidth, Moxy.ScreenHeight);
 
@@ -141,30 +133,26 @@ namespace Moxy.GameStates
 			lightTexture = Moxy.ContentManager.Load<Texture2D> ("light");
 			radiusTexture = Moxy.ContentManager.Load<Texture2D> ("Radius");
 			particleTexture = Moxy.ContentManager.Load<Texture2D> ("powerparticle");
-			texture = new Texture2D (Moxy.Graphics, 1, 1);
-			texture.SetData (new [] { new Color(0, 0, 0, map.AmbientLight.A) });
 
 			radiusOrigin = new Vector2 (radiusTexture.Width / 2, radiusTexture.Height / 2);
 
-			LoadPlayers();
-
-			lights.Add (gunner1.Light);
-			lights.Add (powerGenerator1.Light);
-
-			players.Add (gunner1);
-			players.Add (powerGenerator1);
-
-			camera.ViewTargets.Add (gunner1);
-			camera.ViewTargets.Add (powerGenerator1);
-
-			uiOverlay = new UIOverlay(this);
-			uiOverlay.ActivePlayers = players;
+			uiOverlay = (UIOverlay)Moxy.StateManager["UIOverlay"];
+			characterSelectState = (CharacterSelectState)Moxy.StateManager["CharacterSelect"];
 		}
 
 		public override void OnFocus()
 		{
-			Moxy.StateManager.Push(uiOverlay);
+			if (characterSelectState.CharactersSelected)
+			{
+				LoadMap();
+				LoadPlayers();
+				characterSelectState.CharactersSelected = false;
+			}
+			else
+				LoadMap();
 
+			isLoaded = true;
+			Moxy.StateManager.Push(uiOverlay);
 		}
 
 		private Gunner gunner1;
@@ -180,7 +168,7 @@ namespace Moxy.GameStates
 		private Texture2D radiusTexture;
 		private Texture2D particleTexture; 
 		private List<Light> lights;
-		private List<Item> itemPurgeList;
+		private Queue<Item> itemPurgeQueue;
 		private List<Item> items;
 		private List<Monster> monsterPurgeList;
 		private List<Monster> monsters;
@@ -190,8 +178,8 @@ namespace Moxy.GameStates
 		private Vector2 radiusOrigin;
 		private EnergyPacketEmitter redPacketEmitter;
 		private UIOverlay uiOverlay;
-
-
+		private CharacterSelectState characterSelectState;
+		private bool isLoaded;
 		
 		private void DrawGame (SpriteBatch batch)
 		{
@@ -206,7 +194,6 @@ namespace Moxy.GameStates
 			batch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None,
 				RasterizerState.CullCounterClockwise, null, camera.GetTransformation(Moxy.Graphics));
 			
-
 			foreach (Player player in players)
 				player.Draw (batch);
 
@@ -248,30 +235,95 @@ namespace Moxy.GameStates
 		{
 			float gunnerSpeed = 0.5f;
 			float enchanterSpeed = 0.3f;
+			PlayerIndex invalidPlayerIndex = (PlayerIndex)5;
 
-			gunner1 = new Gunner
+			if (characterSelectState.Gunner1 != invalidPlayerIndex)
 			{
-				PadIndex = PlayerIndex.One,
-				Color = Color.White,
-				Location = new Vector2 (200, 0),
-				Speed = gunnerSpeed,
-				Light = new Light (Color.White, lightTexture),
-				Team = Team.Red,
-				FireballEmitter = FireballEmitter
-			};
+				gunner1 = new Gunner
+				{
+					PadIndex = PlayerIndex.One,
+					Color = Color.White,
+					Location = new Vector2 (200, 0),
+					Speed = gunnerSpeed,
+					Light = new Light (Color.White, lightTexture),
+					Team = Team.Red,
+					FireballEmitter = FireballEmitter
+				};
 
-			powerGenerator1 = new PowerGenerator
+				powerGenerator1 = new PowerGenerator
+				{
+					PadIndex = PlayerIndex.Two,
+					Color = Color.White,
+					Location = new Vector2 (400, 0),
+					Speed = enchanterSpeed,
+					Light = new Light (Color.White, lightTexture),
+					Team = Team.Red,
+				};
+
+				redPacketEmitter.Target = gunner1;
+				redPacketEmitter.Source = powerGenerator1;
+
+				lights.Add (gunner1.Light);
+				lights.Add (powerGenerator1.Light);
+
+				players.Add (gunner1);
+				players.Add (powerGenerator1);
+
+				camera.ViewTargets.Add (gunner1);
+				camera.ViewTargets.Add (powerGenerator1);
+			}
+
+			if (characterSelectState.Gunner2 != invalidPlayerIndex)
 			{
-				PadIndex = PlayerIndex.Two,
-				Color = Color.White,
-				Location = new Vector2 (400, 0),
-				Speed = enchanterSpeed,
-				Light = new Light (Color.White, lightTexture),
-				Team = Team.Red,
-			};
+				gunner2 = new Gunner
+				{
+					PadIndex = PlayerIndex.Three,
+					Color = Color.White,
+					Location = new Vector2 (200, 0),
+					Speed = gunnerSpeed,
+					Light = new Light (Color.White, lightTexture),
+					Team = Team.Red,
+					FireballEmitter = FireballEmitter
+				};
 
-			redPacketEmitter.Target = gunner1;
-			redPacketEmitter.Source = powerGenerator1;
+				powerGenerator2 = new PowerGenerator
+				{
+					PadIndex = PlayerIndex.Four,
+					Color = Color.White,
+					Location = new Vector2 (400, 0),
+					Speed = enchanterSpeed,
+					Light = new Light (Color.White, lightTexture),
+					Team = Team.Red,
+				};
+
+				redPacketEmitter.Target = gunner2;
+				redPacketEmitter.Source = powerGenerator2;
+
+				lights.Add (gunner2.Light);
+				lights.Add (powerGenerator2.Light);
+
+				players.Add (gunner2);
+				players.Add (powerGenerator2);
+
+				camera.ViewTargets.Add (gunner2);
+				camera.ViewTargets.Add (powerGenerator2);
+			}
+
+			uiOverlay.ActivePlayers = players;
+		}
+
+		private void LoadMap()
+		{
+			camera = new DynamicCamera ();
+			camera.MinimumSize = new Size (600, 600);
+			camera.UseBounds = true;
+
+			map = new TileMap ();
+			map.CreateTiles ("Content/map" + Moxy.CurrentLevelIndex + ".bin");
+			map.AmbientLight = new Color (255, 255, 255, 10);
+
+			texture = new Texture2D (Moxy.Graphics, 1, 1);
+			texture.SetData (new[] { new Color (0, 0, 0, map.AmbientLight.A) });
 		}
 
 		private void OnBulletCollision(object sender, GenericEventArgs<Monster> e)

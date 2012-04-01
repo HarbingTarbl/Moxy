@@ -31,6 +31,7 @@ namespace Moxy
 		public static GraphicsDevice Graphics;
 		public static Dictionary<PlayerIndex, GamePadState> CurrentPadStates;
 		public static Dictionary<PlayerIndex, GamePadState> LastPadStates;
+		public static int CurrentLevelIndex;
 
 		public Moxy()
 		{
