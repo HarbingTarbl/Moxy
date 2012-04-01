@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera2D.cs" />
+    <Compile Include="DialogRunner.cs" />
     <Compile Include="DynamicCamera.cs" />
     <Compile Include="Entities\AngryRock.cs" />
     <Compile Include="Entities\Animation.cs" />

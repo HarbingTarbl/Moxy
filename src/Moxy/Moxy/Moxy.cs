@@ -38,6 +38,7 @@ namespace Moxy
 		public static MapBuilder[] Maps;
 		public static BaseLevel[] Levels;
 		public static MapRoot CurrentMap;
+		public static DialogRunner Dialog;
 
 		public Moxy()
 		{
@@ -70,6 +71,7 @@ namespace Moxy
 			Moxy.StateManager = new GameStateManager();
 			Moxy.Random = new Random();
 			Moxy.Graphics = GraphicsDevice;
+			Moxy.Dialog = new DialogRunner();
 
 			Moxy.StateManager.Load (Assembly.GetExecutingAssembly());
 			Moxy.StateManager.Set("MainMenu");
@@ -103,6 +105,7 @@ namespace Moxy
 				CurrentPadStates[padIndex] = GamePad.GetState (padIndex);
 
 			Moxy.StateManager.Update (gameTime);
+			Moxy.Dialog.Update (gameTime);
 
 			foreach (PlayerIndex padIndex in CurrentPadStates.Keys.ToArray())
 				LastPadStates[padIndex] = CurrentPadStates[padIndex];
@@ -113,6 +116,7 @@ namespace Moxy
 		protected override void Draw(GameTime gameTime)
 		{
 			Moxy.StateManager.Draw (spriteBatch);
+			Moxy.Dialog.Draw (spriteBatch);
 
 			base.Draw(gameTime);
 		}

@@ -525,6 +525,12 @@ namespace Moxy.GameStates
 			InbetweenRounds = true;
 			gamePauseTimer.Change (new TimeSpan (0, 0, 0, timeBetweenRounds), new TimeSpan (0, 0, 0, timeBetweenRounds));
 
+			if (Moxy.CurrentLevelIndex == 0)
+			{
+				Moxy.Dialog.EnqueueTimed ("Boss", "You think you can \n defeat me? Fools!", 3f);
+				//() => Moxy.StateManager.Set ("MainMenu")
+			}
+
 			// Only fade after the first level
 			if (Moxy.CurrentLevelIndex > 0)
 			{
@@ -562,12 +568,19 @@ namespace Moxy.GameStates
 				powerGenerator2.Health = powerGenerator2.MaxHealth;
 		}
 
+		private bool strongerMessage = false;
 		private void CheckPlayerLevels()
 		{
 			Team1Score += 9000;
 
 			if (gunner1 != null && gunner1.Level < ExperienceTable.Length && Team1Score >= ExperienceTable[gunner1.Level])
 			{
+				if (!strongerMessage)
+				{
+					Moxy.Dialog.EnqueueTimed ("Boss", "So you've gotten stronger?\nSo what!", 3f);
+					strongerMessage = true;
+				}
+
 				levelUpSound.Play (1.0f, 0f, 0f);
 				gunner1.Level++;
 				powerGenerator1.Level++;
