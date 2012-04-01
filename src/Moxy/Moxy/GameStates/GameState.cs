@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Moxy.Entities;
@@ -38,30 +39,67 @@ namespace Moxy.GameStates
 			camera.Update (Moxy.Graphics);
 			map.Update (gameTime);
 
-			foreach (Player player in players)
-				player.Update (gameTime);
-
-			foreach(var item in items)
+			if (!InbetweenRounds)
 			{
-				item.Update(gameTime);
-				item.CheckCollision(gunner1);
-				item.CheckCollision(powerGenerator1);
+				foreach (Player player in players)
+					player.Update (gameTime);
+
+				foreach (var item in items)
+				{
+					item.Update (gameTime);
+					item.CheckCollision (gunner1);
+					item.CheckCollision (powerGenerator1);
+				}
+
+				while (itemPurgeQueue.Count > 0)
+					items.Remove (itemPurgeQueue.Dequeue());
+
+				foreach (var monster in monsters)
+				{
+					monster.Update (gameTime);
+					FireballEmitter.CheckCollision (monster);
+					monster.CheckCollide (gunner1);
+					monster.CheckCollide (powerGenerator1);
+				}
+
+				while (monsterPurgeQueue.Count > 0)
+					monsters.Remove (monsterPurgeQueue.Dequeue());
+
+				// Spawn Monsters
+				spawnPassed += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+				if (spawnPassed > Level.SpawnDelay && monsterCount < Level.MaxMonsters)
+				{
+					var bounds = camera.ScreenFrustrum;
+					bounds.Inflate (200, 200);
+
+					int x = 0;
+					int y = 0;
+
+					var verticalOrHorizontal = GetRandomDouble ();
+					if (verticalOrHorizontal == 0)
+					{
+						var topBottom = GetRandomDouble ();
+						x = random.Next (bounds.X, bounds.X + bounds.Width);
+						y = bounds.Y + (bounds.Height * topBottom);
+					}
+					else
+					{
+						var leftRight = GetRandomDouble ();
+						x = bounds.X + (bounds.Width * leftRight);
+						y = random.Next (bounds.Y, bounds.Y + bounds.Height);
+					}
+
+					Monster monster = Level.SpawnMonsterRandom ();
+					monster.Location = new Vector2 (x, y);
+					monsterCount++;
+					monster.OnDeath += monster_OnDeath;
+					monsters.Add (monster);
+
+					Level.SpawnDelay = Moxy.Random.Next ((int)Level.SpawnIntervalLow, (int)Level.SpawnIntervalHigh);
+					spawnPassed = 0;
+				}
 			}
-
-			while (itemPurgeQueue.Count > 0)
-				items.Remove(itemPurgeQueue.Dequeue());
-
-
-			foreach (var monster in monsters)
-			{
-				monster.Update(gameTime);
-				FireballEmitter.CheckCollision(monster);
-				monster.CheckCollide(gunner1);
-				monster.CheckCollide(powerGenerator1);
-			}
-
-			while (monsterPurgeQueue.Count > 0)
-				monsters.Remove (monsterPurgeQueue.Dequeue ());
 
 			redPacketEmitter.CalculateEnergyRate(gameTime);
 			redPacketEmitter.GenerateParticles(gameTime);
@@ -69,40 +107,26 @@ namespace Moxy.GameStates
 			redPacketEmitter.Update (gameTime);
 			FireballEmitter.Update(gameTime);
 
-			// Spawn Monsters
-			spawnPassed += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-			if (spawnPassed > level.SpawnDelay)
+			// Should we fade the lights?
+			if (fadingLight)
 			{
-				var bounds = camera.ScreenFrustrum;
-				bounds.Inflate (100, 100);
+				fadePassed += (float)gameTime.ElapsedGameTime.TotalSeconds;
+				float lerp = MathHelper.Clamp (fadePassed / fadeTotal, 0, 1f);
 
-				int x=0;
-				int y=0;
+				float red = MathHelper.Lerp (startFadeColor.R, Level.AmbientLight.R, lerp);
+				float green = MathHelper.Lerp (startFadeColor.G, Level.AmbientLight.G, lerp);
+				float blue = MathHelper.Lerp (startFadeColor.B, Level.AmbientLight.B, lerp);
+				float alpha = MathHelper.Lerp (startFadeColor.A, Level.AmbientLight.A, lerp);
 
-				var verticalOrHorizontal = GetRandomDouble ();
-				if (verticalOrHorizontal == 0)
-				{
-					var topBottom = GetRandomDouble ();
-					x = random.Next (bounds.X, bounds.X + bounds.Width);
-					y = bounds.Y + (bounds.Height * topBottom);
-				}
-				else
-				{
-					var leftRight = GetRandomDouble ();
-					x = bounds.X + (bounds.Width * leftRight);
-					y = random.Next (bounds.Y, bounds.Y + bounds.Height);
-				}
+				map.AmbientColor = new Color (red, green, blue, alpha);
 
-				Monster monster = level.SpawnMonsterRandom ();
-				monster.Location = new Vector2 (x, y);
-				monsterCount++;
-				monster.OnDeath += monster_OnDeath;
-				monsters.Add (monster);
-
-				level.SpawnDelay = Moxy.Random.Next ((int)level.SpawnIntervalLow, (int)level.SpawnIntervalHigh);
-				spawnPassed = 0;
+				if (lerp >= 1)
+					fadingLight = false;
 			}
+			
+			// Check if the level timer has expired
+			if (Level != null && !InbetweenRounds && DateTime.Now.Subtract(StartLevelTime).TotalSeconds > Level.WaveLength)
+				LoadNextLevel();
 		}
 
 		public void monster_OnDeath(object sender, EventArgs e)
@@ -147,7 +171,6 @@ namespace Moxy.GameStates
 			lightingEffect.Parameters["lightMask"].SetValue (lightTarget);
 			lightingEffect.CurrentTechnique.Passes[0].Apply ();
 
-
 			batch.Draw (gameTarget, Vector2.Zero, Color.White);
 			batch.End();
 		}
@@ -166,6 +189,8 @@ namespace Moxy.GameStates
 
 			uiOverlay = (UIOverlay)Moxy.StateManager["UIOverlay"];
 			characterSelectState = (CharacterSelectState)Moxy.StateManager["CharacterSelect"];
+
+			gamePauseTimer = new Timer (timer_StartNextRound, null, Timeout.Infinite, Timeout.Infinite);
 		}
 
 		public override void OnFocus()
@@ -203,7 +228,7 @@ namespace Moxy.GameStates
 		private Texture2D lightTexture;
 		private Texture2D texture;
 		private Texture2D radiusTexture;
-		private Texture2D particleTexture; 
+		private Texture2D particleTexture;
 		private List<Light> lights;
 		private Queue<Item> itemPurgeQueue;
 		private List<Item> items;
@@ -219,9 +244,17 @@ namespace Moxy.GameStates
 		private MonsterSpawner lastWinner;
 		private Random random;
 		private int monsterCount;
-		private BaseLevel level;
+		public BaseLevel Level;
 		private float spawnPassed;
 		private bool isLoaded;
+		private Timer gamePauseTimer;
+		public bool InbetweenRounds;
+		public DateTime StartLevelTime;
+
+		private bool fadingLight;
+		private Color startFadeColor;
+		private float fadePassed;
+		private float fadeTotal = 5f;
 		
 		private void DrawGame (SpriteBatch batch)
 		{
@@ -409,7 +442,7 @@ namespace Moxy.GameStates
 
 		}
 
-		private void FindMonsterTargets(GameTime gameTime)
+		private void FindMonsterTargets (GameTime gameTime)
 		{
 			foreach (Monster monster in monsters)
 				monster.Target = gunner1;
@@ -419,10 +452,26 @@ namespace Moxy.GameStates
 		{
 			Moxy.CurrentLevelIndex++;
 
-			level = Moxy.Levels[Moxy.CurrentLevelIndex];
-			// Start transitioning to next ambient light
-			// Add break timer which starts next round
+			// We beat the game! // TODO: Add win screen
+			if (Moxy.CurrentLevelIndex >= Moxy.Levels.Length)
+			{
+				Moxy.CurrentLevelIndex = -1;
+				Moxy.StateManager.Set ("MainMenu");
+				return;
+			}
 
+			monsters.Clear();
+			Level = Moxy.Levels[Moxy.CurrentLevelIndex];
+			InbetweenRounds = true;
+			gamePauseTimer.Change (new TimeSpan (0, 0, 0, 0), new TimeSpan (0, 0, 0, 0, 10));
+
+			// Only fade after the first level
+			if (Moxy.CurrentLevelIndex > 0)
+			{
+				startFadeColor = map.AmbientColor;
+				fadePassed = 0;
+				fadingLight = true;
+			}
 		}
 
 		private int GetRandomDouble()
@@ -432,6 +481,13 @@ namespace Moxy.GameStates
 				return 0;
 			else
 				return 1;
+		}
+
+		private void timer_StartNextRound (object state)
+		{
+			gamePauseTimer.Change (Timeout.Infinite, Timeout.Infinite);
+			StartLevelTime = DateTime.Now;
+			InbetweenRounds = false;
 		}
 	}
 }

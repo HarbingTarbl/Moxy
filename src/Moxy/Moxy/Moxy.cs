@@ -80,7 +80,8 @@ namespace Moxy
 
 			Moxy.Levels = new BaseLevel[]
 			{
-				new LevelOne()
+				new LevelOne(),
+				new LevelTwo(),
 			};
 		}
 

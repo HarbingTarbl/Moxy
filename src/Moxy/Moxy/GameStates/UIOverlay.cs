@@ -27,6 +27,9 @@ namespace Moxy.GameStates
 			StatusBar.Pixel = new Texture2D (Moxy.Graphics, 1, 1, false, SurfaceFormat.Color);
 			StatusBar.Pixel.SetData (new [] { Color.White });
 
+			getReadyTexture = Moxy.ContentManager.Load<Texture2D> ("getready");
+			font = Moxy.ContentManager.Load<SpriteFont> ("font");
+
 			EnergyBar.UI = this;
 			StatusBars = new List<StatusBar> ();
 			ActivePlayers = new List<Player> ();
@@ -47,6 +50,17 @@ namespace Moxy.GameStates
 				RedRuneBar.Draw(batch);
 			if (RedSkillBar != null)
 				RedSkillBar.Draw(batch);
+
+			if (OwningState.InbetweenRounds)
+				batch.Draw (getReadyTexture, new Vector2 (275, 175), new Color (1f, 1f, 1f, (float)Math.Abs (Math.Sin (sinX))));
+
+			if (!OwningState.InbetweenRounds)
+			{
+				DateTime start = OwningState.StartLevelTime;
+				DateTime endTime = start.Add (new TimeSpan(0, 0, 0, (int)OwningState.Level.WaveLength));
+
+				batch.DrawString (font, endTime.Subtract (DateTime.Now).ToString(), new Vector2 (0, 0), Color.Black);
+			}
 
 			batch.End();
 		}
@@ -112,6 +126,8 @@ namespace Moxy.GameStates
 					bar.Player = player;
 					StatusBars.Add(bar);
 				}
+
+				sinX += (MathHelper.Pi / 3f) * (float)gameTime.ElapsedGameTime.TotalSeconds;
 			}
 		}
 
@@ -122,8 +138,10 @@ namespace Moxy.GameStates
 		public SkillSelection RedSkillBar;
 		public EnergyBar RedEnergyBar;
 		public List<Player> ActivePlayers;
+		private Texture2D getReadyTexture;
+		private SpriteFont font;
+		private float sinX;
 	}
-
 
 	public class SkillSelection
 	{
