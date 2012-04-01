@@ -98,6 +98,9 @@ namespace Moxy.GameStates
 						monster.OnDeath += monster_OnDeath;
 						monsters.Add(monster);
 
+						var chanceToAttackGen = Moxy.Random.NextDouble ();
+						monster.Target = (chanceToAttackGen <= 0.30f) ? (Player)powerGenerator1 : (Player)gunner1;
+
 						Level.SpawnDelay = Moxy.Random.Next((int)Level.SpawnIntervalLow, (int)Level.SpawnIntervalHigh);
 						spawnPassed = 0;
 					}
@@ -500,8 +503,7 @@ namespace Moxy.GameStates
 
 		private void FindMonsterTargets (GameTime gameTime)
 		{
-			foreach (Monster monster in monsters)
-				monster.Target = gunner1;
+			// TODO: Do this!
 		}
 
 		private void LoadNextLevel()

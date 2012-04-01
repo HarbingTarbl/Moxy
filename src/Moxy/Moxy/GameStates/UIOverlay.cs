@@ -64,7 +64,8 @@ namespace Moxy.GameStates
 				DateTime endTime = start.Add (new TimeSpan(0, 0, 0, (int)OwningState.Level.WaveLength));
 
 				var time = endTime.Subtract (DateTime.Now);
-				batch.DrawString (font, string.Format ("{0:##00}:{1:##00}", time.Minutes, time.Seconds), new Vector2 (300, 0), Color.Purple);
+				batch.DrawString (font, string.Format ("{0:##00}:{1:##00}", time.Minutes, time.Seconds), new Vector2 (300, 30), Color.Purple);
+				batch.DrawString (scorefont, "Wave " + Moxy.CurrentLevelIndex, new Vector2 (300, -5), Color.Purple);
 
 				if (RedEnergyBar != null)
 				{

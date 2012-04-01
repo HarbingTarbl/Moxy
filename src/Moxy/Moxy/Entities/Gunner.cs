@@ -168,7 +168,6 @@ namespace Moxy.Entities
 			e.Data.Health -= FireballDamage;
 		}
 
-
 		private FireballEmitter fireballEmitter;
 		public TimeSpan FireballRate = new TimeSpan(0, 0, 0, 0, 500);
 		public float FireballDamage = 10f;
