@@ -25,6 +25,8 @@ namespace Moxy.Entities
 			//Moxy.StateManager.Set("MainMenu");
 		}
 
+
+		public string Animation
 		public PlayerIndex PadIndex;
 		public float PlayerScore;
 		public float Speed;

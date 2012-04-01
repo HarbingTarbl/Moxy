@@ -17,10 +17,10 @@ namespace Moxy.Entities
 			{
 				new Animation("Idle", new Rectangle[]
 				{
-					new Rectangle(0, 0, 98, 64),
-					new Rectangle(98, 0, 98, 64),
-					new Rectangle(196, 0, 98, 64)
-				})
+					new Rectangle(0, 0, 128, 128),
+					new Rectangle(128, 0, 128, 128),
+					new Rectangle(256, 0, 128, 128)
+				}, new TimeSpan(0, 0, 0, 0, 100))
 
 			});
 
@@ -28,10 +28,11 @@ namespace Moxy.Entities
 			Animations.SetAnimation("Idle");
 			Health = 80;
 			TurnSpeed = MathHelper.Pi / 14f;
-			MovementSpeed = 70f;
-			Collision = new Rectangle(0, 0, 96, 96);
-			Origin = new Vector2(42, 54);
-			CollisionRadius = 48;
+			LowSpeed = 60f;
+			HighSpeed = 70f;
+			Collision = new Rectangle(0, 0, 128, 128);
+			Origin = new Vector2(64, 64);
+			CollisionRadius = 64;
 
 
 			OnCollisionWithPlayer += (Demon_OnCollisionWithPlayer);
@@ -43,7 +44,7 @@ namespace Moxy.Entities
 			base.Update(gameTime);
 		}
 
-		public float DemonDamage = 50f;
+		public float DemonDamage = 30f;
 
 		void Demon_OnCollisionWithPlayer(object sender, Events.GenericEventArgs<Player> e)
 		{

@@ -18,7 +18,7 @@ namespace Moxy.Entities
 			Animations = new AnimationManager(Texture, 
 				new Animation[] 
 				{
-					new Animation("Idle", new Rectangle[]
+					new Animation("Idle_1", new Rectangle[]
 					{
 						new Rectangle(0, 320, 64, 64)
 					}),
@@ -43,7 +43,7 @@ namespace Moxy.Entities
 
 				});
 
-			Animations.SetAnimation("Idle");
+			Animations.SetAnimation("Idle_1");
 			EntityType = global::Moxy.EntityType.Generator;
 			Health = 100;
 			CurrentRunes = new ItemID[4];
@@ -57,6 +57,7 @@ namespace Moxy.Entities
 			CurrentItem = 0;
 		}
 
+		
 		public Gunner Gunner;
 		public ItemID[] CurrentRunes;
 		public List<SkillEffect> ActiveSkills;

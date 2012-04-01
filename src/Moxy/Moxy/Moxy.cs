@@ -71,7 +71,7 @@ namespace Moxy
 			Moxy.Graphics = GraphicsDevice;
 
 			Moxy.StateManager.Load (Assembly.GetExecutingAssembly());
-			Moxy.StateManager.Set("RealMenu");
+			Moxy.StateManager.Set("MainMenu");
 
 			Moxy.Maps = new MapBuilder[]
 			{
