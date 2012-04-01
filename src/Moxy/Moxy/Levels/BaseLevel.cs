@@ -57,6 +57,9 @@ namespace Moxy.Levels
 				case "EyeBall":
 					monster = new EyeBall();
 					break;
+				case "AngryRock":
+					monster = new AngryRock();
+					break;
 			}
 
 			monster.MovementSpeed = Moxy.Random.Next ((int)monster.LowSpeed, (int)monster.HighSpeed);

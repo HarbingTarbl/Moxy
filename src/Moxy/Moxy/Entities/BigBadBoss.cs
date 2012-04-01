@@ -39,10 +39,7 @@ namespace Moxy.Entities
 			TurnSpeed = 0f;
 			LowSpeed = 0f;
 			HighSpeed = 0f;
+			ScoreGiven = 56;
 		}
-
-
-
-
 	}
 }
