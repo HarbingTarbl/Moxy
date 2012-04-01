@@ -32,10 +32,6 @@ namespace Moxy.Map
 		{
 			AmbientLight = Color.White;
 			MonsterSpawners = new List<MonsterSpawner>();
-			MonsterSpawners.Add(new MonsterSpawner(this) { Location = new Vector2(10, 10), MonsterType = "Slime" });
-			MonsterSpawners.Add(new MonsterSpawner(this) { Location = new Vector2(10, 20), MonsterType = "Slime" });
-			MonsterSpawners.Add(new MonsterSpawner(this) { Location = new Vector2(10, 30), MonsterType = "Slime" });
-			MonsterSpawners.Add(new MonsterSpawner(this) { Location = new Vector2(10, 40), MonsterType = "Slime" });
 
 		}
 

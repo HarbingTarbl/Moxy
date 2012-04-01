@@ -93,7 +93,7 @@ namespace Moxy.GameStates
 				{
 					var bar = new StatusBar();
 					bar.Player = player;
-					StatusBars.Add(bar);
+					StatusBars.Add(bar);5
 				}
 			}
 		}
