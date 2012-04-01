@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace Moxy.Map
+namespace Moxy
 {
 	public class MapLayer
 	{
@@ -13,15 +13,15 @@ namespace Moxy.Map
 		{
 			LayerType = Type;
 			this.Parent = Parent;
-			Tiles = new uint[(int)Parent.TileDimensions.Width, (int)Parent.TileDimensions.Height];
+			Tiles = new uint[(int)Parent.Dimensions.Width, (int)Parent.Dimensions.Height];
 
 		}
 
 		public readonly Map Parent;
 		public readonly MapLayerType LayerType;
-		public readonly uint[,] Tiles;
+		public uint[,] Tiles;
 
-		public void Draw(SpriteBatch batch)
+		public void Draw(SpriteBatch batch, Rectangle bounds)
 		{
 			var drawLocation = new Rectangle((int)Parent.LocationOffset.X, (int)Parent.LocationOffset.Y, (int)Parent.TileDimensions.Width, (int)Parent.TileDimensions.Height);
 			for (var x = 0; x < Parent.Dimensions.Width; x++)

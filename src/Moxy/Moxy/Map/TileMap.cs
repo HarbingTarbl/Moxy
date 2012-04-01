@@ -13,7 +13,7 @@ using System.IO;
 using Moxy.GameStates;
 using Moxy.Entities;
 
-namespace Moxy.Map
+namespace Moxy
 {
 	public partial class TileMap
 	{

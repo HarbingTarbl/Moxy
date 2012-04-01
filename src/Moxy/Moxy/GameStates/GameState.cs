@@ -5,7 +5,6 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Moxy.Entities;
-using Moxy.Map;
 using Moxy.ParticleSystems;
 using Moxy.Events;
 
@@ -162,7 +161,7 @@ namespace Moxy.GameStates
 		private PowerGenerator powerGenerator2;
 		private List<Player> players;
 		public DynamicCamera camera;
-		private TileMap map;
+		private Map map;
 		private Texture2D lightTexture;
 		private Texture2D texture;
 		private Texture2D radiusTexture;
@@ -189,7 +188,7 @@ namespace Moxy.GameStates
 			batch.Begin (SpriteSortMode.Texture, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None,
 				RasterizerState.CullCounterClockwise, null, camera.GetTransformation (Moxy.Graphics));
 
-			map.Draw (batch);
+			map.Draw (batch, Rectangle.Empty);
 			batch.End();
 			batch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None,
 				RasterizerState.CullCounterClockwise, null, camera.GetTransformation(Moxy.Graphics));
@@ -322,12 +321,10 @@ namespace Moxy.GameStates
 			camera.MinimumSize = new Size (600, 600);
 			camera.UseBounds = true;
 
-			map = new TileMap ();
-			map.CreateTiles ("Content/map" + Moxy.CurrentLevelIndex + ".bin");
-			map.AmbientLight = new Color (255, 255, 255, 10);
+			map = Moxy.Maps[Moxy.CurrentLevelIndex].Build ();
 
 			texture = new Texture2D (Moxy.Graphics, 1, 1);
-			texture.SetData (new[] { new Color (0, 0, 0, map.AmbientLight.A) });
+			texture.SetData (new[] { new Color (0, 0, 0, map.AmbientColor.A) });
 		}
 
 		private void OnBulletCollision(object sender, GenericEventArgs<Monster> e)

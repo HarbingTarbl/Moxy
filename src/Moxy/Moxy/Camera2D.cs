@@ -13,6 +13,7 @@ namespace Moxy
 			this.width = width;
 			this.height = height;
 			this.screenHalf = new Vector2 (width / 2, height / 2);
+			this.updateTransform = true;
 		}
 
 		public Vector2 Location = new Vector2 (0, 0);
@@ -50,6 +51,11 @@ namespace Moxy
 			return mousePos;
 		}
 
+		public Vector2 ScreenToWorld2(Vector2 screenVector)
+		{
+			return new Vector2 ((screenVector.X * Scale) + Location.X, (screenVector.Y + Location.Y) * Scale);
+		}
+
 		public Vector2 Origin
 		{
 			get { return Location - screenHalf; }
@@ -74,9 +80,8 @@ namespace Moxy
 
 		private void generateTransformation()
 		{
-			transformation = Matrix.Identity
-				* Matrix.CreateScale(Scale)
-				* Matrix.CreateTranslation(-Location.X, -Location.Y, 0f);
+			transformation = Matrix.CreateTranslation (new Vector3 (-Location.X, -Location.Y, 0)) *
+				Matrix.CreateScale (new Vector3 (Scale, Scale, 0));
 		}
 	}
 }

@@ -65,7 +65,7 @@ namespace Moxy.GameStates
 								RedEnergyBar = new EnergyBar()
 								{
 									Player = (Gunner)player,
-									Location = new Vector2(30, 60),
+									Location = new Vector2(10, 120),
 								};
 							}
 							break;
@@ -93,7 +93,7 @@ namespace Moxy.GameStates
 				{
 					var bar = new StatusBar();
 					bar.Player = player;
-					StatusBars.Add(bar);5
+					StatusBars.Add(bar);
 				}
 			}
 		}

@@ -35,7 +35,8 @@ namespace Moxy.GameStates
 			if (MediaPlayer.Volume < 1f)
 			{
 				fadeInPassed += (float)gameTime.ElapsedGameTime.TotalSeconds;
-				MediaPlayer.Volume = MathHelper.Lerp (0f, 8f, fadeInPassed / fadeInTime);
+				float lerp = 
+				MediaPlayer.Volume = MathHelper.Lerp (0f, 0.6f, fadeInPassed / fadeInTime);
 			}
 		}
 
@@ -57,12 +58,12 @@ namespace Moxy.GameStates
 		{
 			MediaPlayer.Volume = 0f;
 			MediaPlayer.IsRepeating = true;
-			//MediaPlayer.Play (music);
+			MediaPlayer.Play (music);
 		}
 
 		public override void OnLostFocus()
 		{
-			MediaPlayer.Volume = 8f;
+			MediaPlayer.Volume = 0.6f;
 		}
 
 		private Texture2D titleTexture;

@@ -33,6 +33,8 @@ namespace Moxy
 		public static Dictionary<PlayerIndex, GamePadState> CurrentPadStates;
 		public static Dictionary<PlayerIndex, GamePadState> LastPadStates;
 		public static int CurrentLevelIndex;
+		public static MapBuilder[] Maps;
+		public static Map CurrentMap;
 
 		public Moxy()
 		{
@@ -66,6 +68,11 @@ namespace Moxy
 
 			Moxy.StateManager.Load (Assembly.GetExecutingAssembly());
 			Moxy.StateManager.Set("MainMenu");
+
+			Moxy.Maps = new MapBuilder[]
+			{
+				new Map1Builder()
+			};
 		}
 
 		protected override void UnloadContent()

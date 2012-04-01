@@ -6,16 +6,19 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Moxy.Entities;
 
-namespace Moxy.Map
+namespace Moxy
 {
 	public class Map
 	{
-		public Map(int Width, int Height, int TileWidth, int TileHeight, Texture2D Texture)
+		public Map(int Width, int Height, int TileWidth, int TileHeight, Texture2D texture)
 		{
 			Layers = new MapLayer[3];
 			Dimensions = new Size(Width, Height);
 			TileDimensions = new Size(TileWidth, TileHeight);
-			CreateBoundings();
+			CollidableID = new HashSet<int> ();
+			Texture = texture;
+
+			CreateBoundings ();
 			CreateLayers();
 			CreateSpawns();
 			CreateLights();
@@ -31,6 +34,7 @@ namespace Moxy.Map
 		public readonly MapLayer[] Layers;
 		public readonly Size Dimensions;
 		public readonly Size TileDimensions;
+		public readonly HashSet<int> CollidableID; 
 
 		public Color AmbientColor;
 		public Vector2 LocationOffset;
@@ -49,10 +53,10 @@ namespace Moxy.Map
 			get { return new Size(Dimensions.Width * TileDimensions.Width, Dimensions.Height * TileDimensions.Height); }
 		}
 
-		public void Draw(SpriteBatch batch)
+		public void Draw(SpriteBatch batch, Rectangle bounds)
 		{
-			Layers[(int)MapLayerType.Base].Draw(batch);
-			Layers[(int)MapLayerType.Decal].Draw(batch);
+			Layers[(int)MapLayerType.Base].Draw (batch, bounds);
+			Layers[(int)MapLayerType.Decal].Draw (batch, bounds);
 			//Layers[(int)MapLayerType.Collision].Draw(batch);
 		}
 
@@ -64,7 +68,7 @@ namespace Moxy.Map
 
 		public bool CheckCollision(int X, int Y)
 		{
-			return Layers[(int)MapLayerType.Collision].Tiles[X, Y] > 0;
+			return CollidableID.Contains ((int)Layers[(int)MapLayerType.Collision].Tiles[X, Y]);
 		}
 
 		public bool CheckCollision(Point P)
@@ -104,8 +108,8 @@ namespace Moxy.Map
 		private void CreateLayers()
 		{
 			Layers[(int)MapLayerType.Base] = new MapLayer(this, MapLayerType.Base);
-			Layers[(int)MapLayerType.Base] = new MapLayer(this, MapLayerType.Base);
-			Layers[(int)MapLayerType.Base] = new MapLayer(this, MapLayerType.Base);
+			Layers[(int)MapLayerType.Collision] = new MapLayer(this, MapLayerType.Collision);
+			Layers[(int)MapLayerType.Decal] = new MapLayer(this, MapLayerType.Decal);
 		}
 
 		private void CreateSpawns()

@@ -19,6 +19,14 @@ namespace Moxy
 			return value;
 		}
 
+		public static int LowerClamp (int value, int min)
+		{
+			if (value < min)
+				return min;
+
+			return value;
+		}
+
 		public static bool WasButtonPressed(this ButtonState currentState, ButtonState lastState)
 		{
 			return currentState == ButtonState.Pressed && lastState == ButtonState.Released;

@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Moxy.Entities;
 
-namespace Moxy.Map
+namespace Moxy
 {
 	public partial class TileMap
 	{
@@ -23,7 +23,7 @@ namespace Moxy.Map
 			}
 		}
 
-		public void SaveFile (string FileName = "Content/map1.bin")
+		public void SaveFile (string FileName = "Content/map4.bin")
 		{
 			BinaryWriter writer = new BinaryWriter(File.Create(FileName));
 			using(writer)
@@ -135,7 +135,6 @@ namespace Moxy.Map
 				spawner.Draw(batch);
 
 			}
-
 		}
 
 		public void Deactivate()
