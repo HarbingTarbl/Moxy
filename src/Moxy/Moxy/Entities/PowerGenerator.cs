@@ -54,6 +54,7 @@ namespace Moxy.Entities
 			Skills.Add(new RageSkill(this));
 			CurrentSkill = Skills[3];
 			ActiveSkills = new List<SkillEffect>();
+			CurrentItem = 0;
 		}
 
 		public Gunner Gunner;
@@ -88,6 +89,7 @@ namespace Moxy.Entities
 			CurrentSkill = NewSkill;
 			for (var x = 0; x < CurrentRunes.Length; x++)
 				CurrentRunes[x] = ItemID.None;
+			CurrentItem = 0;
 
 		}
 

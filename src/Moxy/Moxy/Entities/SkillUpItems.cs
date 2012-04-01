@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Moxy.Entities
 {
@@ -22,6 +23,7 @@ namespace Moxy.Entities
 			if (gen == null)
 				return false;
 
+			Moxy.ContentManager.Load<SoundEffect> ("Sounds\\PowerupPickup").Play ();
 			gen.ApplyPowerup(this);
 			return true;
 		}
@@ -43,6 +45,7 @@ namespace Moxy.Entities
 			if (gen == null)
 				return false;
 
+			Moxy.ContentManager.Load<SoundEffect> ("Sounds\\PowerupPickup").Play ();
 			gen.ApplyPowerup(this);
 			return true;
 		}
@@ -64,6 +67,7 @@ namespace Moxy.Entities
 			if (gen == null)
 				return false;
 
+			Moxy.ContentManager.Load<SoundEffect> ("Sounds\\PowerupPickup").Play ();
 			gen.ApplyPowerup(this);
 			return true;
 		}
@@ -85,6 +89,7 @@ namespace Moxy.Entities
 			if (gen == null)
 				return false;
 
+			Moxy.ContentManager.Load<SoundEffect> ("Sounds\\PowerupPickup").Play ();
 			gen.ApplyPowerup(this);
 			return true;
 		}

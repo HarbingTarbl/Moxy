@@ -48,7 +48,7 @@ namespace Moxy.Entities
 				});
 			EntityType = global::Moxy.EntityType.Gunner;
 			Animations.SetAnimation("Walk_1");
-			fireSound = Moxy.ContentManager.Load<SoundEffect>("Sounds/Fire");
+			fireSound = Moxy.ContentManager.Load<SoundEffect>("Sounds//Fire");
 			fireSoundInstance = fireSound.CreateInstance();
 			Health = 100;
 			CircleOrigin = new Vector2(PowerCircleTexture.Width / 2f, PowerCircleTexture.Height / 2f);
@@ -132,7 +132,7 @@ namespace Moxy.Entities
 				direction.Y = -direction.Y;
 
 				var fireEventArgs = new GunnerFireEventArgs (direction);
-				fireSound.Play(1f, 0f, 0f);
+				fireSound.Play(0.8f, 0f, 0f);
 				if (OnCastFireball != null)
 					OnCastFireball(this, fireEventArgs);
 

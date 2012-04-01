@@ -152,171 +152,191 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-      <Compile Include="Arcana.png">
-        <Name>Arcana</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="ArcanaBG.png">
-        <Name>ArcanaBG</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="Credits.png">
-        <Name>Credits</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="Exit.png">
-        <Name>Exit</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="demonSpriteSheet.png">
-        <Name>demonSpriteSheet</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Content Include="map0.bin">
-        <Name>map0</Name>
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Compile Include="Radius.png">
-        <Name>Radius</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="powerFrame.png">
-        <Name>powerFrame</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="titlescreen.png">
-        <Name>titlescreen</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="powerbarspritesheet.png">
-        <Name>powerbarspritesheet</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="powerparticle.png">
-        <Name>powerparticle</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="Orb.png">
-        <Name>Orb</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="powerg1PU2.png">
-        <Name>powerg1PU2</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="powerg1PU3.png">
-        <Name>powerg1PU3</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="powerg2.png">
-        <Name>powerg2</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="powerg2PU1.png">
-        <Name>powerg2PU1</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="powerg2PU2.png">
-        <Name>powerg2PU2</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="powerg2PU3.png">
-        <Name>powerg2PU3</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="powerg3.png">
-        <Name>powerg3</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="powerg3PU1.png">
-        <Name>powerg3PU1</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="powerg3PU2.png">
-        <Name>powerg3PU2</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="powerg3PU3.png">
-        <Name>powerg3PU3</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="WaterRune.png">
-        <Name>WaterRune</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="Sounds\accept.wav">
-        <Name>accept</Name>
-        <Importer>WavImporter</Importer>
-        <Processor>SoundEffectProcessor</Processor>
-      </Compile>
-      <Compile Include="Sounds\decline.wav">
-        <Name>decline</Name>
-        <Importer>WavImporter</Importer>
-        <Processor>SoundEffectProcessor</Processor>
-      </Compile>
-      <Compile Include="Sounds\move.wav">
-        <Name>move</Name>
-        <Importer>WavImporter</Importer>
-        <Processor>SoundEffectProcessor</Processor>
-      </Compile>
-      <Compile Include="Sounds\titlemusic.mp3">
-        <Name>titlemusic</Name>
-        <Importer>Mp3Importer</Importer>
-        <Processor>SongProcessor</Processor>
-      </Compile>
-      <Compile Include="tileset.png">
-        <Name>tileset</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="Sounds\Fire.wav">
-        <Name>Fire</Name>
-        <Importer>WavImporter</Importer>
-        <Processor>SoundEffectProcessor</Processor>
-      </Compile>
-      <Compile Include="startButton.png">
-        <Name>startButton</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="PlayMenu.png">
-        <Name>PlayMenu</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="MasterRune.png">
-        <Name>MasterRune</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-      <Compile Include="MonsterEyeSpriteSheet.png">
-        <Name>MonsterEyeSpriteSheet</Name>
-        <Importer>TextureImporter</Importer>
-        <Processor>TextureProcessor</Processor>
-      </Compile>
-    </ItemGroup>
+    <Compile Include="getready.png">
+      <Name>getready</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Arcana.png">
+      <Name>Arcana</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="ArcanaBG.png">
+      <Name>ArcanaBG</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Credits.png">
+      <Name>Credits</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="demonSpriteSheet.png">
+      <Name>demonSpriteSheet</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Exit.png">
+      <Name>Exit</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Content Include="map0.bin">
+      <Name>map0</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Compile Include="Radius.png">
+      <Name>Radius</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="powerFrame.png">
+      <Name>powerFrame</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="titlescreen.png">
+      <Name>titlescreen</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="powerbarspritesheet.png">
+      <Name>powerbarspritesheet</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="powerparticle.png">
+      <Name>powerparticle</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Orb.png">
+      <Name>Orb</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="powerg1PU2.png">
+      <Name>powerg1PU2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="powerg1PU3.png">
+      <Name>powerg1PU3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="powerg2.png">
+      <Name>powerg2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="powerg2PU1.png">
+      <Name>powerg2PU1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="powerg2PU2.png">
+      <Name>powerg2PU2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="powerg2PU3.png">
+      <Name>powerg2PU3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="powerg3.png">
+      <Name>powerg3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="powerg3PU1.png">
+      <Name>powerg3PU1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="powerg3PU2.png">
+      <Name>powerg3PU2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="powerg3PU3.png">
+      <Name>powerg3PU3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="WaterRune.png">
+      <Name>WaterRune</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Sounds\accept.wav">
+      <Name>accept</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Sounds\decline.wav">
+      <Name>decline</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Sounds\move.wav">
+      <Name>move</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Sounds\titlemusic.mp3">
+      <Name>titlemusic</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+    </Compile>
+    <Compile Include="tileset.png">
+      <Name>tileset</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Sounds\Fire.wav">
+      <Name>Fire</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="startButton.png">
+      <Name>startButton</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Sounds\waveComplete.wav">
+      <Name>waveComplete</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Sounds\PowerupPickup.wav">
+      <Name>PowerupPickup</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Sounds\LevelUp.wav">
+      <Name>LevelUp</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="MasterRune.png">
+      <Name>MasterRune</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="MonsterEyeSpriteSheet.png">
+      <Name>MonsterEyeSpriteSheet</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="PlayMenu.png">
+      <Name>PlayMenu</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="lighting.fx">
       <Name>lighting</Name>
