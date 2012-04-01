@@ -89,14 +89,13 @@ namespace Moxy.GameStates
 				frames[i] = new CharacterFrame
 				{
 					FrameTexture = Moxy.ContentManager.Load<Texture2D> ("cf" + i),
-					//CharacterTexture = (i == 0 || i == 2) ? gunnerFrame : powerFrame,
 					CheckTexture = checkTexture,
 					Location = new Vector2 (i * 200, 0)
 				};
 			}
 
 			for (int i = 0; i < 4; i++)
-				selecters[i] = new ControllerSelector ((PlayerIndex)i, frames, selecters, 0)
+				selecters[i] = new ControllerSelector ((PlayerIndex)i, frames, selecters, i)
 					{
 						AcceptSound = acceptSound,
 						DeclineSound = declineSound

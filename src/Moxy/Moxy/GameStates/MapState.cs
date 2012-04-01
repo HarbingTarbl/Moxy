@@ -52,15 +52,10 @@ namespace Moxy.GameStates
 					ExportMapData ();
 			}
 
-			if (currentTool == EditorTool.PlaceMonsterSpawners)
-			{
-				throw new NotImplementedException();
-			}
-
 			// String debugging
 			Vector2 mouseVec = new Vector2(mouseState.X, mouseState.Y);
-			var worldVec = camera.ScreenToWorld (mouseVec);
-			TileAtCursor = new Vector2 ((int)worldVec.X / 64, (int)worldVec.Y / 64);
+			WorldAtCursor = camera.ScreenToWorld (mouseVec);
+			TileAtCursor = new Vector2 ((int)WorldAtCursor.X / 64, (int)WorldAtCursor.Y / 64);
 
 			oldMouse = mouseState;
 			old = state;
@@ -69,7 +64,9 @@ namespace Moxy.GameStates
 		public override void Load()
 		{
 			font = Moxy.ContentManager.Load<SpriteFont> ("font");
+			highlightTexture = Moxy.ContentManager.Load<Texture2D> ("highlight");
 			texture = new Texture2D (Moxy.Graphics, 1, 1);
+			texture.SetData (new[] { new Color (100, 100, 100, 100) });
 		}
 
 		public override void Draw (SpriteBatch batch)
@@ -85,17 +82,32 @@ namespace Moxy.GameStates
 			if (currentTool == EditorTool.PlaceTiles)
 				batch.Draw (map.Texture, new Vector2 (oldMouse.X, oldMouse.Y), map.Boundings[currentTileID], Color.White);
 
-			batch.DrawString (font, "Tile At Cursor2: " + TileAtCursor.ToString (), new Vector2 (10, 10), Color.Red);
-			batch.DrawString (font, "Current TileID: " + currentTileID, new Vector2 (10, 30), Color.Red);
-			batch.DrawString (font, "Current Layer: " + Enum.GetName (typeof(MapLayerType), currentLayer), new Vector2 (10, 50), Color.Red);
+			// Render tile helper at top
+			batch.Draw (texture, new Rectangle(0, 0, 800, 70), Color.DarkGray);
+			int startIndex = Helpers.LowerClamp (currentTileID - 5, 0);
+
+			for (int i = startIndex; i < startIndex+10; i++)
+			{
+				int modifier = i - (startIndex + 5);
+				batch.Draw (map.Texture, new Vector2(368 + (modifier * 64), 2), map.Boundings[i], Color.White);
+
+				if (i == currentTileID)
+					batch.Draw (highlightTexture, new Vector2 (368 + (modifier * 64), 2), Color.White);
+			}
+
+			batch.DrawString (font, "Tile At Cursor: " + TileAtCursor.ToString (), new Vector2 (10, 80), Color.Red);
+			batch.DrawString (font, "Current TileID: " + currentTileID, new Vector2 (10, 100), Color.Red);
+			batch.DrawString (font, "Current Layer: " + Enum.GetName (typeof(MapLayerType), currentLayer), new Vector2 (10, 120), Color.Red);
+			batch.DrawString (font, "World at Cursor: " + WorldAtCursor.ToString(), new Vector2 (10, 140), Color.Red);
 			batch.End();
 		}
 
 		public override void OnFocus()
 		{
 			MapBuilder builder = new Map1Builder ();
-			map = new MapRoot (96, 96, 64, 64, Moxy.ContentManager.Load<Texture2D> ("tileset"));//builder.Build ();
-			InitializeBaseLayer (16);
+			map = builder.Build ();
+			//map = new MapRoot (64, 64, 64, 64, Moxy.ContentManager.Load<Texture2D> ("tileset"));
+			//InitializeBaseLayer (16);
 			camera = new Camera2D (800, 600);
 		}
 
@@ -108,26 +120,28 @@ namespace Moxy.GameStates
 		private int currentTileID;
 		private SpriteFont font;
 		private Texture2D texture;
+		private Texture2D highlightTexture;
 
 		private Vector2 TileAtCursor;
+		private Vector2 WorldAtCursor;
 
 		private void HandleCameraControls(KeyboardState state, GameTime gameTime)
 		{
 			// Moving
 			if (state.IsKeyDown (Keys.W))
-				camera.Location -= new Vector2 (0, 200) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+				camera.Location -= new Vector2 (0, 600) * (float)gameTime.ElapsedGameTime.TotalSeconds;
 			else if (state.IsKeyDown (Keys.S))
-				camera.Location += new Vector2 (0, 200) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+				camera.Location += new Vector2 (0, 600) * (float)gameTime.ElapsedGameTime.TotalSeconds;
 			if (state.IsKeyDown (Keys.A))
-				camera.Location -= new Vector2 (200, 0) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+				camera.Location -= new Vector2 (600, 0) * (float)gameTime.ElapsedGameTime.TotalSeconds;
 			else if (state.IsKeyDown (Keys.D))
-				camera.Location += new Vector2 (200, 0) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+				camera.Location += new Vector2 (600, 0) * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
 			// Zooming
 			if (state.IsKeyDown (Keys.Up))
-				camera.Scale -= (float)(0.1 * gameTime.ElapsedGameTime.TotalSeconds);
+				camera.Scale += 0.0075f;
 			else if (state.IsKeyDown (Keys.Down))
-				camera.Scale += (float)(0.1 * gameTime.ElapsedGameTime.TotalSeconds);
+				camera.Scale -= 0.0075f;
 		}
 
 		public void SetTileAtPoint (Vector2 Location, int Value)
@@ -136,6 +150,9 @@ namespace Moxy.GameStates
 			{
 				var worldVec = camera.ScreenToWorld (Location);
 				var tileVec = new Vector2 ((int)worldVec.X / 64, (int)worldVec.Y / 64);
+
+				if (tileVec.X < 0 || tileVec.Y < 0)
+					return;
 
 				map.Layers[(int)currentLayer].Tiles[(int)tileVec.X, (int)tileVec.Y] = (uint)Value;
 			}

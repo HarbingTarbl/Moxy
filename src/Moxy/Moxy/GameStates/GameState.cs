@@ -187,7 +187,7 @@ namespace Moxy.GameStates
 			Moxy.Graphics.SetRenderTarget (gameTarget);
 			Moxy.Graphics.Clear (Color.CornflowerBlue);
 
-			batch.Begin (SpriteSortMode.Texture, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None,
+			batch.Begin (SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None,
 				RasterizerState.CullCounterClockwise, null, camera.GetTransformation (Moxy.Graphics));
 
 			map.Draw (batch, Rectangle.Empty);
@@ -229,6 +229,9 @@ namespace Moxy.GameStates
 			foreach (Light light in lights)
 				light.Draw (batch);
 
+			foreach (Light light in map.PointLights)
+				light.Draw (batch);
+
 			batch.End ();
 		}
 
@@ -247,7 +250,7 @@ namespace Moxy.GameStates
 					Color = Color.White,
 					Location = new Vector2 (700, 700),
 					Speed = gunnerSpeed,
-					Light = new Light (Color.White, lightTexture),
+					Light = new Light (Color.White, lightTexture) { Scale = 1.5f },
 					Team = Team.Red,
 					FireballEmitter = FireballEmitter
 				};
@@ -258,7 +261,7 @@ namespace Moxy.GameStates
 					Color = Color.White,
 					Location = new Vector2 (780, 700),
 					Speed = enchanterSpeed,
-					Light = new Light (Color.White, lightTexture),
+					Light = new Light (Color.White, lightTexture) { Scale = 1.5f },
 					Team = Team.Red,
 					Gunner = gunner1,
 				};
