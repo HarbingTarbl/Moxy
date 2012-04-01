@@ -34,7 +34,7 @@ namespace Moxy
 		public static Dictionary<PlayerIndex, GamePadState> LastPadStates;
 		public static int CurrentLevelIndex;
 		public static MapBuilder[] Maps;
-		public static Map CurrentMap;
+		public static MapRoot CurrentMap;
 
 		public Moxy()
 		{

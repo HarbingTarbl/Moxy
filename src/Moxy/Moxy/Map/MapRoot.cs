@@ -8,9 +8,9 @@ using Moxy.Entities;
 
 namespace Moxy
 {
-	public class Map
+	public class MapRoot
 	{
-		public Map(int Width, int Height, int TileWidth, int TileHeight, Texture2D texture)
+		public MapRoot(int Width, int Height, int TileWidth, int TileHeight, Texture2D texture)
 		{
 			Layers = new MapLayer[3];
 			Dimensions = new Size(Width, Height);
@@ -23,9 +23,9 @@ namespace Moxy
 			CreateSpawns();
 			CreateLights();
 		}
-		
 
-		public Map(string File)
+
+		public MapRoot(string File)
 		{
 			throw new NotImplementedException();
 		}

@@ -7,6 +7,6 @@ namespace Moxy
 {
 	public abstract class MapBuilder
 	{
-		public abstract Map Build();
+		public abstract MapRoot Build();
 	}
 }

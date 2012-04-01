@@ -9,7 +9,7 @@ namespace Moxy
 {
 	public class MapLayer
 	{
-		public MapLayer(Map Parent, MapLayerType Type)
+		public MapLayer(MapRoot Parent, MapLayerType Type)
 		{
 			LayerType = Type;
 			this.Parent = Parent;
@@ -17,7 +17,7 @@ namespace Moxy
 
 		}
 
-		public readonly Map Parent;
+		public readonly MapRoot Parent;
 		public readonly MapLayerType LayerType;
 		public uint[,] Tiles;
 

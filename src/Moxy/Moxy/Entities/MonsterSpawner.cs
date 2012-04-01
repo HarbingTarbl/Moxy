@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Moxy;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,14 +11,12 @@ namespace Moxy.Entities
 {
 	public class MonsterSpawner
 	{
-		public TileMap Map;
 		public Vector2 Location;
 		public string MonsterType;
 		public int MonsterCount;
 
-		public MonsterSpawner(TileMap Map)
+		public MonsterSpawner()
 		{
-			this.Map = Map;
 
 		}
 

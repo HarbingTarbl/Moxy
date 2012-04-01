@@ -6,6 +6,8 @@ using Moxy.Entities;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Moxy.GameStates;
+using Moxy.Skills;
+using Microsoft.Xna.Framework.Input;
 
 namespace Moxy.GameStates
 {
@@ -43,6 +45,8 @@ namespace Moxy.GameStates
 				RedEnergyBar.Draw(batch);
 			if (RedRuneBar != null)
 				RedRuneBar.Draw(batch);
+			if (RedSkillBar != null)
+				RedSkillBar.Draw(batch);
 
 			batch.End();
 		}
@@ -51,6 +55,9 @@ namespace Moxy.GameStates
 		{
 			if (RedEnergyBar != null)
 				RedEnergyBar.Update(gameTime);
+
+			if (RedSkillBar != null)
+				RedSkillBar.Update(gameTime);
 
 
 			foreach (var player in ActivePlayers)
@@ -84,6 +91,16 @@ namespace Moxy.GameStates
 									Generator = (PowerGenerator)player
 								};
 							}
+							if (RedSkillBar == null)
+							{
+								RedSkillBar = new SkillSelection()
+								{
+									Location = new Vector2(130, 120),
+									Player = (PowerGenerator)player,
+									IsShown = true,
+									UI = this
+								};
+							}
 							break;
 					}
 				}
@@ -102,10 +119,76 @@ namespace Moxy.GameStates
 		public List<StatusBar> StatusBars;
 		public EnergyBar BlueEnergyBar;
 		public RuneBar RedRuneBar;
+		public SkillSelection RedSkillBar;
 		public EnergyBar RedEnergyBar;
 		public List<Player> ActivePlayers;
 	}
 
+
+	public class SkillSelection
+	{
+		public static Rectangle BoxSize = new Rectangle(0, 0, 150, 150);
+		public static Rectangle ItemSize = new Rectangle(0, 0, 50, 50);
+		public static Texture2D SkillTextures = Moxy.ContentManager.Load<Texture2D>("icons");
+		public static Color ActiveColor = Color.White;
+		public static Color InActiveColor = new Color(128, 128, 128, 128);
+
+		public static Rectangle[] Bounding = new Rectangle[] {
+			new Rectangle(0, 50, 50, 50),
+			new Rectangle(50, 0, 50, 50),
+			new Rectangle(0, 0, 50, 50),
+			new Rectangle(50, 50, 50, 50)};
+
+		public static Rectangle[] DrawLocations = new Rectangle[] {
+			new Rectangle(-25, -70, 50, 50), //Top
+			new Rectangle(-75, -20, 50, 50), //Left
+			new Rectangle(25, -20, 50, 50), //Right
+			new Rectangle(-25, 30, 50, 50)}; //Bottom
+
+		public PowerGenerator Player;
+		public GeneratorSkill oldSkill;
+		public UIOverlay UI;
+		public TimeSpan fadeTime, maxTime = new TimeSpan(0, 0, 1);
+		public Vector2 Location;
+		public bool IsShown;
+
+		public void Draw(SpriteBatch batch)
+		{
+			var currentIcon = new Rectangle(105, 50, 50, 50);
+			batch.Draw(SkillTextures, currentIcon, Bounding[Player.Skills.IndexOf(Player.CurrentSkill)], InActiveColor);
+			if (IsShown)
+			{
+				var screenPos = UI.OwningState.camera.WorldToScreen(Player.Location);
+				var drawRectangle = new Rectangle((int)screenPos.X, (int)screenPos.Y, ItemSize.Width, ItemSize.Height);
+
+				for (var i = 0; i < DrawLocations.Length; i++)
+				{
+					drawRectangle.X = DrawLocations[i].X + (int)screenPos.X;
+					drawRectangle.Y = DrawLocations[i].Y + (int)screenPos.Y;
+					batch.Draw(SkillTextures, drawRectangle, Bounding[i], Color.Lerp(((Player.CurrentSkill == Player.Skills[i]) ? ActiveColor : InActiveColor), Color.Transparent, (float)(fadeTime.TotalSeconds / maxTime.TotalSeconds)));
+				}
+			}
+		}
+
+		public void Update(GameTime gameTime)
+		{
+			fadeTime += gameTime.ElapsedGameTime;
+			if (fadeTime >= maxTime)
+				IsShown = false;
+			else
+				IsShown = true;
+
+			var pad = GamePad.GetState(Player.PadIndex);
+			if (pad.DPad.Right == ButtonState.Pressed ||
+				pad.DPad.Up == ButtonState.Pressed ||
+				pad.DPad.Down == ButtonState.Pressed ||
+				pad.DPad.Left == ButtonState.Pressed)
+			{
+				fadeTime = TimeSpan.Zero;
+				IsShown = true;
+			}
+		}
+	}
 
 	public class RuneBar
 	{

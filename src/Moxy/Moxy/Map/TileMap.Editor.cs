@@ -117,7 +117,7 @@ namespace Moxy
 				if (mouseState.LeftButton == ButtonState.Pressed)
 					SetTileAtPoint(new Vector2(mouseState.X, mouseState.Y), key);
 				else if (mouseState.RightButton == ButtonState.Pressed && oldMouse.RightButton == ButtonState.Released)
-					MonsterSpawners.Add(new MonsterSpawner(this)
+					MonsterSpawners.Add(new MonsterSpawner()
 					{
 						Location = Camera.ScreenToWorld(new Vector2(mouseState.X, mouseState.Y)),
 						MonsterType = "Slime"

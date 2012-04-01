@@ -94,7 +94,7 @@ namespace Moxy.GameStates
 			camera = new Camera2D (800, 600);
 		}
 
-		public Map map;
+		public MapRoot map;
 		public Camera2D camera;
 		private KeyboardState old;
 		private MouseState oldMouse;

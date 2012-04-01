@@ -8,6 +8,7 @@ using Moxy.ParticleSystems;
 using Microsoft.Xna.Framework.Input;
 using Moxy.Events;
 using Moxy.EventHandlers;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Moxy.Entities
 {
@@ -47,6 +48,8 @@ namespace Moxy.Entities
 				});
 			EntityType = global::Moxy.EntityType.Gunner;
 			Animations.SetAnimation("Walk_1");
+			fireSound = Moxy.ContentManager.Load<SoundEffect>("Sounds/Fire");
+			fireSoundInstance = fireSound.CreateInstance();
 			Health = 100;
 			CircleOrigin = new Vector2(PowerCircleTexture.Width / 2f, PowerCircleTexture.Height / 2f);
 		}
@@ -74,6 +77,8 @@ namespace Moxy.Entities
 		public float MaxOverloadLevel = 100;
 		public float OverloadDecayRate = 25;
 
+		public SoundEffect fireSound;
+
 		public float Energy;
 		public float MaxEnergy = 500;
 		public float EnergyRate;
@@ -90,8 +95,11 @@ namespace Moxy.Entities
 			OverloadLevel -= OverloadDecayRate * (float)gameTime.ElapsedGameTime.TotalSeconds;
 			if (OverloadLevel >= MaxOverloadLevel && OnOverLoadExeeded != null)
 				OnOverLoadExeeded(this, null);
-			Energy += EnergyRate * (float)gameTime.ElapsedGameTime.TotalSeconds;
-			Energy = Math.Min(Energy, MaxEnergy);
+			if (!Generator.PowerDisabled)
+			{
+				Energy += EnergyRate * (float)gameTime.ElapsedGameTime.TotalSeconds;
+				Energy = Math.Min(Energy, MaxEnergy);
+			}
 
 			Animations.Update(gameTime);
 			base.Update(gameTime);
@@ -99,17 +107,18 @@ namespace Moxy.Entities
 
 		private void HandleInput(GameTime gameTime)
 		{
+			var rand = new Random();
 			SkillRate += gameTime.ElapsedGameTime;
 			var padState = GamePad.GetState(PadIndex);
-			if (padState.ThumbSticks.Right !=Vector2.Zero && Energy >= 5 && SkillRate > FireballRate)
+			if (padState.ThumbSticks.Right !=Vector2.Zero && Energy >= 10 && SkillRate > FireballRate)
 			{
 				SkillRate = TimeSpan.Zero;
-				Energy -= 1;
+				Energy -= 10;
 				var direction = Vector2.Normalize(padState.ThumbSticks.Right);
 				direction.Y = -direction.Y;
 
 				var fireEventArgs = new GunnerFireEventArgs (direction);
-
+				fireSound.Play(1f, 0f, 0f);
 				if (OnCastFireball != null)
 					OnCastFireball(this, fireEventArgs);
 
@@ -127,7 +136,8 @@ namespace Moxy.Entities
 		private FireballEmitter fireballEmitter;
 		public TimeSpan FireballRate = new TimeSpan(0, 0, 0, 0, 500);
 		public float FireballDamage = 10f;
-
+		public PowerGenerator Generator;
+		SoundEffectInstance fireSoundInstance;
 		private TimeSpan SkillRate;
 
 		public event EventHandler OnOverLoadExeeded;
