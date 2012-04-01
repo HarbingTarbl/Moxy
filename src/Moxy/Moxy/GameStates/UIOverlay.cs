@@ -29,6 +29,7 @@ namespace Moxy.GameStates
 
 			getReadyTexture = Moxy.ContentManager.Load<Texture2D> ("getready");
 			font = Moxy.ContentManager.Load<SpriteFont> ("spookyfont");
+			scorefont = Moxy.ContentManager.Load<SpriteFont> ("scorefont");
 
 			EnergyBar.UI = this;
 			StatusBars = new List<StatusBar> ();
@@ -64,6 +65,18 @@ namespace Moxy.GameStates
 
 				var time = endTime.Subtract (DateTime.Now);
 				batch.DrawString (font, string.Format ("{0:##00}:{1:##00}", time.Minutes, time.Seconds), new Vector2 (300, 0), Color.Purple);
+
+				if (RedEnergyBar != null)
+				{
+					batch.DrawString (scorefont, "Score", new Vector2 (10, 0), Color.Purple);
+					batch.DrawString (scorefont, OwningState.Team1Score.ToString(), new Vector2 (10, 40), Color.Purple);
+				}
+
+				if (BlueEnergyBar != null)
+				{
+					batch.DrawString (scorefont, "Score", new Vector2 (630, 0), Color.Purple);
+					batch.DrawString (scorefont, OwningState.Team2Score.ToString (), new Vector2 (630, 40), Color.Purple);
+				}
 			}
 
 			batch.End();
@@ -144,6 +157,7 @@ namespace Moxy.GameStates
 		public List<Player> ActivePlayers;
 		private Texture2D getReadyTexture;
 		private SpriteFont font;
+		private SpriteFont scorefont;
 		private float sinX;
 	}
 

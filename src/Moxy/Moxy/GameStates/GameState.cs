@@ -132,6 +132,7 @@ namespace Moxy.GameStates
 			if (Level != null && !InbetweenRounds && DateTime.Now.Subtract (StartLevelTime).TotalSeconds > Level.WaveLength)
 			{
 				HealPlayers ();
+				CheckPlayerLevels ();
 				waveDoneSound.Play (0.8f, 0.1f, 0f);
 				LoadNextLevel();
 			}
@@ -144,6 +145,9 @@ namespace Moxy.GameStates
 			var monster = sender as Monster;
 			monster.OnDeath -= monster_OnDeath;
 			monsterPurgeQueue.Enqueue (monster);
+
+			//TODO: Make it get experience for the right team
+			Team1Score += monster.ScoreGiven;
 
 			var item = monster.DropItem();
 			if (item != null)
@@ -558,7 +562,19 @@ namespace Moxy.GameStates
 
 		private void CheckPlayerLevels()
 		{
-			//if (gunner1 != null && gunner1.MaxOverloadLevelTeam1Score >
+			if (gunner1 != null && gunner1.Level < ExperienceTable.Length && Team1Score >= ExperienceTable[gunner1.Level])
+			{
+				levelUpSound.Play (1.0f, 0f, 0f);
+				gunner1.Level++;
+				powerGenerator1.Level++;
+			}
+
+			if (gunner2 != null && gunner2.Level < ExperienceTable.Length && Team2Score >= ExperienceTable[gunner2.Level])
+			{
+				levelUpSound.Play (1.0f, 0f, 0f);
+				gunner2.Level++;
+				powerGenerator2.Level++;
+			}
 		}
 	}
 }

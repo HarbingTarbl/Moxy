@@ -43,6 +43,7 @@ namespace Moxy.Entities
 			Collision = new Rectangle(0, 0, 96, 96);
 			Origin = new Vector2(42, 54);
 			CollisionRadius = 48;
+			ScoreGiven = 56;
 
 			EntityType = global::Moxy.EntityType.Slime;
 

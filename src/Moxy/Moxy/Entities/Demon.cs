@@ -33,6 +33,7 @@ namespace Moxy.Entities
 			Collision = new Rectangle(0, 0, 128, 128);
 			Origin = new Vector2(64, 64);
 			CollisionRadius = 64;
+			ScoreGiven = 56;
 
 
 			OnCollisionWithPlayer += (Demon_OnCollisionWithPlayer);
