@@ -41,42 +41,45 @@ namespace Moxy.GameStates
 			batch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
 				DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Matrix.Identity);
 
-			foreach (var bar in StatusBars)
-				bar.Draw(batch);
-
-			if (RedEnergyBar != null)
-				RedEnergyBar.Draw(batch);
-			if (RedRuneBar != null)
-				RedRuneBar.Draw(batch);
-			if (RedSkillBar != null)
-				RedSkillBar.Draw(batch);
-
-			batch.End();
-			
-			batch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
-
-			if (OwningState.InbetweenRounds)
-				batch.Draw (getReadyTexture, new Vector2 (275, 175), new Color (1f, 1f, 1f, (float)Math.Abs (Math.Sin (sinX))));
-
-			if (!OwningState.InbetweenRounds)
+			if (OwningState.boss == null)
 			{
-				DateTime start = OwningState.StartLevelTime;
-				DateTime endTime = start.Add (new TimeSpan(0, 0, 0, (int)OwningState.Level.WaveLength));
-
-				var time = endTime.Subtract (DateTime.Now);
-				batch.DrawString (font, string.Format ("{0:##00}:{1:##00}", time.Minutes, time.Seconds), new Vector2 (300, 30), Color.Purple);
-				batch.DrawString (scorefont, "Wave " + Moxy.CurrentLevelIndex.ToString("#") + 1 + "/6", new Vector2 (280, -5), Color.Purple);
+				foreach (var bar in StatusBars)
+					bar.Draw(batch);
 
 				if (RedEnergyBar != null)
-				{
-					batch.DrawString (scorefont, "Score", new Vector2 (10, 0), Color.Purple);
-					batch.DrawString (scorefont, OwningState.Team1Score.ToString(), new Vector2 (10, 40), Color.Purple);
-				}
+					RedEnergyBar.Draw(batch);
+				if (RedRuneBar != null)
+					RedRuneBar.Draw(batch);
+				if (RedSkillBar != null)
+					RedSkillBar.Draw(batch);
 
-				if (BlueEnergyBar != null)
+				batch.End();
+
+				batch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
+
+				if (OwningState.InbetweenRounds)
+					batch.Draw(getReadyTexture, new Vector2(275, 175), new Color(1f, 1f, 1f, (float)Math.Abs(Math.Sin(sinX))));
+
+				if (!OwningState.InbetweenRounds)
 				{
-					batch.DrawString (scorefont, "Score", new Vector2 (630, 0), Color.Purple);
-					batch.DrawString (scorefont, OwningState.Team2Score.ToString (), new Vector2 (630, 40), Color.Purple);
+					DateTime start = OwningState.StartLevelTime;
+					DateTime endTime = start.Add(new TimeSpan(0, 0, 0, (int)OwningState.Level.WaveLength));
+
+					var time = endTime.Subtract(DateTime.Now);
+					batch.DrawString(font, string.Format("{0:##00}:{1:##00}", time.Minutes, time.Seconds), new Vector2(300, 30), Color.Purple);
+					batch.DrawString(scorefont, "Wave " + Moxy.CurrentLevelIndex.ToString("#") + 1 + "/6", new Vector2(280, -5), Color.Purple);
+
+					if (RedEnergyBar != null)
+					{
+						batch.DrawString(scorefont, "Score", new Vector2(10, 0), Color.Purple);
+						batch.DrawString(scorefont, OwningState.Team1Score.ToString(), new Vector2(10, 40), Color.Purple);
+					}
+
+					if (BlueEnergyBar != null)
+					{
+						batch.DrawString(scorefont, "Score", new Vector2(630, 0), Color.Purple);
+						batch.DrawString(scorefont, OwningState.Team2Score.ToString(), new Vector2(630, 40), Color.Purple);
+					}
 				}
 			}
 
