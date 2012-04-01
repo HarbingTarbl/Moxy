@@ -31,6 +31,7 @@ namespace Moxy.Entities
 			Origin = new Vector2(49, 50);
 			CollisionRadius = 60;
 			OnCollisionWithPlayer += EyeBall_OnCollisionWithPlayer;
+			ScoreGiven = 56;
 		}
 
 		public float EyeBallDamage = 10f;
