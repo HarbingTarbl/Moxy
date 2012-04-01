@@ -78,4 +78,98 @@ namespace Moxy.Skills
 			Target.FireballEmitter.GenerateParticles(Moxy.GameTime, third);
 		}
 	}
+
+
+	public class ProtectionEffect
+		: SkillEffect
+	{
+		public PowerGenerator Gen;
+
+		public ProtectionEffect(PowerGenerator Gen)
+		{
+			this.Gen = Gen;
+			Duration = new TimeSpan(0, 0, 10);
+		}
+
+		public override void Draw(SpriteBatch batch)
+		{
+			
+		}
+
+		public override void OnStart()
+		{
+			Gen.Defence = 5;
+			Gen.Gunner.Defence = 5;
+		}
+
+		public override void OnEnd()
+		{
+			Gen.Defence = 0;
+			Gen.Gunner.Defence = 0;
+		}
+	}
+
+	public class RageEffect
+		: SkillEffect
+	{
+		public PowerGenerator Gen;
+
+		public RageEffect(PowerGenerator Gen)
+		{
+			this.Gen = Gen;
+			Duration = new TimeSpan(0, 0, 10);
+
+		}
+
+		public override void Draw(SpriteBatch batch)
+		{
+
+		}
+
+		public override void OnEnd()
+		{
+			Gen.Defence += 5;
+			Gen.Gunner.Defence += 5;
+			Gen.Gunner.FireballDamage -= 5;
+		}
+
+		public override void OnStart()
+		{
+			Gen.Defence -= 5;
+			Gen.Gunner.Defence -= 5;
+			Gen.Gunner.FireballDamage += 5;
+		}
+
+	}
+
+	public class PowerEffect
+		: SkillEffect
+	{
+		public PowerGenerator Gen;
+
+		public PowerEffect(PowerGenerator Gen)
+		{
+			this.Gen = Gen;
+			Duration = new TimeSpan(0, 0, 10);
+
+		}
+
+		public override void Draw(SpriteBatch batch)
+		{
+
+		}
+
+		public override void OnEnd()
+		{
+			Gen.Gunner.EnergyRate -= 10f;
+			Gen.Speed += .2f;
+		}
+
+		public override void OnStart()
+		{
+			Gen.Speed -= .2f;
+			Gen.Gunner.EnergyRate += 10f;
+		}
+
+	}
 }

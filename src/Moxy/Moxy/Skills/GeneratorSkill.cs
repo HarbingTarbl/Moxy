@@ -61,9 +61,61 @@ namespace Moxy.Skills
 		public ProtectionSkill(PowerGenerator Gen)
 			: base(Gen)
 		{
-
+			MatchArray[0] = ItemID.BluePowerup;
+			MatchArray[1] = ItemID.GreenPowerup;
+			MatchArray[2] = ItemID.GreenPowerup;
+			MatchArray[3] = ItemID.RedPowerup;
 		}
 
+
+
+		public override bool OnSkillUsed(PowerGenerator Gen)
+		{
+			Gen.ActiveSkills.Add(new ProtectionEffect(Gen));
+			return true;
+		}
+	}
+
+	public class RageSkill
+		: GeneratorSkill
+	{
+		public RageSkill(PowerGenerator Gen)
+			: base(Gen)
+		{
+			MatchArray[0] = ItemID.BluePowerup;
+			MatchArray[1] = ItemID.YellowPowerup;
+			MatchArray[2] = ItemID.GreenPowerup;
+			MatchArray[3] = ItemID.GreenPowerup;
+		}
+
+
+
+
+		public override bool OnSkillUsed(PowerGenerator Gen)
+		{
+			Gen.ActiveSkills.Add(new RageEffect(Gen));
+			return true;
+		}
+	}
+
+	public class PowerSKill
+		: GeneratorSkill
+	{
+		public PowerSKill(PowerGenerator Gen)
+			: base(Gen)
+		{
+			MatchArray[0] = ItemID.YellowPowerup;
+			MatchArray[1] = ItemID.GreenPowerup;
+			MatchArray[2] = ItemID.RedPowerup;
+			MatchArray[3] = ItemID.BluePowerup;
+		}
+
+
+		public override bool OnSkillUsed(PowerGenerator Gen)
+		{
+			Gen.ActiveSkills.Add(new PowerEffect(Gen));
+			return true;
+		}
 
 	}
 }

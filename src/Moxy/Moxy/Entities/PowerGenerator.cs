@@ -47,8 +47,12 @@ namespace Moxy.Entities
 			EntityType = global::Moxy.EntityType.Generator;
 			Health = 100;
 			CurrentRunes = new ItemID[4];
-			CurrentRunes[0] = ItemID.RedPowerup;
-			CurrentSkill = new TriShotSkill(this);
+			Skills = new List<GeneratorSkill>();
+			Skills.Add(new ProtectionSkill(this));
+			Skills.Add(new RageSkill(this));
+			Skills.Add(new TriShotSkill(this));
+			Skills.Add(new PowerSKill(this));
+			CurrentSkill = Skills[3];
 			ActiveSkills = new List<SkillEffect>();
 		}
 
