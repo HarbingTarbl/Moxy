@@ -57,19 +57,19 @@ namespace Moxy.GameStates
 				throw new NotImplementedException();
 			}
 
+			// String debugging
+			Vector2 mouseVec = new Vector2(mouseState.X, mouseState.Y);
+			var worldVec = camera.ScreenToWorld (mouseVec);
+			TileAtCursor = new Vector2 ((int)worldVec.X / 64, (int)worldVec.Y / 64);
+
 			oldMouse = mouseState;
 			old = state;
 		}
 
-		public void SetTileAtPoint (Vector2 Location, int Value)
+		public override void Load()
 		{
-			if (Location.X > 0 && Location.X < Moxy.ScreenWidth && Location.Y > 0 && Location.Y < Moxy.ScreenHeight)
-			{
-				var worldVec = camera.ScreenToWorld2 (Location);
-				var tileVec = new Vector2 ((int)worldVec.X / 64, (int)worldVec.Y / 64);
-
-				map.Layers[(int)currentLayer].Tiles[(int)tileVec.X, (int)tileVec.Y] = (uint)Value;
-			}
+			font = Moxy.ContentManager.Load<SpriteFont> ("font");
+			texture = new Texture2D (Moxy.Graphics, 1, 1);
 		}
 
 		public override void Draw (SpriteBatch batch)
@@ -82,15 +82,20 @@ namespace Moxy.GameStates
 			batch.End();
 
 			batch.Begin ();
-				if (currentTool == EditorTool.PlaceTiles)
-					batch.Draw (map.Texture, new Vector2 (oldMouse.X, oldMouse.Y), map.Boundings[currentTileID], Color.White);
+			if (currentTool == EditorTool.PlaceTiles)
+				batch.Draw (map.Texture, new Vector2 (oldMouse.X, oldMouse.Y), map.Boundings[currentTileID], Color.White);
+
+			batch.DrawString (font, "Tile At Cursor2: " + TileAtCursor.ToString (), new Vector2 (10, 10), Color.Red);
+			batch.DrawString (font, "Current TileID: " + currentTileID, new Vector2 (10, 30), Color.Red);
+			batch.DrawString (font, "Current Layer: " + Enum.GetName (typeof(MapLayerType), currentLayer), new Vector2 (10, 50), Color.Red);
 			batch.End();
 		}
 
 		public override void OnFocus()
 		{
-			MapBuilder builder = new Map1Builder();
-			map = builder.Build ();
+			MapBuilder builder = new Map1Builder ();
+			map = new MapRoot (96, 96, 64, 64, Moxy.ContentManager.Load<Texture2D> ("tileset"));//builder.Build ();
+			InitializeBaseLayer (16);
 			camera = new Camera2D (800, 600);
 		}
 
@@ -101,6 +106,10 @@ namespace Moxy.GameStates
 		private EditorTool currentTool;
 		private MapLayerType currentLayer;
 		private int currentTileID;
+		private SpriteFont font;
+		private Texture2D texture;
+
+		private Vector2 TileAtCursor;
 
 		private void HandleCameraControls(KeyboardState state, GameTime gameTime)
 		{
@@ -121,11 +130,29 @@ namespace Moxy.GameStates
 				camera.Scale += (float)(0.1 * gameTime.ElapsedGameTime.TotalSeconds);
 		}
 
+		public void SetTileAtPoint (Vector2 Location, int Value)
+		{
+			if (Location.X > 0 && Location.X < Moxy.ScreenWidth && Location.Y > 0 && Location.Y < Moxy.ScreenHeight)
+			{
+				var worldVec = camera.ScreenToWorld (Location);
+				var tileVec = new Vector2 ((int)worldVec.X / 64, (int)worldVec.Y / 64);
+
+				map.Layers[(int)currentLayer].Tiles[(int)tileVec.X, (int)tileVec.Y] = (uint)Value;
+			}
+		}
+
+		private void InitializeBaseLayer (int id)
+		{
+			for (int x=0; x < map.Dimensions.Width; x++)
+					for (int y=0; y < map.Dimensions.Height; y++)
+						map.Layers[0].Tiles[x, y] = (uint)id;
+		}
+
 		private void ExportMapData()
 		{
 			StringBuilder b = new StringBuilder();
 
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < 2; i++)
 			{
 				b.Append ("map.Layers[0].Tiles = new uint[,] {");
 

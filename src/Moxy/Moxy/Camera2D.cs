@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Moxy
 {
@@ -45,15 +46,8 @@ namespace Moxy
 
 		public Vector2 ScreenToWorld (Vector2 screenVector)
 		{
-			Matrix inverse = Matrix.Invert(Transformation);
-			Vector2 mousePos = Vector2.Transform(screenVector, inverse);
-
-			return mousePos;
-		}
-
-		public Vector2 ScreenToWorld2(Vector2 screenVector)
-		{
-			return new Vector2 ((screenVector.X * Scale) + Location.X, (screenVector.Y + Location.Y) * Scale);
+			return new Vector2 ((screenVector.X / Scale) + Location.X,
+				(screenVector.Y + Location.Y) / Scale);
 		}
 
 		public Vector2 Origin
