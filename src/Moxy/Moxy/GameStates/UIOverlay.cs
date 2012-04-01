@@ -39,10 +39,9 @@ namespace Moxy.GameStates
 		{
 			batch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp,
 				DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Matrix.Identity);
+
 			foreach (var bar in StatusBars)
-			{
 				bar.Draw(batch);
-			}
 
 			if (RedEnergyBar != null)
 				RedEnergyBar.Draw(batch);
@@ -51,6 +50,9 @@ namespace Moxy.GameStates
 			if (RedSkillBar != null)
 				RedSkillBar.Draw(batch);
 
+			batch.End();
+			
+			batch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
 			if (OwningState.InbetweenRounds)
 				batch.Draw (getReadyTexture, new Vector2 (275, 175), new Color (1f, 1f, 1f, (float)Math.Abs (Math.Sin (sinX))));
 

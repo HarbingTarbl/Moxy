@@ -250,6 +250,7 @@ namespace Moxy.GameStates
 		private Timer gamePauseTimer;
 		public bool InbetweenRounds;
 		public DateTime StartLevelTime;
+		private int timeBetweenRounds = 10;
 
 		private bool fadingLight;
 		private Color startFadeColor;
@@ -463,7 +464,7 @@ namespace Moxy.GameStates
 			monsters.Clear();
 			Level = Moxy.Levels[Moxy.CurrentLevelIndex];
 			InbetweenRounds = true;
-			gamePauseTimer.Change (new TimeSpan (0, 0, 0, 0), new TimeSpan (0, 0, 0, 0, 10));
+			gamePauseTimer.Change (new TimeSpan (0, 0, 0, timeBetweenRounds), new TimeSpan (0, 0, 0, timeBetweenRounds));
 
 			// Only fade after the first level
 			if (Moxy.CurrentLevelIndex > 0)
