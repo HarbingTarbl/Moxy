@@ -71,7 +71,9 @@ namespace Moxy.GameStates
 
 		public override void Update(GameTime gameTime)
 		{
-			var newState = GamePad.GetState(PlayerIndex.One);
+			var newState = Moxy.CurrentPadStates[PlayerIndex.One];
+			var oldState = Moxy.LastPadStates[PlayerIndex.One];
+
 			if (newState.DPad.Up == ButtonState.Pressed &&
 				oldState.DPad.Up == ButtonState.Released)
 				SelectedItem--;

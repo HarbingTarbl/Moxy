@@ -559,6 +559,8 @@ namespace Moxy.GameStates
 
 		private void CheckPlayerLevels()
 		{
+			Team1Score += 9000;
+
 			if (gunner1 != null && gunner1.Level < ExperienceTable.Length && Team1Score >= ExperienceTable[gunner1.Level])
 			{
 				levelUpSound.Play (1.0f, 0f, 0f);

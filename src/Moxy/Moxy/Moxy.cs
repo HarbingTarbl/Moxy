@@ -44,6 +44,7 @@ namespace Moxy
 			graphics = new GraphicsDeviceManager(this);
 			graphics.PreferredBackBufferWidth = Moxy.ScreenWidth;
 			graphics.PreferredBackBufferHeight = Moxy.ScreenHeight;
+			graphics.IsFullScreen = false;
 			graphics.ApplyChanges();
 
 			Content.RootDirectory = "Content";

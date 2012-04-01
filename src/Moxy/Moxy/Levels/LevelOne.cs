@@ -12,7 +12,7 @@ namespace Moxy.Levels
 		public LevelOne()
 		{
 			AmbientLight = new Color(10, 10, 10, 200);
-			WaveLength = 5;
+			WaveLength = 20;
 			MaxMonsters = 20;
 			SpawnIntervalLow = 1f;
 			SpawnIntervalHigh = 2.4f;

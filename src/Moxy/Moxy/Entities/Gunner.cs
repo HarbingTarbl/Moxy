@@ -150,7 +150,11 @@ namespace Moxy.Entities
 				direction.Y = -direction.Y;
 
 				var fireEventArgs = new GunnerFireEventArgs (direction);
-				fireSound.Play(0.8f, 0f, 0f);
+
+				var firePitch = MathHelper.Lerp ((float)Moxy.Random.NextDouble(), -0.5f, 0.6f);
+				var fireVolume = MathHelper.Lerp ((float)Moxy.Random.NextDouble (), 0.7f, 0.8f);
+				fireSound.Play (fireVolume, firePitch, 0f);
+
 				if (OnCastFireball != null)
 					OnCastFireball(this, fireEventArgs);
 

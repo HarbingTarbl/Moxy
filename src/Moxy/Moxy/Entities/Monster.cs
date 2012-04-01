@@ -92,7 +92,7 @@ namespace Moxy.Entities
 			var id = DropTable[num];
 
 			Item item = null;
-			if (rand.Next(0, 10) < 5)
+			if (rand.Next(0, 10) < 6)
 			{
 				switch (id)
 				{
