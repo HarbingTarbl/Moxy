@@ -27,7 +27,7 @@ namespace Moxy.Entities
 
 		public void Damage(float amount)
 		{
-			Health -= Math.Min(0, (amount - Defence));
+			Health -= Math.Max(0, (amount - Defence));
 
 		}
 

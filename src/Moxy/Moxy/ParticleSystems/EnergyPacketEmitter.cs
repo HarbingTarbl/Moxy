@@ -15,7 +15,6 @@ namespace Moxy.ParticleSystems
 		public PowerGenerator Source;
 		public Gunner Target;
 
-
 		// Energy generation
 		public float maxParticleDelay = 0.4f;
 		public float minParticleDelay = 0.1f;
@@ -24,14 +23,12 @@ namespace Moxy.ParticleSystems
 		public float minPowerRange = 100;
 		public float maxPowerRange = 342;
 
-
 		public void CalculateEnergyRate(GameTime gameTime)
 		{
 			float distance = Vector2.Distance(Target.Location, Source.Location);
 			if (distance < minPowerRange)
 			{
 				Target.OverloadLevel += 2 * Target.OverloadDecayRate * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
 			}
 			float lerp = MathHelper.Clamp((distance - minPowerRange) / maxPowerRange, 0, 1);
 

@@ -36,10 +36,10 @@ namespace Moxy.Skills
 		public abstract bool OnSkillUsed(PowerGenerator Gen);
 	}
 
-	public class DerpHerp
+	public class TriShotSkill
 		: GeneratorSkill
 	{
-		public DerpHerp(PowerGenerator Gen)
+		public TriShotSkill(PowerGenerator Gen)
 			: base(Gen)
 		{
 			MatchArray[0] = ItemID.RedPowerup;
@@ -53,5 +53,17 @@ namespace Moxy.Skills
 			Gen.ActiveSkills.Add(new TrishotEffect(Gen.Gunner));
 			return true;
 		}
+	}
+
+	public class ProtectionSkill
+		: GeneratorSkill
+	{
+		public ProtectionSkill(PowerGenerator Gen)
+			: base(Gen)
+		{
+
+		}
+
+
 	}
 }

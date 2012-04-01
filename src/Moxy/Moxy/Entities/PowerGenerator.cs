@@ -48,7 +48,7 @@ namespace Moxy.Entities
 			Health = 100;
 			CurrentRunes = new ItemID[4];
 			CurrentRunes[0] = ItemID.RedPowerup;
-			CurrentSkill = new DerpHerp(this);
+			CurrentSkill = new TriShotSkill(this);
 			ActiveSkills = new List<SkillEffect>();
 		}
 

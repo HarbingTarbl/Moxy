@@ -32,6 +32,7 @@ namespace Moxy
 		public static GameTime GameTime;
 		public static Dictionary<PlayerIndex, GamePadState> CurrentPadStates;
 		public static Dictionary<PlayerIndex, GamePadState> LastPadStates;
+		public static int CurrentLevelIndex;
 
 		public Moxy()
 		{

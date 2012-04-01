@@ -12,19 +12,23 @@ namespace Moxy.GameStates
 	public class UIOverlay
 		: BaseGameState
 	{
-		public UIOverlay(GameState OwningState)
+		public UIOverlay()
 			: base("UIOverlay", isOverlay:true, acceptsInput:false)
 		{
-			StatusBar.UI = this;
-			StatusBar.Pixel = new Texture2D(Moxy.Graphics, 1, 1, false, SurfaceFormat.Color);
-			StatusBar.Pixel.SetData<Color>(new Color[] { Color.White });
-
-			EnergyBar.UI = this;
-			StatusBars = new List<StatusBar>();
-			ActivePlayers = new List<Player>();
-			this.OwningState = OwningState;
 		}
 
+		public override void Load()
+		{
+			OwningState = (GameState)Moxy.StateManager["Game"];
+
+			StatusBar.UI = this;
+			StatusBar.Pixel = new Texture2D (Moxy.Graphics, 1, 1, false, SurfaceFormat.Color);
+			StatusBar.Pixel.SetData (new [] { Color.White });
+
+			EnergyBar.UI = this;
+			StatusBars = new List<StatusBar> ();
+			ActivePlayers = new List<Player> ();
+		}
 
 		public override void Draw(SpriteBatch batch)
 		{

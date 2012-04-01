@@ -127,7 +127,7 @@ namespace Moxy.Entities
 
 
 		private FireballEmitter fireballEmitter;
-		public TimeSpan FireballRate = new TimeSpan(0, 0, 0, 0,100);
+		public TimeSpan FireballRate = new TimeSpan(0, 0, 0, 0, 500);
 		public float FireballDamage = 10f;
 
 		private TimeSpan SkillRate;
