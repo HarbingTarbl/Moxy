@@ -35,21 +35,24 @@ namespace Moxy.GameStates
 			if (MediaPlayer.Volume < 1f)
 			{
 				fadeInPassed += (float)gameTime.ElapsedGameTime.TotalSeconds;
-				float lerp = 
 				MediaPlayer.Volume = MathHelper.Lerp (0f, 0.6f, fadeInPassed / fadeInTime);
 			}
+
+			sinX += (MathHelper.Pi / 3f) * (float)gameTime.ElapsedGameTime.TotalSeconds;
 		}
 
 		public override void Draw (SpriteBatch batch)
 		{
-			batch.Begin();
+			batch.Begin (SpriteSortMode.Immediate, BlendState.NonPremultiplied);
 			batch.Draw (titleTexture, Vector2.Zero, Color.White);
+			batch.Draw (startTexture, new Vector2 (256, 600 - startTexture.Height), new Color(1f, 1f, 1f, (float)Math.Abs(Math.Sin(sinX))));
 			batch.End();
 		}
 
 		public override void Load()
 		{
 			titleTexture = Moxy.ContentManager.Load<Texture2D> ("titlescreen");
+			startTexture = Moxy.ContentManager.Load<Texture2D> ("startButton");
 			acceptSound = Moxy.ContentManager.Load<SoundEffect> ("Sounds\\accept");
 			music = Moxy.ContentManager.Load<Song> ("Sounds\\titlemusic");
 		}
@@ -67,8 +70,10 @@ namespace Moxy.GameStates
 		}
 
 		private Texture2D titleTexture;
+		private Texture2D startTexture;
 		private SoundEffect acceptSound;
 		private Song music;
+		private float sinX;
 		private float fadeInTime = 3f;
 		private float fadeInPassed;
 		private bool fadedMusic;

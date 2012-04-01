@@ -271,6 +271,11 @@
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
+    <Compile Include="startButton.png">
+      <Name>startButton</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="lighting.fx">

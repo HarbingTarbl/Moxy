@@ -73,16 +73,15 @@ namespace Moxy.GameStates
 
 		public override void Draw (SpriteBatch batch)
 		{
-			batch.Begin (SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None,
+			batch.Begin (SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None,
 				RasterizerState.CullCounterClockwise, null, camera.Transformation);
-
 		
 			var offset = camera.ScreenToWorld(Vector2.Zero);
 			var rec = new Rectangle((int)Math.Floor(Math.Max((offset.X  / map.TileDimensions.Width), 0)), 
 				(int)Math.Floor(Math.Max((offset.Y / map.TileDimensions.Height), 0)), 
 				(int)Math.Ceiling(Math.Min((Moxy.Graphics.Viewport.Width / (camera.Scale * map.TileDimensions.Width)) + 3, map.Dimensions.Width)), 
 				(int)Math.Ceiling(Math.Min((Moxy.Graphics.Viewport.Height / (camera.Scale * map.TileDimensions.Height)) + 3, map.Dimensions.Height)));
-			map.Draw (batch, rec);
+			map.Draw (batch, new Rectangle(0, 0, 64, 64));
 
 			batch.End();
 
