@@ -17,8 +17,8 @@ namespace Moxy.Levels
 			SpawnIntervalLow = 0.5f;
 			SpawnIntervalHigh = 0.8f;
 			
-			AddMonster (2, "Slime");
-			AddMonster(1, "EyeBall");
+			AddMonster (1, "Slime");
+			AddMonster(2, "AngryRock");
 		}
 	}
 }

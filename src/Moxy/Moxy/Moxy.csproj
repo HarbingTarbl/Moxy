@@ -111,6 +111,7 @@
     <Compile Include="DynamicCamera.cs" />
     <Compile Include="Entities\AngryRock.cs" />
     <Compile Include="Entities\Animation.cs" />
+    <Compile Include="Entities\BigBadBoss.cs" />
     <Compile Include="Entities\Demon.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EyeBall.cs" />
