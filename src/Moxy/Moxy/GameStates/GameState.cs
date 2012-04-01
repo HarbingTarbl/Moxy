@@ -126,8 +126,11 @@ namespace Moxy.GameStates
 			}
 			
 			// Check if the level timer has expired
-			if (Level != null && !InbetweenRounds && DateTime.Now.Subtract(StartLevelTime).TotalSeconds > Level.WaveLength)
+			if (Level != null && !InbetweenRounds && DateTime.Now.Subtract (StartLevelTime).TotalSeconds > Level.WaveLength)
+			{
+				waveDoneSound.Play (1f, 0.1f, 0f);
 				LoadNextLevel();
+			}
 		}
 
 		public void monster_OnDeath(object sender, EventArgs e)
@@ -185,6 +188,9 @@ namespace Moxy.GameStates
 			radiusTexture = Moxy.ContentManager.Load<Texture2D> ("Radius");
 			particleTexture = Moxy.ContentManager.Load<Texture2D> ("powerparticle");
 
+			waveDoneSound = Moxy.ContentManager.Load<SoundEffect> ("Sounds\\waveComplete");
+			levelUpSound = Moxy.ContentManager.Load<SoundEffect> ("Sounds\\LevelUp");
+
 			radiusOrigin = new Vector2 (radiusTexture.Width / 2, radiusTexture.Height / 2);
 
 			uiOverlay = (UIOverlay)Moxy.StateManager["UIOverlay"];
@@ -231,10 +237,10 @@ namespace Moxy.GameStates
 		private Texture2D radiusTexture;
 		private Texture2D particleTexture;
 		private List<Light> lights;
-		private Queue<Item> itemPurgeQueue;
 		private List<Item> items;
-		private Queue<Monster> monsterPurgeQueue;
 		private List<Monster> monsters;
+		private Queue<Item> itemPurgeQueue;
+		private Queue<Monster> monsterPurgeQueue;
 		private RenderTarget2D gameTarget;
 		private RenderTarget2D lightTarget;
 		private Effect lightingEffect;
@@ -252,6 +258,8 @@ namespace Moxy.GameStates
 		public bool InbetweenRounds = true;
 		public DateTime StartLevelTime;
 		private int timeBetweenRounds = 1;
+		private SoundEffect waveDoneSound;
+		private SoundEffect levelUpSound;
 
 		private bool fadingLight;
 		private Color startFadeColor;

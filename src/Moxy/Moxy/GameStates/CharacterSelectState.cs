@@ -80,6 +80,7 @@ namespace Moxy.GameStates
 
 			acceptSound = Moxy.ContentManager.Load<SoundEffect> ("Sounds//accept");
 			declineSound = Moxy.ContentManager.Load<SoundEffect> ("Sounds//decline");
+			moveSound = Moxy.ContentManager.Load<SoundEffect> ("Sounds//move");
 
 			frames = new CharacterFrame[4];
 			selecters = new ControllerSelector[4];
@@ -98,7 +99,8 @@ namespace Moxy.GameStates
 				selecters[i] = new ControllerSelector ((PlayerIndex)i, frames, selecters, i)
 					{
 						AcceptSound = acceptSound,
-						DeclineSound = declineSound
+						DeclineSound = declineSound,
+						MoveSound = moveSound,
 					};
 		}
 
@@ -127,6 +129,7 @@ namespace Moxy.GameStates
 		private GameState gameState;
 		private SoundEffect acceptSound;
 		private SoundEffect declineSound;
+		private SoundEffect moveSound;
 
 		private class CharacterFrame
 		{
@@ -181,6 +184,7 @@ namespace Moxy.GameStates
 			public bool IsReady;
 			public SoundEffect AcceptSound;
 			public SoundEffect DeclineSound;
+			public SoundEffect MoveSound;
 
 			public void Draw (SpriteBatch batch)
 			{
@@ -218,11 +222,13 @@ namespace Moxy.GameStates
 					{
 						index++;
 						moved = true;
+						MoveSound.Play (1f, 0f, 0f);
 					}
 					else if (padState.DPad.Left.WasButtonPressed (lastPadState.DPad.Left))
 					{
 						index--;
 						moved = true;
+						MoveSound.Play (1f, 0f, 0f);
 					}
 					SelectedIndex = Helpers.Clamp (index, 0, 3);
 
