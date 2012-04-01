@@ -268,6 +268,7 @@ namespace Moxy.GameStates
 				Speed = enchanterSpeed,
 				Light = new Light (Color.White, lightTexture),
 				Team = Team.Red,
+				Gunner = gunner1
 			};
 
 			redPacketEmitter.Target = gunner1;

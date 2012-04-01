@@ -71,7 +71,7 @@ namespace Moxy.Entities
 
 		public override void Draw(SpriteBatch batch)
 		{
-			batch.Draw(StatusBar.Pixel, Collision, Color.Red);
+			//batch.Draw(StatusBar.Pixel, Collision, Color.Red);
 			batch.Draw(Texture, Location, Animations.Bounding, Color.White, Rotation - MathHelper.PiOver2, Origin, 1, SpriteEffects.None, 0);
 		}
 

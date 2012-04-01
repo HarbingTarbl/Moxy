@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Moxy.Skills;
+using Microsoft.Xna.Framework.Input;
 
 namespace Moxy.Entities
 {
@@ -41,14 +42,21 @@ namespace Moxy.Entities
 					}, new TimeSpan(0, 0, 0, 0, 200))
 
 				});
+
 			Animations.SetAnimation("Idle");
 			EntityType = global::Moxy.EntityType.Generator;
 			Health = 100;
-			ItemBelt = new List<Item>();
+			CurrentRunes = new ItemID[4];
+			CurrentRunes[0] = ItemID.RedPowerup;
+			CurrentSkill = new DerpHerp(this);
+			ActiveSkills = new List<SkillEffect>();
 		}
 
-		public List<Item> ItemBelt;
+		public Gunner Gunner;
+		public ItemID[] CurrentRunes;
+		public List<SkillEffect> ActiveSkills;
 		public List<GeneratorSkill> Skills;
+		public GeneratorSkill CurrentSkill;
 		public int CurrentItem;
 		public float ParticleDelay;
 		public float ParticleTimePassed;
@@ -57,8 +65,23 @@ namespace Moxy.Entities
 		public void ApplyPowerup(Item item)
 		{
 			if (item.IsPowerup == false)
-				ItemBelt.Insert(CurrentItem = (CurrentItem + 1) % 4, item);
+			{
+				if (item.ItemID == CurrentSkill.MatchArray[CurrentItem])
+				{
+					CurrentRunes[CurrentItem] = item.ItemID;
+					CurrentItem++;
+					CurrentItem %= 4;
+				}
+			}
 			//else
+
+		}
+
+		public void HandleInput(GameTime gameTime)
+		{
+			var gamePad = GamePad.GetState(this.PadIndex);
+			if (gamePad.IsButtonDown(Buttons.A))
+				CurrentSkill.Activate(this.CurrentRunes);
 
 		}
 
@@ -66,10 +89,25 @@ namespace Moxy.Entities
 		{
 			batch.Draw(Texture, new Rectangle((int)Location.X, (int)Location.Y, 64, 64), Animations.Bounding,
 				Color, Rotation - MathHelper.PiOver2, new Vector2(32, 32), SpriteEffects.None, 0);
+
+			for (var x = 0; x < ActiveSkills.Count; x++)
+			{
+				ActiveSkills[x].Draw(batch);
+			}
+
 		}
 
 		public override void Update(GameTime gameTime)
 		{
+			HandleInput(gameTime);
+			for (var x = 0; x < ActiveSkills.Count; x++)
+			{
+				ActiveSkills[x].Update(gameTime);
+				if (!ActiveSkills[x].Active)
+					ActiveSkills.RemoveAt(x--);
+			}
+
+
 			Animations.Update(gameTime);
 			base.Update(gameTime);
 		}

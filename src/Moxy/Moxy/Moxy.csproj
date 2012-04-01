@@ -120,6 +120,7 @@
     <Compile Include="Entities\PowerGenerator.cs" />
     <Compile Include="Entities\SkillUpItems.cs" />
     <Compile Include="Entities\Slime.cs" />
+    <Compile Include="EventHandlers\GunnerFireEventArgs.cs" />
     <Compile Include="EventHandlers\GenericEventArgs.cs" />
     <Compile Include="GameStates\BaseGameState.cs" />
     <Compile Include="GameStates\CharacterSelectState.cs" />
@@ -146,6 +147,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Size.cs" />
     <Compile Include="Skills\GeneratorSkill.cs" />
+    <Compile Include="Skills\SkillEffect.cs" />
     <Compile Include="Team.cs" />
   </ItemGroup>
   <ItemGroup>

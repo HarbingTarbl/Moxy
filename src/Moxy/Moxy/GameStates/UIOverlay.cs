@@ -34,8 +34,12 @@ namespace Moxy.GameStates
 			{
 				bar.Draw(batch);
 			}
+
 			if (RedEnergyBar != null)
 				RedEnergyBar.Draw(batch);
+			if (RedRuneBar != null)
+				RedRuneBar.Draw(batch);
+
 			batch.End();
 		}
 
@@ -63,6 +67,23 @@ namespace Moxy.GameStates
 							break;
 					}
 				}
+				else if (player.EntityType == EntityType.Generator)
+				{
+					switch (player.Team)
+					{
+						case Team.Red:
+							if (RedRuneBar == null)
+							{
+								RedRuneBar = new RuneBar()
+								{
+									Location = new Vector2(30, 100),
+									Generator = (PowerGenerator)player
+								};
+							}
+							break;
+					}
+				}
+
 
 				if (!StatusBars.Any(bar => bar.Player == player))
 				{
@@ -76,6 +97,7 @@ namespace Moxy.GameStates
 		public GameState OwningState;
 		public List<StatusBar> StatusBars;
 		public EnergyBar BlueEnergyBar;
+		public RuneBar RedRuneBar;
 		public EnergyBar RedEnergyBar;
 		public List<Player> ActivePlayers;
 	}
@@ -83,20 +105,54 @@ namespace Moxy.GameStates
 
 	public class RuneBar
 	{
-		public static Rectangle BarSize = new Rectangle(0, 0, 32, 256);
+		public static Rectangle BarSize = new Rectangle(0, 0, 100, 440);
+		public static Rectangle RuneSize = new Rectangle(0, 0, 100, 50);
 		public static Texture2D FireRune = Moxy.ContentManager.Load<Texture2D>("FireRune");
 		public static Texture2D EarthRune = Moxy.ContentManager.Load<Texture2D>("EarthRune");
 		public static Texture2D WaterRune = Moxy.ContentManager.Load<Texture2D>("WaterRune");
-		//public static Texture2D 
-		//public static Animation[] Runes = new Animation[] 
-		//{
-			//new Animation("Fire", new Rectangle(
+		public static Texture2D AirRune = Moxy.ContentManager.Load<Texture2D>("AirRune");
+		public static Color Active = Color.Transparent;
+		public static Color Inactive = Color.Red;
+
+		public static Texture2D GetRuneInSlot(PowerGenerator Generator, int slot)
+		{
+			switch (Generator.CurrentSkill.MatchArray[slot])
+			{
+				case ItemID.BluePowerup:
+					return WaterRune;
+				case ItemID.RedPowerup:
+					return FireRune;
+				case ItemID.YellowPowerup:
+					return AirRune;
+				case ItemID.GreenPowerup:
+					return EarthRune;
+			}
+
+			return null;
+
+		}
+
+		public RuneBar()
+		{
+		}
 
 
-		//};
-		//public static AnimationManager FirstRune = new AnimationManager
 
+		public PowerGenerator Generator;
+		public Vector2 Location;
 
+		public void Draw(SpriteBatch batch)
+		{
+			Texture2D[] runes = new Texture2D[4];
+			Rectangle drawRectangle = new Rectangle(EnergyBar.BarSize.Width + (int)Location.X, (int)Location.Y, RuneSize.Width, RuneSize.Height);
+			for (var i = 0; i < runes.Length; i++)
+			{
+				runes[i] = GetRuneInSlot(Generator, i);
+				batch.Draw(runes[i], drawRectangle,
+					(Generator.CurrentRunes[i] == Generator.CurrentSkill.MatchArray[i]) ? Active : Inactive);
+				drawRectangle.Y += RuneSize.Height;
+			}
+		}
 
 
 	}
@@ -141,7 +197,7 @@ namespace Moxy.GameStates
 			var height = Math.Min(BarSize.Height, BarSize.Height * Player.Energy / Player.MaxEnergy);
 			var inner = new Rectangle((int)Location.X + 1, (int)(Location.Y + (BarSize.Height - height)), BarSize.Width - 2 , ((int)height));
 			var innerBound = BubbleAnimation.Bounding;
-			innerBound.Height = (int)(inner.Height * (143f /BarSize.Height));
+			innerBound.Height = (int)(inner.Height * (143f /BarSize.Height) - 5);
 			batch.Draw(Texture, inner, innerBound, Color.White);
 			batch.Draw(Texture, outer, BarFrame, Color.White);
 

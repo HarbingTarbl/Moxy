@@ -20,9 +20,16 @@ namespace Moxy.Entities
 		public PlayerIndex PadIndex;
 		public float PlayerScore;
 		public float Speed;
+		public float Defence;
 		public Color Color;
 		public Team Team;
 		public Light Light;
+
+		public void Damage(float amount)
+		{
+			Health -= Math.Min(0, (amount - Defence));
+
+		}
 
 		public override void Update (GameTime gameTime)
 		{

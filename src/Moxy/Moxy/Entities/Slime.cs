@@ -52,7 +52,7 @@ namespace Moxy.Entities
 
 		private void Slime_OnCollisionWithPlayer(object sender, Events.GenericEventArgs<Player> e)
 		{
-			e.Data.Health -= SlimeDamage;
+			e.Data.Damage(SlimeDamage);
 		}
 	}
 }

@@ -29,6 +29,7 @@ namespace Moxy
 		public static GameStateManager StateManager;
 		public static ContentManager ContentManager;
 		public static GraphicsDevice Graphics;
+		public static GameTime GameTime;
 		public static Dictionary<PlayerIndex, GamePadState> CurrentPadStates;
 		public static Dictionary<PlayerIndex, GamePadState> LastPadStates;
 
@@ -73,6 +74,8 @@ namespace Moxy
 
 		protected override void Update(GameTime gameTime)
 		{
+			Moxy.GameTime = gameTime;
+
 			foreach (PlayerIndex padIndex in CurrentPadStates.Keys.ToArray())
 				CurrentPadStates[padIndex] = GamePad.GetState (padIndex);
 

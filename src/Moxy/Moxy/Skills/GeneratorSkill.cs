@@ -29,6 +29,8 @@ namespace Moxy.Skills
 				currentId++;
 			}
 			OnSkillUsed(Gen);
+			for (var x = 0; x < 4; x++)
+				Gen.CurrentRunes[x] = ItemID.None;
 		}
 
 		public abstract bool OnSkillUsed(PowerGenerator Gen);
@@ -40,15 +42,16 @@ namespace Moxy.Skills
 		public DerpHerp(PowerGenerator Gen)
 			: base(Gen)
 		{
-			MatchArray[0] = ItemID.None;
-			MatchArray[1] = ItemID.None;
-			MatchArray[2] = ItemID.None;
-			MatchArray[3] = ItemID.None;
+			MatchArray[0] = ItemID.RedPowerup;
+			MatchArray[1] = ItemID.RedPowerup;
+			MatchArray[2] = ItemID.RedPowerup;
+			MatchArray[3] = ItemID.RedPowerup;
 		}
 
 		public override bool OnSkillUsed(PowerGenerator Gen)
 		{
-			throw new NotImplementedException();
+			Gen.ActiveSkills.Add(new TrishotEffect(Gen.Gunner));
+			return true;
 		}
 	}
 }

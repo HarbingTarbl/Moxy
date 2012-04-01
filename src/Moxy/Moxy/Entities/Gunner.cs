@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Moxy.ParticleSystems;
 using Microsoft.Xna.Framework.Input;
+using Moxy.Events;
+using Moxy.EventHandlers;
 
 namespace Moxy.Entities
 {
@@ -105,7 +107,14 @@ namespace Moxy.Entities
 				Energy -= 1;
 				var direction = Vector2.Normalize(padState.ThumbSticks.Right);
 				direction.Y = -direction.Y;
-				fireballEmitter.GenerateParticles(gameTime, direction);
+
+				var fireEventArgs = new GunnerFireEventArgs (direction);
+
+				if (OnCastFireball != null)
+					OnCastFireball(this, fireEventArgs);
+
+				if (!fireEventArgs.Handled)
+					fireballEmitter.GenerateParticles(gameTime, direction);
 			}
 		}
 
@@ -118,11 +127,12 @@ namespace Moxy.Entities
 
 
 		private FireballEmitter fireballEmitter;
-		private TimeSpan FireballRate = new TimeSpan(0, 0, 0, 0,100);
-		private float FireballDamage = 10f;
+		public TimeSpan FireballRate = new TimeSpan(0, 0, 0, 0,100);
+		public float FireballDamage = 10f;
 
 		private TimeSpan SkillRate;
 
 		public event EventHandler OnOverLoadExeeded;
+		public event EventHandler<GunnerFireEventArgs> OnCastFireball;
 	}
 }
