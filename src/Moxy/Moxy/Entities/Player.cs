@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Moxy.EventHandlers;
 
 namespace Moxy.Entities
 {
@@ -31,6 +32,8 @@ namespace Moxy.Entities
 		public Color Color;
 		public Team Team;
 		public Light Light;
+
+		public bool MovementDisabled;
 
 		public void Damage(float amount)
 		{
@@ -74,7 +77,21 @@ namespace Moxy.Entities
 			if (Health <= 0 && OnDeath != null)
 				OnDeath(this, null);
 
-			base.Location += moveVector * Speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+			var playerMoveEventArgs = new PlayerMovementEventArgs()
+			{
+				NewLocation = this.Location + moveVector * Speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds,
+				Handled = false,
+				Player = this,
+				CurrentLocation = this.Location
+			};
+
+			if (OnMovement != null)
+				OnMovement(this, playerMoveEventArgs);
+
+			if (!playerMoveEventArgs.Handled)
+				base.Location += moveVector * Speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+			else
+				base.Location = playerMoveEventArgs.NewLocation;
 
 			if (moveVector.Length() != 0)
 				base.Rotation = (float)Math.Atan2 (moveVector.Y, moveVector.X);
@@ -86,6 +103,7 @@ namespace Moxy.Entities
 
 
 		public event EventHandler OnDeath;
+		public event EventHandler<PlayerMovementEventArgs> OnMovement;
 
 		private Vector2 lastMovement;
 		private GamePadState oldPad;

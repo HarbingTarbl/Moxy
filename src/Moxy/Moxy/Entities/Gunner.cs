@@ -80,6 +80,7 @@ namespace Moxy.Entities
 		public float Energy;
 		public float MaxEnergy = 500;
 		public float EnergyRate;
+		public float ExtraEnergyRate;
 
 		public override void Draw(SpriteBatch batch)
 		{
@@ -108,7 +109,7 @@ namespace Moxy.Entities
 			}
 			if (!Generator.PowerDisabled)
 			{
-				Energy += EnergyRate * (float)gameTime.ElapsedGameTime.TotalSeconds;
+				Energy += (EnergyRate + ExtraEnergyRate)* (float)gameTime.ElapsedGameTime.TotalSeconds;
 			}
 			Energy = Math.Min(Energy, MaxEnergy);
 			baseRotation += MathHelper.PiOver4 * (float)gameTime.ElapsedGameTime.TotalSeconds;

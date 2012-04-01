@@ -26,13 +26,23 @@ namespace Moxy.Entities
 		public Monster Spawn(GameTime gameTime)
 		{
 			Monster monster = null;
-			switch (MonsterType)
-			{
-				case "Slime":
-					monster = new Slime ();
-					break;
-			}
+				lastSpawn = TimeSpan.Zero;
+				MonsterCount++;
+				switch (MonsterType)
+				{
+					case "Slime":
+						monster = new Slime();
+						break;
+					case "Demon":
+						monster = new Demon();
+						break;
+					case "EyeBall":
+						monster = new EyeBall();
+						break;
+				}
 
+				monster.Location = this.Location;
+			monster.OnDeath += OnMonsterDeath;
 			TimeSinceLastSpawn = 0;
 			return monster;
 		}

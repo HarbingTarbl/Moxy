@@ -43,13 +43,14 @@ namespace Moxy.Entities
 			Collision = new Rectangle(0, 0, 96, 96);
 			Origin = new Vector2(42, 54);
 			CollisionRadius = 48;
-			Light = new Light(new Color(0f, 0.4f, 0f, 0.6f));
+			Light = new Light(new Color(0f, 0.4f, 0f, 0.3f));
+			Light.Scale = .4f;
 
 			EntityType = global::Moxy.EntityType.Slime;
 			OnCollisionWithPlayer += Slime_OnCollisionWithPlayer;
 		}
 
-		public float SlimeDamage = 10f;
+		public float SlimeDamage = 5f;
 
 		private void Slime_OnCollisionWithPlayer(object sender, Events.GenericEventArgs<Player> e)
 		{

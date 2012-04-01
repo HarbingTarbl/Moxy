@@ -110,7 +110,9 @@
     <Compile Include="Camera2D.cs" />
     <Compile Include="DynamicCamera.cs" />
     <Compile Include="Entities\Animation.cs" />
+    <Compile Include="Entities\Demon.cs" />
     <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\EyeBall.cs" />
     <Compile Include="Entities\Gunner.cs" />
     <Compile Include="Entities\Item.cs" />
     <Compile Include="Entities\Monster.cs" />
@@ -122,6 +124,7 @@
     <Compile Include="Entities\Slime.cs" />
     <Compile Include="EventHandlers\GunnerFireEventArgs.cs" />
     <Compile Include="EventHandlers\GenericEventArgs.cs" />
+    <Compile Include="EventHandlers\PlayerMovementEventArgs.cs" />
     <Compile Include="GameStates\BaseGameState.cs" />
     <Compile Include="GameStates\CharacterSelectState.cs" />
     <Compile Include="GameStates\ColorTransition.cs" />

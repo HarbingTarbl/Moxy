@@ -18,10 +18,10 @@ namespace Moxy.ParticleSystems
 		// Energy generation
 		public float maxParticleDelay = 0.4f;
 		public float minParticleDelay = 0.1f;
-		public float maxPowerGeneration = 20;
+		public float maxPowerGeneration = 30;
 		public float minPowerGeneration = 0;
 		public float minPowerRange = 100;
-		public float maxPowerRange = 342;
+		public float maxPowerRange = 450;
 
 		public void CalculateEnergyRate(GameTime gameTime)
 		{

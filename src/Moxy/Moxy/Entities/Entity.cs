@@ -20,6 +20,8 @@ namespace Moxy.Entities
 		public EntityType EntityType;
 		public float Rotation;
 
+		public bool Alive = true;
+
 		public abstract void Update(GameTime gameTime);
 		public abstract void Draw(SpriteBatch batch);
 

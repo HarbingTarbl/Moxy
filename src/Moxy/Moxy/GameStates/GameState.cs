@@ -5,10 +5,10 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Moxy.Entities;
-using Moxy.Levels;
 using Moxy.ParticleSystems;
 using Moxy.Events;
 using Microsoft.Xna.Framework.Audio;
+using Moxy.EventHandlers;
 
 namespace Moxy.GameStates
 {
@@ -16,7 +16,7 @@ namespace Moxy.GameStates
 		: BaseGameState
 	{
 		public GameState()
-			: base ("Game", isOverlay: false, acceptsInput:true)
+			: base ("Game", isOverlay: false, acceptsInput: true)
 		{
 			players = new List<Player> (4);
 			lights = new List<Light>();
@@ -27,10 +27,9 @@ namespace Moxy.GameStates
 			redPacketEmitter = new EnergyPacketEmitter();
 			FireballEmitter = new FireballEmitter();
 			FireballEmitter.OnParticleMonsterCollision += OnBulletCollision;
-			random = new Random();
 		}
 
-		public override void Update (GameTime gameTime)
+		public override void Update(GameTime gameTime)
 		{
 			if (!isLoaded)
 				return;
@@ -43,9 +42,9 @@ namespace Moxy.GameStates
 
 			foreach(var item in items)
 			{
-				item.Update(gameTime);
 				item.CheckCollision(gunner1);
 				item.CheckCollision(powerGenerator1);
+				item.Update(gameTime);
 			}
 
 			while (itemPurgeQueue.Count > 0)
@@ -54,61 +53,36 @@ namespace Moxy.GameStates
 
 			foreach (var monster in monsters)
 			{
-				monster.Update(gameTime);
 				FireballEmitter.CheckCollision(monster);
 				monster.CheckCollide(gunner1);
 				monster.CheckCollide(powerGenerator1);
+				monster.Update(gameTime);
 			}
 
 			while (monsterPurgeQueue.Count > 0)
 				monsters.Remove (monsterPurgeQueue.Dequeue ());
 
 			redPacketEmitter.CalculateEnergyRate(gameTime);
+			//GenerateEnergy (gameTime);
 			redPacketEmitter.GenerateParticles(gameTime);
 			FindMonsterTargets (gameTime);
 			redPacketEmitter.Update (gameTime);
 			FireballEmitter.Update(gameTime);
 
 			// Spawn Monsters
-			spawnPassed += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-			if (spawnPassed > level.SpawnDelay)
+			foreach (var spawner in map.MonsterSpawners)
 			{
-				var bounds = camera.ScreenFrustrum;
-				bounds.Inflate (100, 100);
-
-				int x=0;
-				int y=0;
-
-				var verticalOrHorizontal = GetRandomDouble ();
-				if (verticalOrHorizontal == 0)
+				var monster = spawner.Spawn (gameTime);
+				if (monster != null)
 				{
-					var topBottom = GetRandomDouble ();
-					x = random.Next (bounds.X, bounds.X + bounds.Width);
-					y = bounds.Y + (bounds.Height * topBottom);
+					monster.OnDeath += (monster_OnDeath);
+					monsters.Add(monster);
 				}
-				else
-				{
-					var leftRight = GetRandomDouble ();
-					x = bounds.X + (bounds.Width * leftRight);
-					y = random.Next (bounds.Y, bounds.Y + bounds.Height);
-				}
-
-				Monster monster = level.SpawnMonsterRandom ();
-				monster.Location = new Vector2 (x, y);
-				monsterCount++;
-				monster.OnDeath += monster_OnDeath;
-				monsters.Add (monster);
-
-				level.SpawnDelay = Moxy.Random.Next ((int)level.SpawnIntervalLow, (int)level.SpawnIntervalHigh);
-				spawnPassed = 0;
 			}
 		}
 
 		public void monster_OnDeath(object sender, EventArgs e)
 		{
-			monsterCount--;
-
 			var monster = sender as Monster;
 			monster.OnDeath -= monster_OnDeath;
 			monsterPurgeQueue.Enqueue (monster);
@@ -118,6 +92,7 @@ namespace Moxy.GameStates
 			{
 				item.OnPickup += item_OnPickup;
 				items.Add(item);
+				Console.WriteLine("Dropping " + Enum.GetName(typeof(ItemID), item.ItemID));
 			}
 		}
 
@@ -173,12 +148,12 @@ namespace Moxy.GameStates
 			if (characterSelectState.CharactersSelected)
 			{
 				Reset ();
-				LoadNextLevel();
-				LoadMap ();
+				LoadMap();
 				LoadPlayers();
 				characterSelectState.CharactersSelected = false;
 			}
-
+			else
+				LoadMap();
 			if(gunner1 != null)
 				gunner1.Location = map.GunnerSpawns[0];
 			if (powerGenerator1 != null)
@@ -192,6 +167,7 @@ namespace Moxy.GameStates
 			Moxy.StateManager.Push(uiOverlay);
 		}
 
+		private float MaxPlayerDistance = 1000;
 		private Gunner gunner1;
 		private FireballEmitter FireballEmitter;
 		private Gunner gunner2;
@@ -216,11 +192,6 @@ namespace Moxy.GameStates
 		private EnergyPacketEmitter redPacketEmitter;
 		private UIOverlay uiOverlay;
 		private CharacterSelectState characterSelectState;
-		private MonsterSpawner lastWinner;
-		private Random random;
-		private int monsterCount;
-		private BaseLevel level;
-		private float spawnPassed;
 		private bool isLoaded;
 		
 		private void DrawGame (SpriteBatch batch)
@@ -258,7 +229,7 @@ namespace Moxy.GameStates
 			Moxy.Graphics.Clear (Color.CornflowerBlue);
 
 			batch.Begin();
-			batch.Draw (texture, new Rectangle (0, 0, 800, 600), new Color (0, 0, 0, map.AmbientColor.A));
+			batch.Draw (texture, new Rectangle (0, 0, 800, 600), new Color (0, 0, 0, 255));
 			batch.End();
 
 			batch.Begin (SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None,
@@ -333,6 +304,9 @@ namespace Moxy.GameStates
 					Gunner = gunner1,
 				};
 
+				gunner1.OnMovement += (Player_OnMovement);
+				powerGenerator1.OnMovement += (Player_OnMovement);
+
 				gunner1.Generator = powerGenerator1;
 
 				redPacketEmitter.Target = gunner1;
@@ -391,6 +365,28 @@ namespace Moxy.GameStates
 			uiOverlay.ActivePlayers = players;
 		}
 
+		void Player_OnMovement(object sender, EventHandlers.PlayerMovementEventArgs e)
+		{
+			var distance = 0f;
+			switch (e.Player.EntityType)
+			{
+				case EntityType.Generator:
+					var gen = (PowerGenerator)e.Player;
+					distance = Vector2.Distance(e.NewLocation, gen.Gunner.Location);
+					break;
+				case EntityType.Gunner:
+					var gun = (Gunner)e.Player;
+					distance = Vector2.Distance(e.NewLocation, gun.Generator.Location);
+					break;
+			}
+
+			if (distance > MaxPlayerDistance)
+			{
+				e.Handled = true;
+				e.NewLocation = e.CurrentLocation;
+			}
+		}
+
 		private void LoadMap()
 		{
 			camera = new DynamicCamera ();
@@ -398,10 +394,10 @@ namespace Moxy.GameStates
 			camera.UseBounds = true;
 
 			map = new MapRoot(128, 128, 64, 64, Moxy.ContentManager.Load<Texture2D>("tileset"));
-			map = Moxy.Maps[Moxy.CurrentLevelIndex].Build ();
+			map = Moxy.Maps[0].Build ();
 
 			texture = new Texture2D (Moxy.Graphics, 1, 1);
-			texture.SetData (new[] { new Color (255, 255, 255, 255) });
+			texture.SetData (new[] { new Color (0, 0, 0, map.AmbientColor.A) });
 		}
 
 		private void OnBulletCollision(object sender, GenericEventArgs<Monster> e)
@@ -413,25 +409,6 @@ namespace Moxy.GameStates
 		{
 			foreach (Monster monster in monsters)
 				monster.Target = gunner1;
-		}
-
-		private void LoadNextLevel()
-		{
-			Moxy.CurrentLevelIndex++;
-
-			level = Moxy.Levels[Moxy.CurrentLevelIndex];
-			// Start transitioning to next ambient light
-			// Add break timer which starts next round
-
-		}
-
-		private int GetRandomDouble()
-		{
-			double random = Moxy.Random.NextDouble ();
-			if (random < 0.5)
-				return 0;
-			else
-				return 1;
 		}
 	}
 }
