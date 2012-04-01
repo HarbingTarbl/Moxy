@@ -128,7 +128,8 @@ namespace Moxy.GameStates
 			// Check if the level timer has expired
 			if (Level != null && !InbetweenRounds && DateTime.Now.Subtract (StartLevelTime).TotalSeconds > Level.WaveLength)
 			{
-				waveDoneSound.Play (1f, 0.1f, 0f);
+				HealPlayers ();
+				waveDoneSound.Play (0.8f, 0.1f, 0f);
 				LoadNextLevel();
 			}
 		}
@@ -199,6 +200,14 @@ namespace Moxy.GameStates
 			characterSelectState = (CharacterSelectState)Moxy.StateManager["CharacterSelect"];
 
 			gamePauseTimer = new Timer (timer_StartNextRound, null, Timeout.Infinite, Timeout.Infinite);
+
+			ExperienceTable = new int[]
+			{
+				0,
+				1000,
+				2000,
+				4000
+			};
 		}
 
 		public override void OnFocus()
@@ -262,6 +271,9 @@ namespace Moxy.GameStates
 		private int timeBetweenRounds = 1;
 		private SoundEffect waveDoneSound;
 		private SoundEffect levelUpSound;
+		public int Team1Score;
+		public int Team2Score;
+		public int[] ExperienceTable;
 
 		private bool fadingLight;
 		private Color startFadeColor;
@@ -527,6 +539,23 @@ namespace Moxy.GameStates
 			gamePauseTimer.Change (Timeout.Infinite, Timeout.Infinite);
 			StartLevelTime = DateTime.Now;
 			InbetweenRounds = false;
+		}
+
+		private void HealPlayers()
+		{
+			if (gunner1 != null)
+				gunner1.Health = gunner1.MaxHealth;
+			if (powerGenerator1 != null)
+				powerGenerator1.Health = powerGenerator1.MaxHealth;
+			if (gunner2 != null)
+				gunner2.Health = gunner2.MaxHealth;
+			if (powerGenerator2 != null)
+				powerGenerator2.Health = powerGenerator2.MaxHealth;
+		}
+
+		private void CheckPlayerLevels()
+		{
+			//if (gunner1 != null && gunner1.MaxOverloadLevelTeam1Score >
 		}
 	}
 }
