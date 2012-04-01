@@ -47,7 +47,7 @@ namespace Moxy
 		public Vector2 ScreenToWorld (Vector2 screenVector)
 		{
 			return new Vector2 ((screenVector.X / Scale) + Location.X,
-				(screenVector.Y / Scale) +  Location.Y);
+				(screenVector.Y / Scale) + Location.Y);
 		}
 
 		public Vector2 Origin

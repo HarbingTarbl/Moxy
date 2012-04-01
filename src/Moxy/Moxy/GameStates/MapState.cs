@@ -15,6 +15,8 @@ namespace Moxy.GameStates
 		public MapState()
 			: base("MapState", isOverlay:false, acceptsInput:true)
 		{
+
+			
 		}
 	
 		public override void Update(GameTime gameTime)
@@ -71,10 +73,16 @@ namespace Moxy.GameStates
 
 		public override void Draw (SpriteBatch batch)
 		{
-			batch.Begin (SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None,
+			batch.Begin (SpriteSortMode.Texture, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None,
 				RasterizerState.CullCounterClockwise, null, camera.Transformation);
 
-			map.Draw (batch, new Rectangle(0, 0, 128, 128));
+		
+			var offset = camera.ScreenToWorld(Vector2.Zero);
+			var rec = new Rectangle((int)Math.Floor(Math.Max((offset.X  / map.TileDimensions.Width), 0)), 
+				(int)Math.Floor(Math.Max((offset.Y / map.TileDimensions.Height), 0)), 
+				(int)Math.Ceiling(Math.Min((Moxy.Graphics.Viewport.Width / (camera.Scale * map.TileDimensions.Width)) + 3, map.Dimensions.Width)), 
+				(int)Math.Ceiling(Math.Min((Moxy.Graphics.Viewport.Height / (camera.Scale * map.TileDimensions.Height)) + 3, map.Dimensions.Height)));
+			map.Draw (batch, rec);
 
 			batch.End();
 
@@ -99,6 +107,7 @@ namespace Moxy.GameStates
 			batch.DrawString (font, "Current TileID: " + currentTileID, new Vector2 (10, 100), Color.Red);
 			batch.DrawString (font, "Current Layer: " + Enum.GetName (typeof(MapLayerType), currentLayer), new Vector2 (10, 120), Color.Red);
 			batch.DrawString (font, "World at Cursor: " + WorldAtCursor.ToString(), new Vector2 (10, 140), Color.Red);
+			batch.DrawString (font, "Showing " + (rec.Width * rec.Height).ToString() + " Tiles", new Vector2(10, 180), Color.Red);
 			batch.End();
 		}
 
@@ -108,6 +117,7 @@ namespace Moxy.GameStates
 			map = builder.Build ();
 			//map = new MapRoot (64, 64, 64, 64, Moxy.ContentManager.Load<Texture2D> ("tileset"));
 			//InitializeBaseLayer (16);
+
 			camera = new Camera2D (800, 600);
 		}
 

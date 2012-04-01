@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Moxy;
 
 namespace Moxy
 {
@@ -23,16 +24,18 @@ namespace Moxy
 
 		public void Draw(SpriteBatch batch, Rectangle bounds)
 		{
-			var drawLocation = new Rectangle((int)Parent.LocationOffset.X, (int)Parent.LocationOffset.Y, (int)Parent.TileDimensions.Width, (int)Parent.TileDimensions.Height);
-			for (var x = 0; x < Parent.Dimensions.Width; x++)
+			var drawLocation = new Rectangle(bounds.X * (int)Parent.TileDimensions.Width, bounds.Y * (int)Parent.TileDimensions.Height, (int)Parent.TileDimensions.Width, (int)Parent.TileDimensions.Height);
+			for (var x = 0; x < bounds.Width; x++)
 			{
-				drawLocation.Y = (int)Parent.LocationOffset.Y;
-				for (var y = 0; y < Parent.Dimensions.Height; y++)
+				drawLocation.Y = bounds.Y * (int)Parent.TileDimensions.Height ;
+				for (var y = 0; y < bounds.Height; y++)
 				{
-					batch.Draw(Parent.Texture, drawLocation, Parent.Boundings[Tiles[x, y]], Color.White);
+					batch.Draw(Parent.Texture, drawLocation, Parent.Boundings[Tiles[bounds.X + x, bounds.Y + y]], Color.White);
 					drawLocation.Y += (int)Parent.TileDimensions.Height;
+					//= (int)Math.Ceiling(y * Parent.TileDimensions.Height);
 				}
 				drawLocation.X += (int)Parent.TileDimensions.Width;
+
 			}
 		}
 
