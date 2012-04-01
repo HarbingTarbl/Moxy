@@ -27,6 +27,34 @@ namespace Moxy.Entities
 
 
 		public string Animation
+		{
+			get
+			{
+				return animation;
+			}
+
+			set
+			{
+				animation = value;
+				Animations.SetAnimation(animation + "_" + level.ToString());
+			}
+		}
+		public int Level
+		{
+			get
+			{
+				return level;
+			}
+			set
+			{
+				level = value;
+				Animations.SetAnimation(animation + "_" + level.ToString());
+			}
+		}
+
+
+		protected string animation;
+		protected int level = 1;
 		public PlayerIndex PadIndex;
 		public float PlayerScore;
 		public float Speed;
@@ -70,9 +98,9 @@ namespace Moxy.Entities
 			moveVector.Y *= -1;
 
 			if (lastMovement == Vector2.Zero && moveVector != Vector2.Zero)
-				Animations.SetAnimation("Walk_1");
+				Animation = "Walk";
 			else if (moveVector == Vector2.Zero)
-				Animations.SetAnimation("Idle");
+				Animation = "Idle";
 
 			Health = MathHelper.Clamp(Health, 0, MaxHealth);
 

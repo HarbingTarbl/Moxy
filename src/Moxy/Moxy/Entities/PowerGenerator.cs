@@ -20,7 +20,15 @@ namespace Moxy.Entities
 				{
 					new Animation("Idle_1", new Rectangle[]
 					{
-						new Rectangle(0, 320, 64, 64)
+						new Rectangle(0, 320, 64, 64),
+					}),
+					new Animation("Idle_2", new Rectangle[]
+					{
+						new Rectangle(0, 384, 64,64 ),
+					}),
+					new Animation("Idle_3", new Rectangle[]
+					{
+						new Rectangle(0, 448, 64, 64),
 					}),
 					new Animation("Walk_1", new Rectangle[] 
 					{

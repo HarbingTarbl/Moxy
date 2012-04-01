@@ -22,9 +22,17 @@ namespace Moxy.Entities
 			Animations = new AnimationManager(Texture,
 				new Animation[] 
 				{
-					new Animation("Idle", new Rectangle[]
+					new Animation("Idle_1", new Rectangle[]
 					{
 						new Rectangle(0, 0, 64, 64)
+					}),
+					new Animation("Idle_2", new Rectangle[]
+					{
+						new Rectangle(0, 64, 64, 64)
+					}),
+					new Animation("Idle_3", new Rectangle[]
+					{
+						new Rectangle(0, 128, 64, 64)
 					}),
 					new Animation("Walk_1", new Rectangle[] 
 					{
