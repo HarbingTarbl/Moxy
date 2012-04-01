@@ -11,7 +11,7 @@ namespace Moxy.Entities
 	{
 		public RedSkillUp()
 		{
-			CollisionRadius = 10;
+			CollisionRadius = 25;
 			base.Color = Color.Red;
 			ItemID = ItemID.RedPowerup;
 		}
@@ -32,8 +32,8 @@ namespace Moxy.Entities
 	{
 		public BlueSkillUp()
 		{
-			CollisionRadius = 10;
-			base.Color = Color.Blue;
+			CollisionRadius = 25;
+			base.Color = Color.Aquamarine;
 			ItemID = ItemID.BluePowerup;
 		}
 
@@ -53,7 +53,7 @@ namespace Moxy.Entities
 	{
 		public YellowSkillUp()
 		{
-			CollisionRadius = 10;
+			CollisionRadius = 25;
 			base.Color = Color.Yellow;
 			ItemID = ItemID.YellowPowerup;
 		}
@@ -74,7 +74,7 @@ namespace Moxy.Entities
 	{
 		public GreenSkillUp()
 		{
-			CollisionRadius = 10;
+			CollisionRadius = 25;
 			base.Color = Color.Green;
 			ItemID = ItemID.GreenPowerup;
 		}
@@ -95,7 +95,7 @@ namespace Moxy.Entities
 	{
 		public HealthItem()
 		{
-			CollisionRadius = 10;
+			CollisionRadius = 25;
 			ItemID = ItemID.HealthPowerup;
 		}
 
@@ -111,7 +111,7 @@ namespace Moxy.Entities
 	{
 		public ManaItem()
 		{
-			CollisionRadius = 10;
+			CollisionRadius = 25;
 			ItemID = ItemID.ManaPowerup;
 		}
 

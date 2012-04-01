@@ -94,6 +94,7 @@ namespace Moxy.Entities
 
 		public override void Update(GameTime gameTime)
 		{
+			Health = Math.Min(Generator.Health, Health);
 			HandleInput(gameTime);
 			OverloadLevel += OverloadRate;
 
@@ -108,10 +109,10 @@ namespace Moxy.Entities
 			if (!Generator.PowerDisabled)
 			{
 				Energy += EnergyRate * (float)gameTime.ElapsedGameTime.TotalSeconds;
-				Energy = Math.Min(Energy, MaxEnergy);
 			}
-
+			Energy = Math.Min(Energy, MaxEnergy);
 			baseRotation += MathHelper.PiOver4 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+			baseRotation %= MathHelper.TwoPi;
 			Animations.Update(gameTime);
 
 			base.Update(gameTime);

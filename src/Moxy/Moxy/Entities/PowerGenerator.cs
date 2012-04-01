@@ -48,10 +48,10 @@ namespace Moxy.Entities
 			Health = 100;
 			CurrentRunes = new ItemID[4];
 			Skills = new List<GeneratorSkill>();
-			Skills.Add(new ProtectionSkill(this));
-			Skills.Add(new RageSkill(this));
-			Skills.Add(new TriShotSkill(this));
 			Skills.Add(new PowerSKill(this));
+			Skills.Add(new ProtectionSkill(this));
+			Skills.Add(new TriShotSkill(this));
+			Skills.Add(new RageSkill(this));
 			CurrentSkill = Skills[3];
 			ActiveSkills = new List<SkillEffect>();
 		}
@@ -75,6 +75,7 @@ namespace Moxy.Entities
 					CurrentRunes[CurrentItem] = item.ItemID;
 					CurrentItem++;
 					CurrentItem %= 4;
+					Console.WriteLine("Picked up an item {0}", Enum.GetName(typeof(ItemID), item.ItemID));
 				}
 			}
 			//else
@@ -122,6 +123,7 @@ namespace Moxy.Entities
 
 		public override void Update(GameTime gameTime)
 		{
+			Health = Math.Min(Gunner.Health, Health);
 			HandleInput(gameTime);
 			for (var x = 0; x < ActiveSkills.Count; x++)
 			{

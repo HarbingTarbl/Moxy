@@ -47,7 +47,7 @@ namespace Moxy.Skills
 		public TrishotEffect(Gunner Target)
 		{
 			this.Target = Target;
-			Duration = new TimeSpan(0, 5, 0);
+			Duration = new TimeSpan(0, 0, 10);
 		}
 
 		public override void Draw(SpriteBatch batch)
@@ -70,8 +70,8 @@ namespace Moxy.Skills
 		void Target_OnCastFireball(object sender, GunnerFireEventArgs e)
 		{
 			var rads = Math.Atan2(e.FireVector.Y, e.FireVector.X);
-			var second = new Vector2((float)Math.Cos(rads + MathHelper.PiOver4/2), (float)Math.Sin(rads + MathHelper.PiOver4/2));
-			var third = new Vector2((float)Math.Cos(rads - MathHelper.PiOver4/2), (float)Math.Sin(rads - MathHelper.PiOver4/2));
+			var second = new Vector2((float)Math.Cos(rads + MathHelper.PiOver4/3), (float)Math.Sin(rads + MathHelper.PiOver4/3));
+			var third = new Vector2((float)Math.Cos(rads - MathHelper.PiOver4/3), (float)Math.Sin(rads - MathHelper.PiOver4/3));
 			e.Handled = true;
 			Target.FireballEmitter.GenerateParticles(Moxy.GameTime, e.FireVector);
 			Target.FireballEmitter.GenerateParticles(Moxy.GameTime, second);
@@ -88,7 +88,7 @@ namespace Moxy.Skills
 		public ProtectionEffect(PowerGenerator Gen)
 		{
 			this.Gen = Gen;
-			Duration = new TimeSpan(0, 0, 10);
+			Duration = new TimeSpan(0, 0, 20);
 		}
 
 		public override void Draw(SpriteBatch batch)
@@ -161,14 +161,14 @@ namespace Moxy.Skills
 
 		public override void OnEnd()
 		{
-			Gen.Gunner.EnergyRate -= 10f;
-			Gen.Speed += .2f;
+			Gen.Gunner.Energy += 200;
+			Gen.Speed += .01f;
 		}
 
 		public override void OnStart()
 		{
-			Gen.Speed -= .2f;
-			Gen.Gunner.EnergyRate += 10f;
+			Gen.Speed -= .01f;
+			Gen.Gunner.Energy += 100;
 		}
 
 	}

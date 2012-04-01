@@ -13,6 +13,8 @@ namespace Moxy.Entities
 		public Item()
 		{
 			Texture = Moxy.ContentManager.Load<Texture2D>("Orb");
+			Light = new Light(new Color());
+			Light.Scale = 0.1f;
 		}
 
 		public Vector2 Location;
@@ -23,6 +25,8 @@ namespace Moxy.Entities
 		public Color Color = Color.White;
 		public ItemID ItemID;
 		public bool IsPowerup = false;
+		public Light Light;
+		public bool Enabled = true;
 
 		public void Draw(SpriteBatch batch)
 		{
@@ -34,14 +38,22 @@ namespace Moxy.Entities
 			CollisionCenter = Location;
 			Collision = new Rectangle((int)CollisionCenter.X, (int)CollisionCenter.Y, 1, 1);
 			Collision.Inflate((int)CollisionRadius, (int)CollisionRadius);
+			if (Light != null)
+			{
+				Light.Location = Location;
+				Light.Color = Color;
+			}
 		}
 
 		public void CheckCollision(Player player)
 		{
-			if (Vector2.Distance(CollisionCenter, player.CollisionCenter) < (CollisionRadius + player.CollisionRadius))
+			if (Enabled && Vector2.Distance(CollisionCenter, player.CollisionCenter) < (CollisionRadius + player.CollisionRadius))
 			{
 				if (OnPlayerCollision(player))
+				{
+					Enabled = false;
 					OnPickup(this, new GenericEventArgs<Player>(player));
+				}
 			}
 		}
 

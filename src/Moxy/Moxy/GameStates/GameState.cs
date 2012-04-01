@@ -47,7 +47,8 @@ namespace Moxy.GameStates
 			}
 
 			while (itemPurgeQueue.Count > 0)
-				items.Remove (itemPurgeQueue.Dequeue ());
+				items.Remove(itemPurgeQueue.Dequeue());
+
 
 			foreach (var monster in monsters)
 			{
@@ -151,6 +152,14 @@ namespace Moxy.GameStates
 			}
 			else
 				LoadMap();
+			if(gunner1 != null)
+				gunner1.Location = map.GunnerSpawns[0];
+			if (powerGenerator1 != null)
+				powerGenerator1.Location = map.PowerGeneratorSpawns[0];
+			if (gunner2 != null)
+				gunner2.Location = map.GunnerSpawns[1];
+			if (powerGenerator2 != null)
+				powerGenerator2.Location = map.PowerGeneratorSpawns[1];
 
 			isLoaded = true;
 			Moxy.StateManager.Push(uiOverlay);
@@ -180,7 +189,6 @@ namespace Moxy.GameStates
 		private EnergyPacketEmitter redPacketEmitter;
 		private UIOverlay uiOverlay;
 		private CharacterSelectState characterSelectState;
-		private SoundEffect fireSound;
 		private bool isLoaded;
 		
 		private void DrawGame (SpriteBatch batch)
@@ -230,6 +238,10 @@ namespace Moxy.GameStates
 			foreach (var monster in monsters)
 				if (monster.Light != null)
 					monster.Light.Draw(batch);
+
+			foreach (var item in items)
+				if (item.Light != null)
+					item.Light.Draw(batch);
 
 			foreach (Light light in lights)
 				light.Draw (batch);

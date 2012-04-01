@@ -27,6 +27,13 @@ namespace Moxy
 			AddMonster (map, new Vector2 (4017, 1896), 10, "Slime");
 			AddMonster (map, new Vector2 (1784, 352), 10, "Slime");
 			AddMonster (map, new Vector2 (208, 1797), 10, "Slime");
+			
+			//Add Player Spawn
+			map.GunnerSpawns[0] = new Vector2(1692, 2110);
+			map.GunnerSpawns[1] = new Vector2(1250, 2010);
+
+			map.PowerGeneratorSpawns[0] = new Vector2(1520, 2000);
+			map.PowerGeneratorSpawns[1] = new Vector2(1123, 1930);
 
 			loadBaseLayer (map);
 			loadDecalLayer (map);
@@ -56,9 +63,9 @@ namespace Moxy
 		{
 			map.MonsterSpawners.Add (new MonsterSpawner
 			{
-				Location = new Vector2 (4017, 1896),
-				MonsterCount = 10,
-				MonsterType = "Slime"
+				Location = vector,
+				MonsterCount = count,
+				MonsterType =  monsterType
 			});
 		}
 	}
