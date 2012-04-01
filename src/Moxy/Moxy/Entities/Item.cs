@@ -12,13 +12,14 @@ namespace Moxy.Entities
 	{
 		public Item()
 		{
-			Texture = Moxy.ContentManager.Load<Texture2D>("Orb");
+			Texture = Moxy.ContentManager.Load<Texture2D>("Gems");
 			Light = new Light(new Color());
 			Light.Scale = 0.1f;
 		}
 
 		public Vector2 Location;
 		public Texture2D Texture;
+		public Rectangle Bounds;
 		public Rectangle Collision;
 		public Vector2 CollisionCenter = Vector2.Zero;
 		public float CollisionRadius = 10f;
@@ -30,7 +31,7 @@ namespace Moxy.Entities
 
 		public void Draw(SpriteBatch batch)
 		{
-			batch.Draw(Texture, Collision, null, Color, 0f, Vector2.Zero, SpriteEffects.None, 0);
+			batch.Draw(Texture, Collision, Bounds, Color, 0f, Vector2.Zero, SpriteEffects.None, 0);
 		}
 
 		public void Update(GameTime gameTime)
