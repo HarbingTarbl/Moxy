@@ -12,11 +12,13 @@ namespace Moxy.Entities
 	{
 		public EyeBall()
 		{
-			Texture = Moxy.ContentManager.Load<Texture2D>("EyeBall");
+			Texture = Moxy.ContentManager.Load<Texture2D>("MonsterEyeSpriteSheet");
 			Animations = new AnimationManager(Texture, new Animation[] 
 			{
 				new Animation("Idle", new Rectangle[] {
-					new Rectangle(0, 0, 0, 0)
+					new Rectangle(0, 0, 64, 64),
+					new Rectangle(64, 0, 64, 64),
+					new Rectangle(128, 0, 64, 64)
 				})
 			});
 

@@ -134,6 +134,7 @@
     <Compile Include="GameStates\MainMenuState.cs" />
     <Compile Include="GameStates\MapPlayerState.cs" />
     <Compile Include="GameStates\MapState.cs" />
+    <Compile Include="GameStates\RealMenuState.cs" />
     <Compile Include="GameStates\TestGameState.cs" />
     <Compile Include="GameStates\UIOverlay.cs" />
     <Compile Include="Helpers.cs" />

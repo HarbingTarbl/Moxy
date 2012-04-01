@@ -25,7 +25,7 @@ namespace Moxy.GameStates
 				|| PollPadForStart (PlayerIndex.Three)
 				|| PollPadForStart (PlayerIndex.Four))
 			{
-				Moxy.StateManager.Set ("CharacterSelect");
+				Moxy.StateManager.Set ("RealMenu");
 				acceptSound.Play();
 			}
 
