@@ -15,6 +15,7 @@ namespace Moxy.Entities
 			CollisionRadius = 25;
 			base.Color = Color.Red;
 			ItemID = ItemID.RedPowerup;
+			Bounds = new Rectangle(132, 100, 24, 24);
 		}
 
 		public override bool OnPlayerCollision(Player p)
@@ -37,6 +38,7 @@ namespace Moxy.Entities
 			CollisionRadius = 25;
 			base.Color = Color.Aquamarine;
 			ItemID = ItemID.BluePowerup;
+			Bounds = new Rectangle(132, 4, 24, 24);
 		}
 
 		public override bool OnPlayerCollision(Player p)
@@ -59,6 +61,7 @@ namespace Moxy.Entities
 			CollisionRadius = 25;
 			base.Color = Color.Yellow;
 			ItemID = ItemID.YellowPowerup;
+			Bounds = new Rectangle(292, 68, 24, 24);
 		}
 
 		public override bool OnPlayerCollision(Player p)
@@ -81,6 +84,7 @@ namespace Moxy.Entities
 			CollisionRadius = 25;
 			base.Color = Color.Green;
 			ItemID = ItemID.GreenPowerup;
+			Bounds = new Rectangle(292, 4, 24, 24);
 		}
 
 		public override bool OnPlayerCollision(Player p)
