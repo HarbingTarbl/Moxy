@@ -8,6 +8,7 @@ using Moxy.Entities;
 using Moxy.Map;
 using Moxy.ParticleSystems;
 using Moxy.Events;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Moxy.GameStates
 {
@@ -179,6 +180,7 @@ namespace Moxy.GameStates
 		private EnergyPacketEmitter redPacketEmitter;
 		private UIOverlay uiOverlay;
 		private CharacterSelectState characterSelectState;
+		private SoundEffect fireSound;
 		private bool isLoaded;
 		
 		private void DrawGame (SpriteBatch batch)
@@ -262,6 +264,8 @@ namespace Moxy.GameStates
 					Gunner = gunner1,
 				};
 
+				gunner1.Generator = powerGenerator1;
+
 				redPacketEmitter.Target = gunner1;
 				redPacketEmitter.Source = powerGenerator1;
 
@@ -299,6 +303,8 @@ namespace Moxy.GameStates
 					Team = Team.Red,
 					Gunner = gunner2,
 				};
+
+				gunner2.Generator = powerGenerator2;
 
 				redPacketEmitter.Target = gunner2;
 				redPacketEmitter.Source = powerGenerator2;

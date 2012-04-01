@@ -5,11 +5,11 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace Moxy.Map
+namespace Moxy
 {
 	public class MapLayer
 	{
-		public MapLayer(Map Parent, MapLayerType Type)
+		public MapLayer(MapRoot Parent, MapLayerType Type)
 		{
 			LayerType = Type;
 			this.Parent = Parent;
@@ -17,7 +17,7 @@ namespace Moxy.Map
 
 		}
 
-		public readonly Map Parent;
+		public readonly MapRoot Parent;
 		public readonly MapLayerType LayerType;
 		public readonly uint[,] Tiles;
 

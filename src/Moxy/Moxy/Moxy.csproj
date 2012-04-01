@@ -135,6 +135,8 @@
     <Compile Include="GameStates\UIOverlay.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Light.cs" />
+    <Compile Include="Map\MapRoot.cs" />
+    <Compile Include="Map\MapLayer.cs" />
     <Compile Include="Map\TileMap.cs" />
     <Compile Include="Map\TileMap.Editor.cs" />
     <Compile Include="Moxy.cs" />

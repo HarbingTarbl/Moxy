@@ -32,9 +32,11 @@ namespace Moxy.ParticleSystems
 			}
 			float lerp = MathHelper.Clamp((distance - minPowerRange) / maxPowerRange, 0, 1);
 
+			Source.PowerDisabled = distance > maxPowerRange || OldLocation == Source.Location;
 			Target.EnergyRate = MathHelper.Lerp(maxPowerGeneration, minPowerGeneration, lerp);
 			Source.ParticleDelay = MathHelper.SmoothStep(minParticleDelay, maxParticleDelay, lerp);
-			Source.PowerDisabled = distance > maxPowerRange;
+
+			OldLocation = Source.Location;
 		}
 
 		public void GenerateParticles(GameTime gameTime)
@@ -48,6 +50,8 @@ namespace Moxy.ParticleSystems
 				Source.ParticleTimePassed = 0;
 			}
 		}
+
+		private Vector2 OldLocation;
 
 
 	}

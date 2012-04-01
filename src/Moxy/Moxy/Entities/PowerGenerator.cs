@@ -81,11 +81,30 @@ namespace Moxy.Entities
 
 		}
 
+		public void SetCurrentSkill(GeneratorSkill NewSkill)
+		{
+			CurrentSkill = NewSkill;
+			for (var x = 0; x < CurrentRunes.Length; x++)
+				CurrentRunes[x] = ItemID.None;
+
+		}
+
 		public void HandleInput(GameTime gameTime)
 		{
 			var gamePad = GamePad.GetState(this.PadIndex);
+
 			if (gamePad.IsButtonDown(Buttons.A))
 				CurrentSkill.Activate(this.CurrentRunes);
+
+
+			if (gamePad.DPad.Left == ButtonState.Pressed)
+				SetCurrentSkill(Skills[1]);
+			if (gamePad.DPad.Up == ButtonState.Pressed)
+				SetCurrentSkill(Skills[0]);
+			if (gamePad.DPad.Down == ButtonState.Pressed)
+				SetCurrentSkill(Skills[3]);
+			if (gamePad.DPad.Right == ButtonState.Pressed)
+				SetCurrentSkill(Skills[2]);
 
 		}
 
@@ -111,9 +130,11 @@ namespace Moxy.Entities
 					ActiveSkills.RemoveAt(x--);
 			}
 
-
 			Animations.Update(gameTime);
 			base.Update(gameTime);
+			oldPosition = Location;
 		}
+
+		private Vector2 oldPosition;
 	}
 }
