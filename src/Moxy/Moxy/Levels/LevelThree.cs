@@ -6,17 +6,17 @@ using Microsoft.Xna.Framework;
 
 namespace Moxy.Levels
 {
-	public class LevelOne
+	public class LevelThree
 		: BaseLevel
 	{
-		public LevelOne()
+		public LevelThree()
 		{
-			AmbientLight = new Color(10, 10, 10, 200);
+			AmbientLight = new Color (10, 10, 10, 200);
 			WaveLength = 5;
 			MaxMonsters = 10;
-			SpawnIntervalLow = 1f;
-			SpawnIntervalHigh = 2f;
-			
+			SpawnIntervalLow = 0.5f;
+			SpawnIntervalHigh = 0.8f;
+
 			AddMonster (1, "Slime");
 
 		}

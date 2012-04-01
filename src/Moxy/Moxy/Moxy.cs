@@ -82,6 +82,10 @@ namespace Moxy
 			{
 				new LevelOne(),
 				new LevelTwo(),
+				new LevelThree(), 
+				new LevelFour(), 
+				new LevelFive(),
+				new LevelSix()
 			};
 		}
 

@@ -28,7 +28,7 @@ namespace Moxy.GameStates
 			StatusBar.Pixel.SetData (new [] { Color.White });
 
 			getReadyTexture = Moxy.ContentManager.Load<Texture2D> ("getready");
-			font = Moxy.ContentManager.Load<SpriteFont> ("font");
+			font = Moxy.ContentManager.Load<SpriteFont> ("spookyfont");
 
 			EnergyBar.UI = this;
 			StatusBars = new List<StatusBar> ();
@@ -62,7 +62,8 @@ namespace Moxy.GameStates
 				DateTime start = OwningState.StartLevelTime;
 				DateTime endTime = start.Add (new TimeSpan(0, 0, 0, (int)OwningState.Level.WaveLength));
 
-				batch.DrawString (font, endTime.Subtract (DateTime.Now).ToString(), new Vector2 (0, 0), Color.Black);
+				var time = endTime.Subtract (DateTime.Now);
+				batch.DrawString (font, string.Format ("{0:##00}:{1:##00}", time.Minutes, time.Seconds), new Vector2 (300, 0), Color.Purple);
 			}
 
 			batch.End();

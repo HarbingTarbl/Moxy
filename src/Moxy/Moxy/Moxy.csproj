@@ -138,7 +138,11 @@
     <Compile Include="GameStates\UIOverlay.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Levels\BaseLevel.cs" />
+    <Compile Include="Levels\LevelFive.cs" />
+    <Compile Include="Levels\LevelFour.cs" />
     <Compile Include="Levels\LevelOne.cs" />
+    <Compile Include="Levels\LevelSix.cs" />
+    <Compile Include="Levels\LevelThree.cs" />
     <Compile Include="Levels\LevelTwo.cs" />
     <Compile Include="Light.cs" />
     <Compile Include="Map\Map1Builder.cs" />
