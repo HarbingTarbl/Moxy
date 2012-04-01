@@ -24,6 +24,7 @@ namespace Moxy.Entities
 		public Light Light;
 		public float LowSpeed;
 		public float HighSpeed;
+		public int ScoreGiven;
 
 		public void CheckCollide(Player player)
 		{

@@ -45,6 +45,7 @@ namespace Moxy.Entities
 			CollisionRadius = 48;
 			Light = new Light(new Color(0f, 0.4f, 0f, 0.3f));
 			Light.Scale = .4f;
+			ScoreGiven = 9000;
 
 			EntityType = global::Moxy.EntityType.Slime;
 			OnCollisionWithPlayer += Slime_OnCollisionWithPlayer;
