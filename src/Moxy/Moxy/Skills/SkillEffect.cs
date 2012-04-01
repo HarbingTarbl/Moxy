@@ -16,6 +16,7 @@ namespace Moxy.Skills
 		public TimeSpan Duration;
 		public bool Active;
 		public int SkillID;
+		public Texture2D Texture = Moxy.ContentManager.Load<Texture2D>("radiusapprentice");
 
 		public abstract void Draw(SpriteBatch batch);
 

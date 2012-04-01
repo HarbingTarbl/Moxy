@@ -65,8 +65,8 @@ namespace Moxy.Entities
 			}
 		}
 
-		public float RockRamage = 7;
-		public TimeSpan RockAttackSpeed = new TimeSpan(0, 0, 0, 600);
+		public float RockRamage = 20;
+		public TimeSpan RockAttackSpeed = new TimeSpan(0, 0, 0, 100);
 		
 
 		private TimeSpan currentTime;

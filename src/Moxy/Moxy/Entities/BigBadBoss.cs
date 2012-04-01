@@ -10,7 +10,7 @@ namespace Moxy.Entities
 	public class BigBadBoss
 		: Monster
 	{
-		public BigBadBoss()
+		public BigBadBoss(Vector2 Location)
 		{
 			Texture = Moxy.ContentManager.Load<Texture2D>("BossSpriteSheet");
 			Animations = new AnimationManager(Texture, new Animation[]
@@ -19,10 +19,10 @@ namespace Moxy.Entities
 				{
 					new Rectangle(0, 0, 384, 384),
 					new Rectangle(384, 0, 384, 384),
-					new Rectangle(786, 0, 384, 384), 
+					new Rectangle(768, 0, 384, 384), 
 					new Rectangle(1152, 0, 384, 384),
 					new Rectangle(1536, 0, 384, 384)
-				}),
+				}, new TimeSpan(0, 0, 0, 0, 150), false),
 				new Animation("Idle", new Rectangle[]
 				{
 					new Rectangle(0, 384, 384, 384),
@@ -40,17 +40,23 @@ namespace Moxy.Entities
 			LowSpeed = 0f;
 			HighSpeed = 0f;
 			ScoreGiven = 56;
+			Rotation = 0;
 			Health = 200;
+			this.Location = Location - new Vector2(184, 500);
+			Animations.SetAnimation("Spawn");
 		}
 
 		public override void Draw(SpriteBatch batch)
 		{
-			base.Draw(batch);
+			batch.Draw(Texture, Location, Animations.Bounding, Color.White); 
 		}
 
 		public override void Update(GameTime gameTime)
 		{
+			Animations.Update(gameTime);
 			base.Update(gameTime);
+			Rotation = 0;
+			
 		}
 
 		public override Item DropItem()

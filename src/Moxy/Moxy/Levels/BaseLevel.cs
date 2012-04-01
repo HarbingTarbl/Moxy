@@ -64,7 +64,7 @@ namespace Moxy.Levels
 					monster = new AngryRock();
 					break;
 				case "BigBadBoss":
-					monster = new BigBadBoss();
+					monster = new AngryRock();
 					break;
 			}
 

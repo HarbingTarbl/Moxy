@@ -75,7 +75,8 @@ namespace Moxy.Entities
 			HandleInput (gameTime);
 
 			Light.Location = Location + new Vector2(32, 32);
-
+			if (Health <= 0 && OnDeath != null)
+				OnDeath(this, null);
 			CollisionCenter = Location;
 			Collision = new Rectangle((int)CollisionCenter.X, (int)CollisionCenter.Y, 1, 1);
 			CollisionRadius = 32f;

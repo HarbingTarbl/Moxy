@@ -39,8 +39,14 @@ namespace Moxy.GameStates
 			camera.Update (Moxy.Graphics);
 			map.Update (gameTime);
 
-			foreach (var player in players)
-				player.Update (gameTime);
+			if (boss != null)
+				boss.Update(gameTime);
+
+			if (boss == null)
+			{
+				foreach (var player in players)
+					player.Update(gameTime);
+			}
 
 			if (!InbetweenRounds)
 			{
@@ -244,6 +250,8 @@ namespace Moxy.GameStates
 			Moxy.StateManager.Push(uiOverlay);
 		}
 
+
+		public BigBadBoss boss;
 		private float MaxPlayerDistance = 1000;
 		private Gunner gunner1;
 		private FireballEmitter FireballEmitter;
@@ -299,15 +307,20 @@ namespace Moxy.GameStates
 				RasterizerState.CullCounterClockwise, null, camera.GetTransformation (Moxy.Graphics));
 
 			map.Draw(batch, new Rectangle(0, 0, 64, 64));
-			
-			foreach (Player player in players)
-				player.Draw (batch);
+
+			//if (boss == null)
+			{
+				foreach (Player player in players)
+					player.Draw(batch);
+			}
 
 			foreach (Monster monster in monsters)
 				monster.Draw (batch);
 
 			foreach (var item in items)
 				item.Draw(batch);
+			if (boss != null)
+				boss.Draw(batch);
 
 			batch.End ();
 
@@ -402,6 +415,8 @@ namespace Moxy.GameStates
 
 				gunner1.OnMovement += (Player_OnMovement);
 				powerGenerator1.OnMovement += (Player_OnMovement);
+				gunner1.OnDeath += (Player_OnDeath);
+				
 
 				gunner1.Generator = powerGenerator1;
 
@@ -459,6 +474,13 @@ namespace Moxy.GameStates
 			}
 
 			uiOverlay.ActivePlayers = players;
+		}
+
+		void Player_OnDeath(object sender, EventArgs e)
+		{
+			boss = new BigBadBoss(gunner1.Location);
+			boss.Animations.SetAnimation("Spawn");
+			//Moxy.StateManager.Pop();
 		}
 
 		void Player_OnMovement(object sender, EventHandlers.PlayerMovementEventArgs e)

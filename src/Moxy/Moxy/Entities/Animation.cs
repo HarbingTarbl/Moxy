@@ -11,16 +11,18 @@ namespace Moxy.Entities
 	{
 		private static readonly TimeSpan DefaultTimeSpan = new TimeSpan(0, 0, 0, 0, 500);
 
+		public readonly bool Looping = true;
 		public readonly TimeSpan FrameRate;
 		public readonly string Name;
 		public readonly Rectangle[] Sources;
 		public int CurrentSource;
 
-		public Animation(string name, IEnumerable<Rectangle> sources, TimeSpan frameRate = default(TimeSpan))
+		public Animation(string name, IEnumerable<Rectangle> sources, TimeSpan frameRate = default(TimeSpan), bool Looping = true)
 		{
 			Name = name;
 			Sources = sources.ToArray();
 			FrameRate = frameRate == default(TimeSpan) ? DefaultTimeSpan : frameRate;
+			this.Looping = Looping;
 		}
 	}
 
@@ -66,7 +68,14 @@ namespace Moxy.Entities
 			if (lastUpdate < currentAnimation.FrameRate)
 				return;
 
-			currentAnimation.CurrentSource = ((currentAnimation.CurrentSource + 1) % currentAnimation.Sources.Length);
+
+			if (currentAnimation.Looping)
+				currentAnimation.CurrentSource = ((currentAnimation.CurrentSource + 1) % currentAnimation.Sources.Length);
+			else
+			{
+				if (currentAnimation.CurrentSource < currentAnimation.Sources.Length - 1)
+					currentAnimation.CurrentSource++;
+			}
 			Bounding = currentAnimation.Sources[currentAnimation.CurrentSource];
 			lastUpdate = TimeSpan.Zero;
 		}
