@@ -22,6 +22,8 @@ namespace Moxy.Entities
 		public ElementalTypeEnum Element;
 		public Vector2 Origin;
 		public Light Light;
+		public float LowSpeed;
+		public float HighSpeed;
 
 		public void CheckCollide(Player player)
 		{

@@ -17,6 +17,8 @@ namespace Moxy
 
 		public bool UseBounds;
 		public Size MinimumSize;
+		public int InflateAmount = 100;
+		public Rectangle ScreenFrustrum;
 
 		public Vector2 ScreenToWorld(Vector2 ScreenPos)
 		{
@@ -67,7 +69,8 @@ namespace Moxy
 						rect.Inflate (0, (int)(MinimumSize.Height - rect.Height) / 2);
 				}
 				
-				rect.Inflate (100, 100);
+				rect.Inflate (InflateAmount, InflateAmount);
+				ScreenFrustrum = rect;
 
 				desiredPosition = new Vector2 (rect.Center.X, rect.Center.Y);
 

@@ -14,7 +14,7 @@ namespace Moxy
 		public override MapRoot Build()
 		{
 			MapRoot map = new MapRoot (64, 64, 64, 64, Moxy.ContentManager.Load<Texture2D> ("tileset"));
-			map.AmbientColor = new Color (255, 255, 255, 200);
+			map.AmbientColor = new Color (255, 255, 255, 0);
 
 			// Load lights
 			Texture2D lightTexture = Moxy.ContentManager.Load<Texture2D> ("light");
@@ -24,9 +24,9 @@ namespace Moxy
 			map.PointLights.Add (new Light (Color.White, lightTexture) { Location = new Vector2 (736, 2670) });
 
 			// Add monster spawning
-			AddMonster (map, new Vector2 (4017, 1896), 10, "Slime");
-			AddMonster (map, new Vector2 (1784, 352), 10, "Slime");
-			AddMonster (map, new Vector2 (208, 1797), 10, "Slime");
+			AddMonster (map, new Vector2 (4017, 1896), "Slime", 1f, 10);
+			AddMonster (map, new Vector2 (1784, 352), "Slime", 1f, 10);
+			AddMonster (map, new Vector2 (208, 1797), "Slime", 1f, 10);
 			
 			//Add Player Spawn
 			map.GunnerSpawns[0] = new Vector2(1692, 2110);
@@ -59,13 +59,14 @@ namespace Moxy
 17,17,17,17,17,17,17,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
 		}
 
-		private void AddMonster(MapRoot map, Vector2 vector, int count, string monsterType)
+		private void AddMonster(MapRoot map, Vector2 vector, string monsterType, float spawnDelay, int maxSpawn)
 		{
 			map.MonsterSpawners.Add (new MonsterSpawner
 			{
 				Location = vector,
-				MonsterCount = count,
-				MonsterType =  monsterType
+				MonsterType =  monsterType,
+				SpawnDelay = spawnDelay,
+				MaxSpawns = maxSpawn
 			});
 		}
 	}

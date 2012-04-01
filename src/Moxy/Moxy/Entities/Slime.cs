@@ -36,9 +36,10 @@ namespace Moxy.Entities
 
 			});
 			Animations.SetAnimation("Idle_Ice");
-			Health = 20;
+			Health = 17;
 			TurnSpeed = MathHelper.Pi/14f;
-			MovementSpeed = 100f;
+			LowSpeed = 100;
+			HighSpeed = 150;
 			Collision = new Rectangle(0, 0, 96, 96);
 			Origin = new Vector2(42, 54);
 			CollisionRadius = 48;

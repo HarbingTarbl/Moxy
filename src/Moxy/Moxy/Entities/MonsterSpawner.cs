@@ -14,35 +14,26 @@ namespace Moxy.Entities
 		public Vector2 Location;
 		public string MonsterType;
 		public int MonsterCount;
+		public float TimeSinceLastSpawn;
+		public float SpawnDelay;
+		public float MaxSpawns;
 
-		public MonsterSpawner()
+		public bool NeedsSpawn
 		{
-
+			get { return TimeSinceLastSpawn > SpawnDelay && MonsterCount < MaxSpawns; }
 		}
 
 		public Monster Spawn(GameTime gameTime)
 		{
 			Monster monster = null;
-			var range = MonsterSpawnerOptions.Randomizer.Next(0, 101);
-
-
-			///SOMETHING WITH STUFF
-			lastSpawn += gameTime.ElapsedGameTime;
-			if (MonsterCount < MonsterSpawnerOptions.MaxSpawns && MonsterSpawnerOptions.SpawnRange[0] < range && MonsterSpawnerOptions.SpawnRange[1] > range
-				&& (lastSpawn > MonsterSpawnerOptions.SpawnRate))
+			switch (MonsterType)
 			{
-				lastSpawn = TimeSpan.Zero;
-				switch (MonsterType)
-				{
-					case "Slime":
-						MonsterCount++;
-						monster = new Slime();
-						monster.OnDeath += OnMonsterDeath;
-						break;
-				}
+				case "Slime":
+					monster = new Slime ();
+					break;
 			}
 
-
+			TimeSinceLastSpawn = 0;
 			return monster;
 		}
 

@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Moxy.GameStates;
 using System.Reflection;
+using Moxy.Levels;
 
 namespace Moxy
 {
@@ -24,6 +25,7 @@ namespace Moxy
 		SpriteBatch spriteBatch;
 
 		public static Moxy Instance;
+		public static Random Random;
 		public static int ScreenWidth = 800;
 		public static int ScreenHeight = 600;
 		public static GameStateManager StateManager;
@@ -32,8 +34,9 @@ namespace Moxy
 		public static GameTime GameTime;
 		public static Dictionary<PlayerIndex, GamePadState> CurrentPadStates;
 		public static Dictionary<PlayerIndex, GamePadState> LastPadStates;
-		public static int CurrentLevelIndex;
+		public static int CurrentLevelIndex = -1;
 		public static MapBuilder[] Maps;
+		public static BaseLevel[] Levels;
 		public static MapRoot CurrentMap;
 
 		public Moxy()
@@ -64,6 +67,7 @@ namespace Moxy
 			Moxy.Instance = this;
 			Moxy.ContentManager = Content;
 			Moxy.StateManager = new GameStateManager();
+			Moxy.Random = new Random();
 			Moxy.Graphics = GraphicsDevice;
 
 			Moxy.StateManager.Load (Assembly.GetExecutingAssembly());
@@ -72,6 +76,11 @@ namespace Moxy
 			Moxy.Maps = new MapBuilder[]
 			{
 				new Map1Builder()
+			};
+
+			Moxy.Levels = new BaseLevel[]
+			{
+				new LevelOne()
 			};
 		}
 

@@ -20,7 +20,8 @@ namespace Moxy.Entities
 
 		void Player_OnDeath(object sender, EventArgs e)
 		{
-			Moxy.StateManager.Set("MainMenu");
+			//TODO: Remove on death
+			//Moxy.StateManager.Set("MainMenu");
 		}
 
 		public PlayerIndex PadIndex;
