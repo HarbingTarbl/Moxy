@@ -34,6 +34,10 @@ namespace Moxy.Entities
 					{
 						new Rectangle(0, 128, 64, 64)
 					}),
+					new Animation("Idle_4", new Rectangle[]
+					{
+						new Rectangle(0, 192, 64, 64)
+					}),
 					new Animation("Walk_1", new Rectangle[] 
 					{
 						new Rectangle(0, 0, 64, 64),
@@ -51,6 +55,12 @@ namespace Moxy.Entities
 						new Rectangle(0, 128, 64, 64),
 						new Rectangle(64, 128, 64, 64),
 						new Rectangle(128, 128, 64, 64),
+					}, new TimeSpan(0, 0, 0, 0, 200)),
+					new Animation("Walk_4", new Rectangle[] 
+					{
+						new Rectangle(0, 192, 64, 64),
+						new Rectangle(64, 192, 64, 64),
+						new Rectangle(128, 192, 64, 64),
 					}, new TimeSpan(0, 0, 0, 0, 200))
 
 				});
