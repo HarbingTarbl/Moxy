@@ -90,7 +90,7 @@ namespace Moxy.GameStates
 								RedEnergyBar = new EnergyBar()
 								{
 									Player = (Gunner)player,
-									Location = new Vector2(10, 120),
+									Location = new Vector2(10, 160),
 								};
 							}
 							break;
@@ -105,7 +105,7 @@ namespace Moxy.GameStates
 							{
 								RedRuneBar = new RuneBar()
 								{
-									Location = new Vector2(30, 100),
+									Location = new Vector2(20, 220),
 									Generator = (PowerGenerator)player
 								};
 							}
@@ -113,7 +113,7 @@ namespace Moxy.GameStates
 							{
 								RedSkillBar = new SkillSelection()
 								{
-									Location = new Vector2(130, 120),
+									Location = new Vector2(20, 200),
 									Player = (PowerGenerator)player,
 									IsShown = true,
 									UI = this
@@ -176,7 +176,7 @@ namespace Moxy.GameStates
 
 		public void Draw(SpriteBatch batch)
 		{
-			var currentIcon = new Rectangle(105, 50, 50, 50);
+			var currentIcon = new Rectangle(105, 170, 50, 50);
 			batch.Draw(SkillTextures, currentIcon, Bounding[Player.Skills.IndexOf(Player.CurrentSkill)], InActiveColor);
 			if (IsShown)
 			{

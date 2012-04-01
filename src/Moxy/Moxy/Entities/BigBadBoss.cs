@@ -39,6 +39,28 @@ namespace Moxy.Entities
 			TurnSpeed = 0f;
 			LowSpeed = 0f;
 			HighSpeed = 0f;
+			Health = 200;
+		}
+
+		public override void Draw(SpriteBatch batch)
+		{
+			base.Draw(batch);
+		}
+
+		public override void Update(GameTime gameTime)
+		{
+			base.Update(gameTime);
+		}
+
+		public override Item DropItem()
+		{
+			return base.DropItem();
+		}
+
+		public void Ability()
+		{
+
+
 		}
 
 
