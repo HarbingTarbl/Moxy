@@ -136,6 +136,8 @@ namespace Moxy.GameStates
 
 		public void monster_OnDeath(object sender, EventArgs e)
 		{
+			monsterCount--;
+
 			var monster = sender as Monster;
 			monster.OnDeath -= monster_OnDeath;
 			monsterPurgeQueue.Enqueue (monster);
@@ -359,7 +361,7 @@ namespace Moxy.GameStates
 
 		private void LoadPlayers()
 		{
-			float gunnerSpeed = 0.3f;//0.1f;
+			float gunnerSpeed = 0.2f;//0.1f;
 			float enchanterSpeed = 0.3f;
 			PlayerIndex invalidPlayerIndex = (PlayerIndex)5;
 

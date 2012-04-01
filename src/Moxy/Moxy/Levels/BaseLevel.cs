@@ -51,6 +51,12 @@ namespace Moxy.Levels
 				case "Slime":
 					monster = new Slime ();
 					break;
+				case "Demon":
+					monster = new Demon();
+					break;
+				case "EyeBall":
+					monster = new EyeBall();
+					break;
 			}
 
 			monster.MovementSpeed = Moxy.Random.Next ((int)monster.LowSpeed, (int)monster.HighSpeed);
@@ -64,7 +70,7 @@ namespace Moxy.Levels
 			double rangeEnd = 0;
 			foreach (MonsterSpawnInformation info in Monsters)
 			{
-				info.Range = info.SpawnChance / randomTotal;
+				info.Range = (float)info.SpawnChance / (float)randomTotal;
 				info.RandomLow = rangeEnd;
 				info.RandomHigh = info.RandomLow + info.Range;
 				rangeEnd += info.Range;

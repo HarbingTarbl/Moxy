@@ -12,21 +12,24 @@ namespace Moxy.Entities
 	{
 		public EyeBall()
 		{
-			Texture = Moxy.ContentManager.Load<Texture2D>("EyeBall");
+			Texture = Moxy.ContentManager.Load<Texture2D>("MonsterEyeSpriteSheet");
 			Animations = new AnimationManager(Texture, new Animation[] 
 			{
 				new Animation("Idle", new Rectangle[] {
-					new Rectangle(0, 0, 0, 0)
+					new Rectangle(0, 0, 98, 98),
+					new Rectangle(98, 0, 98, 98),
+					new Rectangle(196, 0, 98, 98)
 				})
 			});
 
 			Animations.SetAnimation("Idle");
 			Health = 10;
 			TurnSpeed = MathHelper.Pi / 7f;
-			MovementSpeed = 150f;
-			Collision = new Rectangle(0, 0, 96, 96);
-			Origin = new Vector2(42, 54);
-			CollisionRadius = 48;
+			LowSpeed = 150;
+			HighSpeed = 300f;
+			Collision = new Rectangle(0, 0, 98, 98);
+			Origin = new Vector2(49, 50);
+			CollisionRadius = 60;
 			OnCollisionWithPlayer += EyeBall_OnCollisionWithPlayer;
 		}
 

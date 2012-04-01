@@ -18,9 +18,17 @@ namespace Moxy.Entities
 			Animations = new AnimationManager(Texture, 
 				new Animation[] 
 				{
-					new Animation("Idle", new Rectangle[]
+					new Animation("Idle_1", new Rectangle[]
 					{
-						new Rectangle(0, 320, 64, 64)
+						new Rectangle(0, 320, 64, 64),
+					}),
+					new Animation("Idle_2", new Rectangle[]
+					{
+						new Rectangle(0, 384, 64,64 ),
+					}),
+					new Animation("Idle_3", new Rectangle[]
+					{
+						new Rectangle(0, 448, 64, 64),
 					}),
 					new Animation("Walk_1", new Rectangle[] 
 					{
@@ -43,7 +51,7 @@ namespace Moxy.Entities
 
 				});
 
-			Animations.SetAnimation("Idle");
+			Animations.SetAnimation("Idle_1");
 			EntityType = global::Moxy.EntityType.Generator;
 			Health = 100;
 			CurrentRunes = new ItemID[4];
@@ -54,8 +62,10 @@ namespace Moxy.Entities
 			Skills.Add(new RageSkill(this));
 			CurrentSkill = Skills[3];
 			ActiveSkills = new List<SkillEffect>();
+			CurrentItem = 0;
 		}
 
+		
 		public Gunner Gunner;
 		public ItemID[] CurrentRunes;
 		public List<SkillEffect> ActiveSkills;
@@ -88,6 +98,7 @@ namespace Moxy.Entities
 			CurrentSkill = NewSkill;
 			for (var x = 0; x < CurrentRunes.Length; x++)
 				CurrentRunes[x] = ItemID.None;
+			CurrentItem = 0;
 
 		}
 

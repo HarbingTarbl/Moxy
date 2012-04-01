@@ -26,7 +26,7 @@ namespace Moxy.Skills
 			foreach(var id in CurrentItems)
 			{
 				if(MatchArray[currentId] != id)
-					//return;
+					return;
 				currentId++;
 			}
 			OnSkillUsed(Gen);
