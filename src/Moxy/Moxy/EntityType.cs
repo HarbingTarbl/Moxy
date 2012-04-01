@@ -9,6 +9,8 @@ namespace Moxy
 	{
 		Gunner,
 		Generator,
-		Slime
+		Slime,
+		EyeBall,
+		Demon
 	}
 }

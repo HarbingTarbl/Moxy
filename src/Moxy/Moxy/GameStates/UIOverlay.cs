@@ -53,6 +53,7 @@ namespace Moxy.GameStates
 			batch.End();
 			
 			batch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
+
 			if (OwningState.InbetweenRounds)
 				batch.Draw (getReadyTexture, new Vector2 (275, 175), new Color (1f, 1f, 1f, (float)Math.Abs (Math.Sin (sinX))));
 

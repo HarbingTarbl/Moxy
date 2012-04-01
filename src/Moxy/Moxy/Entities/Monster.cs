@@ -28,7 +28,7 @@ namespace Moxy.Entities
 		public void CheckCollide(Player player)
 		{
 			var distance = Vector2.Distance(player.CollisionCenter, CollisionCenter);
-			if (distance < player.CollisionRadius + CollisionRadius && OnCollisionWithPlayer != null)
+			if (Alive && distance < player.CollisionRadius + CollisionRadius && OnCollisionWithPlayer != null)
 				OnCollisionWithPlayer (this, new GenericEventArgs<Player> (player));
 		}
 
@@ -37,8 +37,11 @@ namespace Moxy.Entities
 			if (Target == null)
 				return;
 
-			if (Health <= 0 && OnDeath != null)
+			if (Health <= 0 && OnDeath != null && Alive)
+			{
+				Alive = false;
 				OnDeath(this, null);
+			}
 
 			// Calculate the best way to move and angle difference is high enough
 			if (Vector2.DistanceSquared(Target.Location, Location + new Vector2(32, 32)) < 50)
@@ -92,9 +95,6 @@ namespace Moxy.Entities
 			{
 				switch (id)
 				{
-					case ItemID.HealthPowerup:
-						item = new HealthItem();
-						break;
 					case ItemID.GreenPowerup:
 						item = new GreenSkillUp();
 						break;
@@ -118,7 +118,6 @@ namespace Moxy.Entities
 
 		public static ItemID[] DropTable = new ItemID[] 
 		{
-			ItemID.HealthPowerup,
 			ItemID.GreenPowerup,
 			ItemID.BluePowerup,
 			ItemID.YellowPowerup,

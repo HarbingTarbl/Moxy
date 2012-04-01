@@ -15,6 +15,7 @@ namespace Moxy.Skills
 	{
 		public TimeSpan Duration;
 		public bool Active;
+		public int SkillID;
 
 		public abstract void Draw(SpriteBatch batch);
 
@@ -47,7 +48,8 @@ namespace Moxy.Skills
 		public TrishotEffect(Gunner Target)
 		{
 			this.Target = Target;
-			Duration = new TimeSpan(0, 0, 10);
+			Duration = new TimeSpan(0, 0, 20);
+			SkillID = 1;
 		}
 
 		public override void Draw(SpriteBatch batch)
@@ -89,6 +91,7 @@ namespace Moxy.Skills
 		{
 			this.Gen = Gen;
 			Duration = new TimeSpan(0, 0, 20);
+			SkillID = 2;
 		}
 
 		public override void Draw(SpriteBatch batch)
@@ -117,8 +120,8 @@ namespace Moxy.Skills
 		public RageEffect(PowerGenerator Gen)
 		{
 			this.Gen = Gen;
-			Duration = new TimeSpan(0, 0, 10);
-
+			Duration = new TimeSpan(0, 0, 20);
+			SkillID = 3;
 		}
 
 		public override void Draw(SpriteBatch batch)
@@ -150,8 +153,8 @@ namespace Moxy.Skills
 		public PowerEffect(PowerGenerator Gen)
 		{
 			this.Gen = Gen;
-			Duration = new TimeSpan(0, 0, 10);
-
+			Duration = new TimeSpan(0, 0, 20);
+			SkillID = 4;
 		}
 
 		public override void Draw(SpriteBatch batch)
@@ -161,15 +164,18 @@ namespace Moxy.Skills
 
 		public override void OnEnd()
 		{
-			Gen.Gunner.Energy += 200;
-			Gen.Speed += .01f;
+			Gen.Speed = originalSpeed;
+			Gen.Gunner.ExtraEnergyRate = 0;
 		}
 
 		public override void OnStart()
 		{
-			Gen.Speed -= .01f;
-			Gen.Gunner.Energy += 100;
+			originalSpeed = Gen.Speed;
+			Gen.Speed = originalSpeed * .60f;
+			Gen.Gunner.ExtraEnergyRate = 10;
+			
 		}
 
+		private float originalSpeed;
 	}
 }

@@ -47,11 +47,10 @@ namespace Moxy.Entities
 
 		public void CheckCollision(Player player)
 		{
-			if (Enabled && Vector2.Distance(CollisionCenter, player.CollisionCenter) < (CollisionRadius + player.CollisionRadius))
+			if (Vector2.Distance(CollisionCenter, player.CollisionCenter) < (CollisionRadius + player.CollisionRadius))
 			{
 				if (OnPlayerCollision(player))
 				{
-					Enabled = false;
 					OnPickup(this, new GenericEventArgs<Player>(player));
 				}
 			}

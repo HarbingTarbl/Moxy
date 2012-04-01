@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Moxy.Entities;
 using Microsoft.Xna.Framework.Graphics;
+using Moxy.Skills;
 
 namespace Moxy.Skills
 {
@@ -50,7 +51,19 @@ namespace Moxy.Skills
 
 		public override bool OnSkillUsed(PowerGenerator Gen)
 		{
-			Gen.ActiveSkills.Add(new TrishotEffect(Gen.Gunner));
+			var newSkill = new TrishotEffect(Gen.Gunner);
+			foreach(var skill in Gen.ActiveSkills)
+			{
+				if (skill.SkillID == newSkill.SkillID)
+				{
+					skill.Duration = newSkill.Duration;
+					return false;
+				}
+
+			}
+
+			Gen.ActiveSkills.Add(newSkill);
+
 			return true;
 		}
 	}
@@ -71,7 +84,18 @@ namespace Moxy.Skills
 
 		public override bool OnSkillUsed(PowerGenerator Gen)
 		{
-			Gen.ActiveSkills.Add(new ProtectionEffect(Gen));
+			var newSkill = new ProtectionEffect(Gen);
+			foreach(var skill in Gen.ActiveSkills)
+			{
+				if (skill.SkillID == newSkill.SkillID)
+				{
+					skill.Duration = newSkill.Duration;
+				}
+				return false;
+			}
+
+			Gen.ActiveSkills.Add(newSkill);
+
 			return true;
 		}
 	}
@@ -88,12 +112,20 @@ namespace Moxy.Skills
 			MatchArray[3] = ItemID.GreenPowerup;
 		}
 
-
-
-
 		public override bool OnSkillUsed(PowerGenerator Gen)
 		{
-			Gen.ActiveSkills.Add(new RageEffect(Gen));
+			var newSkill = new RageEffect(Gen);
+			foreach(var skill in Gen.ActiveSkills)
+			{
+				if (skill.SkillID == newSkill.SkillID)
+				{
+					skill.Duration = newSkill.Duration;
+				}
+				return false;
+			}
+
+			Gen.ActiveSkills.Add(newSkill);
+
 			return true;
 		}
 	}
@@ -113,7 +145,18 @@ namespace Moxy.Skills
 
 		public override bool OnSkillUsed(PowerGenerator Gen)
 		{
-			Gen.ActiveSkills.Add(new PowerEffect(Gen));
+			var newSkill = new PowerEffect(Gen);
+			foreach(var skill in Gen.ActiveSkills)
+			{
+				if (skill.SkillID == newSkill.SkillID)
+				{
+					skill.Duration = newSkill.Duration;
+				}
+				return false;
+			}
+
+			Gen.ActiveSkills.Add(newSkill);
+
 			return true;
 		}
 

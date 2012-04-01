@@ -70,8 +70,9 @@ namespace Moxy.Entities
 		{
 			if (item.IsPowerup == false)
 			{
-				if (item.ItemID == CurrentSkill.MatchArray[CurrentItem])
+				if (item.ItemID == CurrentSkill.MatchArray[CurrentItem] && item.Enabled)
 				{
+					item.Enabled = false;
 					CurrentRunes[CurrentItem] = item.ItemID;
 					CurrentItem++;
 					CurrentItem %= 4;

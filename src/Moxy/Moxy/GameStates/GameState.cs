@@ -10,6 +10,7 @@ using Moxy.Levels;
 using Moxy.ParticleSystems;
 using Moxy.Events;
 using Microsoft.Xna.Framework.Audio;
+using Moxy.EventHandlers;
 
 namespace Moxy.GameStates
 {
@@ -17,7 +18,7 @@ namespace Moxy.GameStates
 		: BaseGameState
 	{
 		public GameState()
-			: base ("Game", isOverlay: false, acceptsInput:true)
+			: base ("Game", isOverlay: false, acceptsInput: true)
 		{
 			players = new List<Player> (4);
 			lights = new List<Light>();
@@ -28,10 +29,9 @@ namespace Moxy.GameStates
 			redPacketEmitter = new EnergyPacketEmitter();
 			FireballEmitter = new FireballEmitter();
 			FireballEmitter.OnParticleMonsterCollision += OnBulletCollision;
-			random = new Random();
 		}
 
-		public override void Update (GameTime gameTime)
+		public override void Update(GameTime gameTime)
 		{
 			if (!isLoaded)
 				return;
@@ -39,11 +39,11 @@ namespace Moxy.GameStates
 			camera.Update (Moxy.Graphics);
 			map.Update (gameTime);
 
+			foreach (var player in players)
+				player.Update (gameTime);
+
 			if (!InbetweenRounds)
 			{
-				foreach (Player player in players)
-					player.Update (gameTime);
-
 				foreach (var item in items)
 				{
 					item.Update (gameTime);
@@ -80,14 +80,14 @@ namespace Moxy.GameStates
 					if (verticalOrHorizontal == 0)
 					{
 						var topBottom = GetRandomDouble ();
-						x = random.Next (bounds.X, bounds.X + bounds.Width);
+						x = Moxy.Random.Next (bounds.X, bounds.X + bounds.Width);
 						y = bounds.Y + (bounds.Height * topBottom);
 					}
 					else
 					{
 						var leftRight = GetRandomDouble ();
 						x = bounds.X + (bounds.Width * leftRight);
-						y = random.Next (bounds.Y, bounds.Y + bounds.Height);
+						y = Moxy.Random.Next (bounds.Y, bounds.Y + bounds.Height);
 					}
 
 					Monster monster = Level.SpawnMonsterRandom ();
@@ -102,6 +102,7 @@ namespace Moxy.GameStates
 			}
 
 			redPacketEmitter.CalculateEnergyRate(gameTime);
+			//GenerateEnergy (gameTime);
 			redPacketEmitter.GenerateParticles(gameTime);
 			FindMonsterTargets (gameTime);
 			redPacketEmitter.Update (gameTime);
@@ -113,12 +114,12 @@ namespace Moxy.GameStates
 				fadePassed += (float)gameTime.ElapsedGameTime.TotalSeconds;
 				float lerp = MathHelper.Clamp (fadePassed / fadeTotal, 0, 1f);
 
-				float red = MathHelper.Lerp (startFadeColor.R, Level.AmbientLight.R, lerp);
-				float green = MathHelper.Lerp (startFadeColor.G, Level.AmbientLight.G, lerp);
-				float blue = MathHelper.Lerp (startFadeColor.B, Level.AmbientLight.B, lerp);
-				float alpha = MathHelper.Lerp (startFadeColor.A, Level.AmbientLight.A, lerp);
+				var color = startFadeColor.ToVector4();
+				var colorTo = Level.AmbientLight.ToVector4();
 
-				map.AmbientColor = new Color (red, green, blue, alpha);
+				float lerpValue = MathHelper.Lerp (startFadeColor.A, Level.AmbientLight.A, fadePassed / fadeTotal);
+				map.AmbientColor = new Color (10, 10, 10, (int)lerpValue);
+				texture.SetData (new [] { new Color(0, 0, 0, map.AmbientColor.A)});
 
 				if (lerp >= 1)
 					fadingLight = false;
@@ -131,8 +132,6 @@ namespace Moxy.GameStates
 
 		public void monster_OnDeath(object sender, EventArgs e)
 		{
-			monsterCount--;
-
 			var monster = sender as Monster;
 			monster.OnDeath -= monster_OnDeath;
 			monsterPurgeQueue.Enqueue (monster);
@@ -142,6 +141,7 @@ namespace Moxy.GameStates
 			{
 				item.OnPickup += item_OnPickup;
 				items.Add(item);
+				Console.WriteLine("Dropping " + Enum.GetName(typeof(ItemID), item.ItemID));
 			}
 		}
 
@@ -198,9 +198,9 @@ namespace Moxy.GameStates
 			if (characterSelectState.CharactersSelected)
 			{
 				Reset ();
-				LoadNextLevel();
-				LoadMap ();
+				LoadMap();
 				LoadPlayers();
+				LoadNextLevel ();
 				characterSelectState.CharactersSelected = false;
 			}
 
@@ -217,6 +217,7 @@ namespace Moxy.GameStates
 			Moxy.StateManager.Push(uiOverlay);
 		}
 
+		private float MaxPlayerDistance = 1000;
 		private Gunner gunner1;
 		private FireballEmitter FireballEmitter;
 		private Gunner gunner2;
@@ -248,14 +249,14 @@ namespace Moxy.GameStates
 		private float spawnPassed;
 		private bool isLoaded;
 		private Timer gamePauseTimer;
-		public bool InbetweenRounds;
+		public bool InbetweenRounds = true;
 		public DateTime StartLevelTime;
-		private int timeBetweenRounds = 10;
+		private int timeBetweenRounds = 1;
 
 		private bool fadingLight;
 		private Color startFadeColor;
 		private float fadePassed;
-		private float fadeTotal = 5f;
+		private float fadeTotal = 2f;
 		
 		private void DrawGame (SpriteBatch batch)
 		{
@@ -292,7 +293,7 @@ namespace Moxy.GameStates
 			Moxy.Graphics.Clear (Color.CornflowerBlue);
 
 			batch.Begin();
-			batch.Draw (texture, new Rectangle (0, 0, 800, 600), new Color (0, 0, 0, map.AmbientColor.A));
+			batch.Draw (texture, new Rectangle (0, 0, 800, 600), new Color (0, 0, 0, 255));
 			batch.End();
 
 			batch.Begin (SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.None,
@@ -367,6 +368,9 @@ namespace Moxy.GameStates
 					Gunner = gunner1,
 				};
 
+				gunner1.OnMovement += (Player_OnMovement);
+				powerGenerator1.OnMovement += (Player_OnMovement);
+
 				gunner1.Generator = powerGenerator1;
 
 				redPacketEmitter.Target = gunner1;
@@ -425,6 +429,28 @@ namespace Moxy.GameStates
 			uiOverlay.ActivePlayers = players;
 		}
 
+		void Player_OnMovement(object sender, EventHandlers.PlayerMovementEventArgs e)
+		{
+			var distance = 0f;
+			switch (e.Player.EntityType)
+			{
+				case EntityType.Generator:
+					var gen = (PowerGenerator)e.Player;
+					distance = Vector2.Distance(e.NewLocation, gen.Gunner.Location);
+					break;
+				case EntityType.Gunner:
+					var gun = (Gunner)e.Player;
+					distance = Vector2.Distance(e.NewLocation, gun.Generator.Location);
+					break;
+			}
+
+			if (distance > MaxPlayerDistance)
+			{
+				e.Handled = true;
+				e.NewLocation = e.CurrentLocation;
+			}
+		}
+
 		private void LoadMap()
 		{
 			camera = new DynamicCamera ();
@@ -432,10 +458,10 @@ namespace Moxy.GameStates
 			camera.UseBounds = true;
 
 			map = new MapRoot(128, 128, 64, 64, Moxy.ContentManager.Load<Texture2D>("tileset"));
-			map = Moxy.Maps[Moxy.CurrentLevelIndex].Build ();
+			map = Moxy.Maps[0].Build ();
 
 			texture = new Texture2D (Moxy.Graphics, 1, 1);
-			texture.SetData (new[] { new Color (255, 255, 255, 255) });
+			texture.SetData (new[] { new Color (0, 0, 0, map.AmbientColor.A) });
 		}
 
 		private void OnBulletCollision(object sender, GenericEventArgs<Monster> e)
@@ -462,6 +488,8 @@ namespace Moxy.GameStates
 			}
 
 			monsters.Clear();
+			monsterCount = 0;
+
 			Level = Moxy.Levels[Moxy.CurrentLevelIndex];
 			InbetweenRounds = true;
 			gamePauseTimer.Change (new TimeSpan (0, 0, 0, timeBetweenRounds), new TimeSpan (0, 0, 0, timeBetweenRounds));
