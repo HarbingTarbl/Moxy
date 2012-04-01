@@ -25,7 +25,7 @@ namespace Moxy.GameStates
 				Speed = .5f,
 				PadIndex = PlayerIndex.One
 			});
-			Camera = new Camera(Moxy.ScreenWidth, Moxy.ScreenHeight);
+			Camera = new Camera2D(Moxy.ScreenWidth, Moxy.ScreenHeight);
 			Monsters = new List<Monster>();
 			Map.Camera = Camera;
 			//Camera.UseBounds = true;
@@ -91,6 +91,6 @@ namespace Moxy.GameStates
 		public UIOverlay UI;
 		public TileMap Map;
 		public List<Player> Dudes;
-		public Camera Camera;
+		public Camera2D Camera;
 	}
 }

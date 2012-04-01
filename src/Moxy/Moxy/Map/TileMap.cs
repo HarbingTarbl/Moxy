@@ -26,7 +26,7 @@ namespace Moxy.Map
 		public Vector2 TileSize;
 		public Vector2 MapSize;
 		public Color AmbientLight;
-		public Camera Camera;
+		public Camera2D Camera;
 
 		public TileMap()
 		{
@@ -43,7 +43,6 @@ namespace Moxy.Map
 		{
 			UpdateEditor(gameTime);
 		}
-
 
 		public void SetTileAtPoint(Vector2 Location, int Value)
 		{

@@ -6,9 +6,9 @@ using Microsoft.Xna.Framework;
 
 namespace Moxy
 {
-	public class Camera
+	public class Camera2D
 	{
-		public Camera(int width, int height)
+		public Camera2D(int width, int height)
 		{
 			this.width = width;
 			this.height = height;

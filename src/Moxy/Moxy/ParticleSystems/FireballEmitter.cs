@@ -67,7 +67,9 @@ namespace Moxy.ParticleSystems
 				var particle = new Particle(Gunner.Location, ParticleTexture, 1f, 1f)
 				{
 					EndLocation = Gunner.Location + (Direction * maxParticleRange),
+					Rotation = (float)Math.Atan2 (Direction.Y, Direction.X),
 					Size = 10f,
+					Scale = 0.35f
 				};
 				base.StartParticle(particle);
 			}

@@ -30,6 +30,7 @@ namespace Moxy
 		public float Size;
 		public Texture2D Texture;
 		public float Scale;
+		public float Rotation;
 		public Color Color;
 		public float Time;
 		public float TimePassed;
@@ -38,7 +39,7 @@ namespace Moxy
 
 		public void Draw(SpriteBatch batch)
 		{
-			batch.Draw (Texture, CurrentLocation, null, Color, 0f, origin, Scale, SpriteEffects.None, 1f);
+			batch.Draw (Texture, CurrentLocation, null, Color, Rotation, origin, Scale, SpriteEffects.None, 1f);
 		}
 
 		private Vector2 origin;

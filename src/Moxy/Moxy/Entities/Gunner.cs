@@ -118,8 +118,6 @@ namespace Moxy.Entities
 			}
 		}
 
-		
-
 		private void fireballEmitter_OnParticleMonsterCollision(object sender, Events.GenericEventArgs<Monster> e)
 		{
 			e.Data.Health -= FireballDamage;

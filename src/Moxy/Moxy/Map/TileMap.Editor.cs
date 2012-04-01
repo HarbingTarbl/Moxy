@@ -21,10 +21,9 @@ namespace Moxy.Map
 				EditActive = true;
 				defaultScale = Camera.Scale;
 			}
-
 		}
 
-		public void SaveFile(string FileName = "map.bin")
+		public void SaveFile (string FileName = "Content/map1.bin")
 		{
 			BinaryWriter writer = new BinaryWriter(File.Create(FileName));
 			using(writer)
@@ -71,8 +70,6 @@ namespace Moxy.Map
 			if (EditActive)
 			{
 				var mouseState = Mouse.GetState();
-				
-
 				var state = Keyboard.GetState();
 				var key = 0;
 

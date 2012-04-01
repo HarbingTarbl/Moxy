@@ -233,17 +233,18 @@ namespace Moxy.GameStates
 
 		private void LoadPlayers()
 		{
-			float gunnerSpeed = 0.1f;
+			float gunnerSpeed = 0.3f;//0.1f;
 			float enchanterSpeed = 0.3f;
 			PlayerIndex invalidPlayerIndex = (PlayerIndex)5;
 
-			if (characterSelectState.Gunner1 != invalidPlayerIndex)
+			if (characterSelectState.Gunner1 != invalidPlayerIndex
+				|| characterSelectState.PowerGenerator1 != invalidPlayerIndex)
 			{
 				gunner1 = new Gunner
 				{
-					PadIndex = PlayerIndex.One,
+					PadIndex = characterSelectState.Gunner1,
 					Color = Color.White,
-					Location = new Vector2 (200, 0),
+					Location = new Vector2 (700, 700),
 					Speed = gunnerSpeed,
 					Light = new Light (Color.White, lightTexture),
 					Team = Team.Red,
@@ -252,9 +253,9 @@ namespace Moxy.GameStates
 
 				powerGenerator1 = new PowerGenerator
 				{
-					PadIndex = PlayerIndex.Two,
+					PadIndex = characterSelectState.PowerGenerator1,
 					Color = Color.White,
-					Location = new Vector2 (400, 0),
+					Location = new Vector2 (780, 700),
 					Speed = enchanterSpeed,
 					Light = new Light (Color.White, lightTexture),
 					Team = Team.Red,
@@ -274,11 +275,12 @@ namespace Moxy.GameStates
 				camera.ViewTargets.Add (powerGenerator1);
 			}
 
-			if (characterSelectState.Gunner2 != invalidPlayerIndex)
+			if (characterSelectState.Gunner2 != invalidPlayerIndex
+				|| characterSelectState.PowerGenerator2 != invalidPlayerIndex)
 			{
 				gunner2 = new Gunner
 				{
-					PadIndex = PlayerIndex.Three,
+					PadIndex = characterSelectState.Gunner2,
 					Color = Color.White,
 					Location = new Vector2 (200, 0),
 					Speed = gunnerSpeed,
@@ -289,7 +291,7 @@ namespace Moxy.GameStates
 
 				powerGenerator2 = new PowerGenerator
 				{
-					PadIndex = PlayerIndex.Four,
+					PadIndex = characterSelectState.PowerGenerator2,
 					Color = Color.White,
 					Location = new Vector2 (400, 0),
 					Speed = enchanterSpeed,

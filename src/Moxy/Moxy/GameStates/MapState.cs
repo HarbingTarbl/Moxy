@@ -12,10 +12,9 @@ namespace Moxy.GameStates
 		: BaseGameState
 	{
 		public MapState()
-			: base("MenuState", isOverlay:false, acceptsInput:true)
+			: base("MapState", isOverlay:false, acceptsInput:true)
 		{
 			derp = new TileMap();
-		
 		}
 	
 		public override void Update(GameTime gameTime)
@@ -25,18 +24,21 @@ namespace Moxy.GameStates
 
 		public override void Draw (SpriteBatch batch)
 		{
-			batch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullCounterClockwise);
+			batch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default,
+				RasterizerState.CullCounterClockwise, null, derp.Camera.Transformation);
+
 			derp.Draw(batch);
 			batch.End();
 		}
 
 		public override void OnFocus()
 		{
-			derp.Texture = Moxy.ContentManager.Load<Texture2D>("lofi_tiles");
-			derp.MapSize = new Vector2(5, 5);
-			derp.TileSize = new Vector2(8, 8);
-
-			derp.CreateTiles("map.bin");
+			derp.Texture = Moxy.ContentManager.Load<Texture2D> ("tileset");
+			derp.MapSize = new Vector2(256, 256);
+			derp.TileSize = new Vector2(64, 64);
+			derp.Camera = new Camera2D (800, 600);
+			derp.Camera.CenterOnPoint (0, 0);
+			derp.CreateTiles("Content/map1.bin");
 		}
 
 		public TileMap derp;

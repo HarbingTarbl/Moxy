@@ -40,7 +40,7 @@ namespace Moxy.GameStates
 					readyCount++;
 			}
 
-			if (allReady && readyCount >= 2)
+			if (allReady && readyCount >= 1)
 			{
 				Gunner1 = frames[0].PlayerIndex;
 				PowerGenerator1 = frames[1].PlayerIndex;
