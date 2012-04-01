@@ -20,7 +20,7 @@ namespace Moxy.GameStates
 			players = new List<Player> (4);
 			lights = new List<Light>();
 			monsters = new List<Monster>();
-			monsterPurgeList = new List<Monster>();
+			monsterPurgeQueue = new Queue<Monster>();
 			items = new List<Item>();
 			itemPurgeQueue = new Queue<Item>();
 			redPacketEmitter = new EnergyPacketEmitter();
@@ -36,13 +36,8 @@ namespace Moxy.GameStates
 			camera.Update (Moxy.Graphics);
 			map.Update (gameTime);
 
-			
-			
 			foreach (Player player in players)
 				player.Update (gameTime);
-
-			while (itemPurgeQueue.Count > 0)
-				items.Remove (itemPurgeQueue.Dequeue ());
 
 			foreach(var item in items)
 			{
@@ -51,11 +46,8 @@ namespace Moxy.GameStates
 				item.CheckCollision(powerGenerator1);
 			}
 
-			foreach (var monster in monsterPurgeList)
-			{
-				monsters.Remove(monster);
-			}
-			monsterPurgeList.Clear();
+			while (itemPurgeQueue.Count > 0)
+				items.Remove (itemPurgeQueue.Dequeue ());
 
 			foreach (var monster in monsters)
 			{
@@ -64,6 +56,9 @@ namespace Moxy.GameStates
 				monster.CheckCollide(gunner1);
 				monster.CheckCollide(powerGenerator1);
 			}
+
+			while (monsterPurgeQueue.Count > 0)
+				monsters.Remove (monsterPurgeQueue.Dequeue ());
 
 			redPacketEmitter.CalculateEnergyRate(gameTime);
 			//GenerateEnergy (gameTime);
@@ -88,11 +83,12 @@ namespace Moxy.GameStates
 		{
 			var monster = sender as Monster;
 			monster.OnDeath -= monster_OnDeath;
-			monsterPurgeList.Add(monster);
+			monsterPurgeQueue.Enqueue (monster);
+
 			var item = monster.DropItem();
 			if (item != null)
 			{
-				item.OnPickup += new EventHandler<GenericEventArgs<Player>>(item_OnPickup);
+				item.OnPickup += item_OnPickup;
 				items.Add(item);
 			}
 		}
@@ -148,6 +144,7 @@ namespace Moxy.GameStates
 		{
 			if (characterSelectState.CharactersSelected)
 			{
+				Reset ();
 				LoadMap();
 				LoadPlayers();
 				characterSelectState.CharactersSelected = false;
@@ -174,7 +171,7 @@ namespace Moxy.GameStates
 		private List<Light> lights;
 		private Queue<Item> itemPurgeQueue;
 		private List<Item> items;
-		private List<Monster> monsterPurgeList;
+		private Queue<Monster> monsterPurgeQueue;
 		private List<Monster> monsters;
 		private RenderTarget2D gameTarget;
 		private RenderTarget2D lightTarget;
@@ -244,6 +241,21 @@ namespace Moxy.GameStates
 				part.Light.Draw(batch);
 
 			batch.End ();
+		}
+
+		private void Reset()
+		{
+			lights.Clear();
+			players.Clear();
+			monsters.Clear();
+
+			uiOverlay.ActivePlayers.Clear();
+			uiOverlay.StatusBars.Clear();
+			uiOverlay.RedEnergyBar = null;
+			uiOverlay.RedSkillBar = null;
+			uiOverlay.RedRuneBar = null;
+			uiOverlay.BlueEnergyBar = null;
+			//TODO: Add blue removable here
 		}
 
 		private void LoadPlayers()

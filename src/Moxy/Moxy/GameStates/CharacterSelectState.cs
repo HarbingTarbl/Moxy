@@ -104,6 +104,13 @@ namespace Moxy.GameStates
 
 		public override void OnFocus()
 		{
+			foreach (var frame in frames)
+			{
+				frame.IsReady = false;
+				if (frame.Selecter != null)
+					frame.Selecter.IsReady = false;
+			}
+
 			Gunner1 = (PlayerIndex)5;
 			Gunner2 = (PlayerIndex)5;
 			PowerGenerator1 = (PlayerIndex)5;

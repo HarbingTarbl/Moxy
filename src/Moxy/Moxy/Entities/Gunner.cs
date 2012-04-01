@@ -62,7 +62,6 @@ namespace Moxy.Entities
 			get
 			{
 				return fireballEmitter;
-
 			}
 			set
 			{
@@ -71,7 +70,6 @@ namespace Moxy.Entities
 				fireballEmitter.OnParticleMonsterCollision += new EventHandler<Events.GenericEventArgs<Monster>>(fireballEmitter_OnParticleMonsterCollision);
 			}
 		}
-
 
 		public float OverloadLevel = 0;
 		public float MaxOverloadLevel = 500;
@@ -90,9 +88,7 @@ namespace Moxy.Entities
 			var interpol = Vector3.SmoothStep(whiteVector, redVector, (float)Math.Sin(OverloadRate));
 			var interpolColor = new Color(interpol);
 
-			batch.Draw(PowerCircleTexture, this.Location, null, interpolColor, baseRotation, CircleOrigin, 1f, SpriteEffects.None, 0f);
-
-
+			batch.Draw(PowerCircleTexture, this.CollisionCenter, null, interpolColor, baseRotation, CircleOrigin, 1f, SpriteEffects.None, 0f);
 			batch.Draw(Texture, new Rectangle((int)Location.X, (int)Location.Y, 64, 64), Animations.Bounding, Color, Rotation - MathHelper.PiOver2, new Vector2(32, 32), SpriteEffects.None, 0);
 		}
 
@@ -100,6 +96,7 @@ namespace Moxy.Entities
 		{
 			HandleInput(gameTime);
 			OverloadLevel += OverloadRate;
+
 			if (OverloadLevel >= MaxOverloadLevel)
 			{
 				Moxy.StateManager.Set("MainMenu");
@@ -116,6 +113,7 @@ namespace Moxy.Entities
 
 			baseRotation += MathHelper.PiOver4 * (float)gameTime.ElapsedGameTime.TotalSeconds;
 			Animations.Update(gameTime);
+
 			base.Update(gameTime);
 		}
 

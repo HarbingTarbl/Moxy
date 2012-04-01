@@ -33,8 +33,7 @@ namespace Moxy.Entities
 
 		public void Damage(float amount)
 		{
-			Health -= Math.Max(0, (amount - Defence));
-
+			Health -= Math.Max (0, (amount - Defence));
 		}
 
 		public override void Update (GameTime gameTime)
@@ -45,6 +44,7 @@ namespace Moxy.Entities
 
 			CollisionCenter = Location;
 			Collision = new Rectangle((int)CollisionCenter.X, (int)CollisionCenter.Y, 1, 1);
+			CollisionRadius = 32f;
 			Collision.Inflate((int)CollisionRadius, (int)CollisionRadius);
 		}
 
@@ -73,9 +73,10 @@ namespace Moxy.Entities
 			if (Health <= 0 && OnDeath != null)
 				OnDeath(this, null);
 
-
 			base.Location += moveVector * Speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-			base.Rotation = (float)Math.Atan2 (moveVector.Y, moveVector.X);
+
+			if (moveVector.Length() != 0)
+				base.Rotation = (float)Math.Atan2 (moveVector.Y, moveVector.X);
 
 			lastMovement = moveVector;
 			oldPad = currentPad;

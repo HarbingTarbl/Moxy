@@ -26,9 +26,8 @@ namespace Moxy.Entities
 		public void CheckCollide(Player player)
 		{
 			var distance = Vector2.Distance(player.CollisionCenter, CollisionCenter);
-			if(distance < player.CollisionRadius + CollisionRadius && OnCollisionWithPlayer != null)
-				OnCollisionWithPlayer(this, new GenericEventArgs<Player>(player));
-
+			if (distance < player.CollisionRadius + CollisionRadius && OnCollisionWithPlayer != null)
+				OnCollisionWithPlayer (this, new GenericEventArgs<Player> (player));
 		}
 
 		public override void Update(GameTime gameTime)

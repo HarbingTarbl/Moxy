@@ -45,7 +45,7 @@ namespace Moxy.Entities
 			Light = new Light(new Color(0f, 0.4f, 0f, 0.6f));
 
 			EntityType = global::Moxy.EntityType.Slime;
-			OnCollisionWithPlayer += new EventHandler<Events.GenericEventArgs<Player>>(Slime_OnCollisionWithPlayer);
+			OnCollisionWithPlayer += Slime_OnCollisionWithPlayer;
 		}
 
 		public float SlimeDamage = 10f;
