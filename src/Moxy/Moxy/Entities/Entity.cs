@@ -24,6 +24,11 @@ namespace Moxy.Entities
 
 		public abstract void Update(GameTime gameTime);
 		public abstract void Draw(SpriteBatch batch);
+		public virtual void Draw(SpriteBatch batch, Rectangle ViewFrustrum)
+		{
+			if(ViewFrustrum.Contains(Collision))
+				Draw(batch);
+		}
 
 
 		public AnimationManager Animations;

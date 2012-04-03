@@ -312,14 +312,15 @@ namespace Moxy.GameStates
 			//if (boss == null)
 			{
 				foreach (Player player in players)
-					player.Draw(batch);
+					player.Draw(batch, camera.ViewFrustrum);
 			}
 
 			foreach (Monster monster in monsters)
-				monster.Draw (batch);
+				monster.Draw (batch, camera.ViewFrustrum);
 
 			foreach (var item in items)
-				item.Draw(batch);
+				item.Draw(batch, camera.ViewFrustrum);
+
 			if (boss != null)
 				boss.Draw(batch);
 			

@@ -55,7 +55,7 @@ namespace Moxy
 			var worldAtView = ScreenToWorld(new Vector2(Moxy.Graphics.Viewport.Width, Moxy.Graphics.Viewport.Height));
 			ViewFrustrum = new Rectangle((int)Math.Floor(worldAtZero.X), (int)Math.Floor(worldAtZero.Y), (int)Math.Ceiling(worldAtView.X - worldAtZero.X),
 			                             (int)Math.Ceiling(worldAtView.Y - worldAtZero.Y));
-			
+			ViewFrustrum.Inflate(100, 100);
 			if (ViewTargets.Count > 0)
 			{
 				Vector2 min = ViewTargets[0].Location;

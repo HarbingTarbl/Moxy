@@ -28,6 +28,12 @@ namespace Moxy.Entities
 		public Light Light;
 		public bool Enabled = true;
 
+		public void Draw(SpriteBatch batch, Rectangle ViewFrustrum)
+		{
+			if(ViewFrustrum.Contains(Collision))
+				Draw(batch);
+		}
+
 		public void Draw(SpriteBatch batch)
 		{
 			batch.Draw(Texture, Collision, Bounds, Color, 0f, Vector2.Zero, SpriteEffects.None, 0);
