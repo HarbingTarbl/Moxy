@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Moxy.Entities;
+using Moxy.GameStates;
 
 namespace Moxy
 {
@@ -13,8 +14,8 @@ namespace Moxy
 	{
 		public override MapRoot Build()
 		{
-			MapRoot map = new MapRoot (64, 64, 64, 64, Moxy.ContentManager.Load<Texture2D> ("tileset"));
-			map.AmbientColor = new Color (10, 10, 10, 10);
+			MapRoot map = new MapRoot (64, 64, 64, 64, Moxy.ContentManager.Load<Texture2D> ("tileset"), ((GameState)Moxy.StateManager["Game"]).camera);
+			map.AmbientColor = new Color (1, 1, 1, 1);
 
 			// Load lights
 			Texture2D lightTexture = Moxy.ContentManager.Load<Texture2D> ("light");

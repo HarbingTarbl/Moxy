@@ -76,7 +76,7 @@ namespace Moxy.GameStates
 
 				if (spawnPassed > Level.SpawnDelay && monsterCount < Level.MaxMonsters)
 				{
-					var bounds = camera.ScreenFrustrum;
+					var bounds = camera.PlayerFrustrum;
 					bounds.Inflate (200, 200);
 
 					int x = 0;
@@ -306,7 +306,8 @@ namespace Moxy.GameStates
 			batch.Begin (SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None,
 				RasterizerState.CullCounterClockwise, null, camera.GetTransformation (Moxy.Graphics));
 
-			map.Draw(batch, new Rectangle(0, 0, 64, 64));
+
+			map.Draw(batch);
 
 			//if (boss == null)
 			{
@@ -321,6 +322,7 @@ namespace Moxy.GameStates
 				item.Draw(batch);
 			if (boss != null)
 				boss.Draw(batch);
+			
 
 			batch.End ();
 
@@ -517,11 +519,12 @@ namespace Moxy.GameStates
 		private void LoadMap()
 		{
 			camera = new DynamicCamera ();
-			camera.MinimumSize = new Size (600, 600);
+			camera.MinimumSize = new Size (800, 600);
 			camera.UseBounds = true;
 
-			map = new MapRoot(128, 128, 64, 64, Moxy.ContentManager.Load<Texture2D>("tileset"));
+			map = new MapRoot(128, 128, 64, 64, Moxy.ContentManager.Load<Texture2D>("tileset"), camera);
 			map = Moxy.Maps[0].Build ();
+		
 
 			texture = new Texture2D (Moxy.Graphics, 1, 1);
 			texture.SetData (new[] { new Color (0, 0, 0, map.AmbientColor.A) });

@@ -21,6 +21,7 @@ namespace Moxy.GameStates
 	
 		public override void Update(GameTime gameTime)
 		{
+			camera.Update(Moxy.Graphics);
 			map.Update(gameTime);
 
 			var mouseState = Mouse.GetState ();
@@ -74,9 +75,9 @@ namespace Moxy.GameStates
 		public override void Draw (SpriteBatch batch)
 		{
 			batch.Begin (SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None,
-				RasterizerState.CullCounterClockwise, null, camera.Transformation);
+				RasterizerState.CullCounterClockwise, null, camera.GetTransformation(Moxy.Graphics));
 		
-			map.Draw (batch, new Rectangle(0, 0, 64, 64));
+			map.Draw (batch);
 
 			batch.End();
 
@@ -101,6 +102,8 @@ namespace Moxy.GameStates
 			batch.DrawString (font, "Current TileID: " + currentTileID, new Vector2 (10, 100), Color.Red);
 			batch.DrawString (font, "Current Layer: " + Enum.GetName (typeof(MapLayerType), currentLayer), new Vector2 (10, 120), Color.Red);
 			batch.DrawString (font, "World at Cursor: " + WorldAtCursor.ToString(), new Vector2 (10, 140), Color.Red);
+			batch.DrawString (font, "TIles Drawn: " + map.TilesDrawn, new Vector2(10, 180),Color.Red);
+			batch.DrawString (font, "FPS: " + (1/Moxy.GameTime.ElapsedGameTime.TotalSeconds).ToString(), new Vector2(10, 200),Color.Red) ;
 			
 			batch.End();
 		}
@@ -112,11 +115,15 @@ namespace Moxy.GameStates
 			//map = new MapRoot (64, 64, 64, 64, Moxy.ContentManager.Load<Texture2D> ("tileset"));
 			//InitializeBaseLayer (16);
 
-			camera = new Camera2D (800, 600);
+			camera = new DynamicCamera();
+			camera.UseBounds = true;
+			camera.MinimumSize = new Size(800, 600);
+			camera.Position = new Vector2(0, 0);
+			map.ViewCamera = camera;
 		}
 
 		public MapRoot map;
-		public Camera2D camera;
+		public DynamicCamera camera;
 		private KeyboardState old;
 		private MouseState oldMouse;
 		private EditorTool currentTool;
@@ -132,20 +139,20 @@ namespace Moxy.GameStates
 		private void HandleCameraControls(KeyboardState state, GameTime gameTime)
 		{
 			// Moving
-			if (state.IsKeyDown (Keys.W))
-				camera.Location -= new Vector2 (0, 600) * (float)gameTime.ElapsedGameTime.TotalSeconds;
-			else if (state.IsKeyDown (Keys.S))
-				camera.Location += new Vector2 (0, 600) * (float)gameTime.ElapsedGameTime.TotalSeconds;
-			if (state.IsKeyDown (Keys.A))
-				camera.Location -= new Vector2 (600, 0) * (float)gameTime.ElapsedGameTime.TotalSeconds;
-			else if (state.IsKeyDown (Keys.D))
-				camera.Location += new Vector2 (600, 0) * (float)gameTime.ElapsedGameTime.TotalSeconds;
+			if (state.IsKeyDown(Keys.W))
+				camera.MoveDiff(-new Vector2(0, 600) * (float)gameTime.ElapsedGameTime.TotalSeconds);
+			else if (state.IsKeyDown(Keys.S))
+				camera.MoveDiff(new Vector2(0, 600)*(float) gameTime.ElapsedGameTime.TotalSeconds);
+			if (state.IsKeyDown(Keys.A))
+				camera.MoveDiff(-new Vector2(600, 0) * (float)gameTime.ElapsedGameTime.TotalSeconds);
+			else if (state.IsKeyDown(Keys.D))
+				camera.MoveDiff(new Vector2(600, 0)*(float) gameTime.ElapsedGameTime.TotalSeconds);
 
 			// Zooming
-			if (state.IsKeyDown (Keys.Up))
-				camera.Scale += 0.0075f;
-			else if (state.IsKeyDown (Keys.Down))
-				camera.Scale -= 0.0075f;
+			if (state.IsKeyDown(Keys.Up))
+				camera.ZoomDiff(0.0075f);
+			else if (state.IsKeyDown(Keys.Down))
+				camera.ZoomDiff(-0.0075f);
 		}
 
 		public void SetTileAtPoint (Vector2 Location, int Value)

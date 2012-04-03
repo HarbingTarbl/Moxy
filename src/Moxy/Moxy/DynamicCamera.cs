@@ -13,17 +13,18 @@ namespace Moxy
 		public Vector2 Position = Vector2.Zero;
 		public float Zoom = 1;
 		public float Rotation = 0;
-		public List<Player> ViewTargets = new List<Player> ();
+		public List<Player> ViewTargets = new List<Player>();
 
 		public bool UseBounds;
 		public Size MinimumSize;
 		public int InflateAmount = 100;
-		public Rectangle ScreenFrustrum;
+		public Rectangle PlayerFrustrum;
+		public Rectangle ViewFrustrum;
 
-		public Vector2 ScreenToWorld(Vector2 ScreenPos)
+		public Vector2 ScreenToWorld(Vector2 screenVector)
 		{
-			return new Vector2((ScreenPos.X / Zoom) + Position.X,
-				(ScreenPos.Y / Zoom) + Position.Y);
+			return new Vector2((screenVector.X/Zoom) + Position.X,
+			                   (screenVector.Y/Zoom) + Position.Y);
 		}
 
 		public Vector2 WorldToScreen(Vector2 WorldPos)
@@ -34,16 +35,27 @@ namespace Moxy
 
 		public Matrix GetTransformation(GraphicsDevice graphicsdevice)
 		{
-			return Matrix.CreateTranslation (new Vector3 (-Position.X, -Position.Y, 0)) *
-				Matrix.CreateRotationZ (Rotation) *
-				Matrix.CreateScale (new Vector3 (Zoom, Zoom, 0)) *
-				Matrix.CreateTranslation (new Vector3 (
-				graphicsdevice.Viewport.Width * 0.5f,
-				graphicsdevice.Viewport.Height * 0.5f, 0));
+			return Matrix.CreateTranslation(new Vector3(-Position.X, -Position.Y, 0))*
+			       Matrix.CreateScale(new Vector3(Zoom, Zoom, 0));
+		}
+
+		public void MoveDiff(Vector2 Dif)
+		{
+			desiredPosition += Dif;
+		}
+
+		public void ZoomDiff(float Dif)
+		{
+			desiredZoom += Dif;
 		}
 
 		public void Update(GraphicsDevice graphicsdevice)
 		{
+			var worldAtZero = ScreenToWorld(Vector2.Zero);
+			var worldAtView = ScreenToWorld(new Vector2(Moxy.Graphics.Viewport.Width, Moxy.Graphics.Viewport.Height));
+			ViewFrustrum = new Rectangle((int)Math.Floor(worldAtZero.X), (int)Math.Floor(worldAtZero.Y), (int)Math.Ceiling(worldAtView.X - worldAtZero.X),
+			                             (int)Math.Ceiling(worldAtView.Y - worldAtZero.Y));
+			
 			if (ViewTargets.Count > 0)
 			{
 				Vector2 min = ViewTargets[0].Location;
@@ -63,28 +75,29 @@ namespace Moxy
 				if (UseBounds)
 				{
 					if (rect.Width < MinimumSize.Width)
-						rect.Inflate ((int)(MinimumSize.Width - rect.Width) / 2, 0);
-					
+						rect.Inflate((int)(MinimumSize.Width - rect.Width) / 2, 0);
+
 					if (rect.Height < MinimumSize.Height)
-						rect.Inflate (0, (int)(MinimumSize.Height - rect.Height) / 2);
+						rect.Inflate(0, (int)(MinimumSize.Height - rect.Height) / 2);
 				}
 				
 				rect.Inflate (InflateAmount, InflateAmount);
-				ScreenFrustrum = rect;
+				PlayerFrustrum = rect;
 
-				desiredPosition = new Vector2 (rect.Center.X, rect.Center.Y);
+				desiredPosition = new Vector2(rect.X, rect.Y);
 
 				float widthdiff = ((float)graphicsdevice.Viewport.Width) / ((float)rect.Width);
 				float heightdiff = ((float)graphicsdevice.Viewport.Height) / ((float)rect.Height);
 				desiredZoom = Math.Min (widthdiff, heightdiff);
+
 			}
 
-			Position = Vector2.Lerp (Position, desiredPosition, 0.1f);
-			Zoom = MathHelper.Lerp (Zoom, desiredZoom, 0.1f);
+			Position = Vector2.Lerp(Position, desiredPosition, 0.1f);
+			Zoom = MathHelper.Lerp(Zoom, desiredZoom, 0.1f);
 		}
 
-		private float desiredZoom;
-		private Vector2 desiredPosition;
+		private float desiredZoom = 1;
+		private Vector2 desiredPosition = new Vector2(0, 0);
 
 	}
 }

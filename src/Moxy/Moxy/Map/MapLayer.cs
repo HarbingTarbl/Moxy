@@ -24,14 +24,15 @@ namespace Moxy
 
 		public void Draw(SpriteBatch batch, Rectangle bounds)
 		{
-			var drawLocation = new Rectangle(0, 0, (int)Parent.TileDimensions.Width, (int)Parent.TileDimensions.Height);
-			for (var x = 0; x < Parent.Dimensions.Width; x++)
+			var drawLocation = new Rectangle(bounds.X * (int)Parent.TileDimensions.Width, bounds.Y * (int)Parent.TileDimensions.Height, (int)Parent.TileDimensions.Width, (int)Parent.TileDimensions.Height);
+			for (var x = bounds.X; x < (bounds.Right); x++)
 			{
 				drawLocation.Y = bounds.Y * (int)Parent.TileDimensions.Height ;
-				for (var y = 0; y < Parent.Dimensions.Width; y++)
+				for (var y = bounds.Y; y < (bounds.Bottom); y++)
 				{
 					batch.Draw(Parent.Texture, drawLocation, Parent.Boundings[Tiles[x, y]], Color.White);
 					drawLocation.Y += (int)Parent.TileDimensions.Height;
+					Parent.TilesDrawn++;
 				}
 				drawLocation.X += (int)Parent.TileDimensions.Width;
 

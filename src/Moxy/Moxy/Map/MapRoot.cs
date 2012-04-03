@@ -10,13 +10,14 @@ namespace Moxy
 {
 	public class MapRoot
 	{
-		public MapRoot(int Width, int Height, int TileWidth, int TileHeight, Texture2D texture)
+		public MapRoot(int Width, int Height, int TileWidth, int TileHeight, Texture2D texture, DynamicCamera Camera)
 		{
 			Layers = new MapLayer[3];
 			Dimensions = new Size(Width, Height);
 			TileDimensions = new Size(TileWidth, TileHeight);
 			CollidableID = new HashSet<int> ();
 			Texture = texture;
+			ViewCamera = Camera;
 
 			CreateBoundings ();
 			CreateLayers();
@@ -30,16 +31,20 @@ namespace Moxy
 			throw new NotImplementedException();
 		} 
 
+	
 		public readonly Texture2D Texture;
 		public readonly MapLayer[] Layers;
 		public readonly Size Dimensions;
 		public readonly Size TileDimensions;
-		public readonly HashSet<int> CollidableID; 
+		public readonly HashSet<int> CollidableID;
+
+		public DynamicCamera ViewCamera;
 
 		public Color AmbientColor;
-		public Vector2 LocationOffset;
+	
 		public Rectangle[] Boundings;
 
+		public Vector2 LocationOffset;
 		public Vector2 TeamRedSpawn;
 		public Vector2 TeamBlueSpawn;
 		public Vector2[] PowerGeneratorSpawns;
@@ -48,13 +53,27 @@ namespace Moxy
 		public List<MonsterSpawner> MonsterSpawners;
 		public List<Light> PointLights;
 
+		public int TilesDrawn;
+		//Mainly a debug field
+
 		public Size TilesToPixel
 		{
 			get { return new Size(Dimensions.Width * TileDimensions.Width, Dimensions.Height * TileDimensions.Height); }
 		}
 
-		public void Draw(SpriteBatch batch, Rectangle bounds)
+		public void Draw(SpriteBatch batch)
 		{
+			TilesDrawn = 0;
+			Rectangle bounds;
+			if(ViewCamera == null)
+			{
+				bounds = new Rectangle(0, 0, (int)Dimensions.Width, (int)Dimensions.Height);
+			}
+			else
+			{
+				bounds = BuildCullingRectangle();
+			}
+
 			Layers[(int)MapLayerType.Base].Draw (batch, bounds);
 			Layers[(int)MapLayerType.Decal].Draw (batch, bounds);
 			//Layers[(int)MapLayerType.Collision].Draw(batch);
@@ -65,12 +84,20 @@ namespace Moxy
 
 		}
 
-		public Rectangle BuildCullingRectangle(float Scale, Vector2 TranlatedCameraLocation, Vector2 CameraLocation)
+		public Rectangle BuildCullingRectangle()
 		{
-			var rec = new Rectangle((int)Math.Floor(Math.Max(((TranlatedCameraLocation.X + CameraLocation.X)/ TileDimensions.Width), 0)),
-				(int)Math.Floor(Math.Max(((TranlatedCameraLocation.Y + CameraLocation.Y)/ TileDimensions.Height), 0)), 
-				(int)Math.Ceiling(Math.Min((Moxy.Graphics.Viewport.Width / (Scale * TileDimensions.Width)) + 3, Dimensions.Width)), 
-				(int)Math.Ceiling(Math.Min((Moxy.Graphics.Viewport.Height / (Scale * TileDimensions.Height)) + 3, Dimensions.Height)));
+			var x = (int) Math.Floor(ViewCamera.ViewFrustrum.Left/TileDimensions.Width);
+			var y = (int) Math.Floor(ViewCamera.ViewFrustrum.Top/TileDimensions.Height);
+			var width = (int) Math.Ceiling(ViewCamera.ViewFrustrum.Width/TileDimensions.Width) + 1;
+			var height = (int) Math.Ceiling(ViewCamera.ViewFrustrum.Height/TileDimensions.Height) + 1;
+			x = (int) Math.Max(x, 0);
+			y = (int) Math.Max(y, 0);
+			width = (int) Math.Min(width, (Dimensions.Width - x));
+			height = (int) Math.Min(height, (Dimensions.Height - y));
+			
+
+
+			var rec = new Rectangle(x, y, width, height);
 			return rec;
 		}
 
