@@ -30,9 +30,13 @@ namespace Moxy
 				drawLocation.Y = bounds.Y * (int)Parent.TileDimensions.Height ;
 				for (var y = bounds.Y; y < (bounds.Bottom); y++)
 				{
-					batch.Draw(Parent.Texture, drawLocation, Parent.Boundings[Tiles[x, y]], Color.White);
+					if (Tiles[x, y] != 0)
+					{
+						batch.Draw(Parent.Texture, drawLocation, Parent.Boundings[Tiles[x, y]], Color.White);
+						Parent.TilesDrawn++;
+					}
 					drawLocation.Y += (int)Parent.TileDimensions.Height;
-					Parent.TilesDrawn++;
+						
 				}
 				drawLocation.X += (int)Parent.TileDimensions.Width;
 

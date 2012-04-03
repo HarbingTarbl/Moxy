@@ -35,12 +35,16 @@ namespace Moxy.GameStates
 			if (currentTool == EditorTool.PlaceTiles)
 			{
 				int tileID = currentTileID;
-				if (WasKeyPressed (state, Keys.PageUp))
-					tileID++;
-				else if (WasKeyPressed (state, Keys.PageDown))
-					tileID = Helpers.LowerClamp(tileID - 1, 0);
+				if (WasKeyPressed(state, Keys.Right))
+					tileID++;// = (int)MathHelper.Min(tileID + 1, map.Boundings.Length - 1);
+				else if (WasKeyPressed(state, Keys.Left))
+					tileID--;// = Helpers.LowerClamp(tileID - 1, 0);
 
-				currentTileID = tileID;
+				if (tileID < 0)
+					tileID = map.Boundings.Length + tileID;
+
+				currentTileID = tileID%map.Boundings.Length;
+					
 
 				if (mouseState.LeftButton == ButtonState.Pressed)
 					SetTileAtPoint (new Vector2 (mouseState.X, mouseState.Y), currentTileID);
@@ -83,16 +87,17 @@ namespace Moxy.GameStates
 
 			batch.Begin ();
 			if (currentTool == EditorTool.PlaceTiles)
-				batch.Draw (map.Texture, new Vector2 (oldMouse.X, oldMouse.Y), map.Boundings[currentTileID], Color.White);
+				batch.Draw (map.Texture, new Vector2 (oldMouse.X, oldMouse.Y), map.Boundings[currentTileID % map.Boundings.Length], Color.White);
 
 			// Render tile helper at top
 			batch.Draw (texture, new Rectangle(0, 0, 800, 70), Color.DarkGray);
 			int startIndex = Helpers.LowerClamp (currentTileID - 5, 0);
+			//int endIndex = (int)MathHelper.Min(currentTileID + 10, )
 
 			for (int i = startIndex; i < startIndex+10; i++)
 			{
 				int modifier = i - (startIndex + 5);
-				batch.Draw (map.Texture, new Vector2(368 + (modifier * 64), 2), map.Boundings[i], Color.White);
+				batch.Draw (map.Texture, new Vector2(368 + (modifier * 64), 2), map.Boundings[i % map.Boundings.Length], Color.White);
 
 				if (i == currentTileID)
 					batch.Draw (highlightTexture, new Vector2 (368 + (modifier * 64), 2), Color.White);
