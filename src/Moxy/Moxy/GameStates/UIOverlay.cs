@@ -245,13 +245,13 @@ namespace Moxy.GameStates
 		{
 			switch (Generator.CurrentSkill.MatchArray[slot])
 			{
-				case ItemID.BluePowerup:
+				case ItemID.WaterRune:
 					return WaterRune;
-				case ItemID.RedPowerup:
+				case ItemID.FireRune:
 					return FireRune;
-				case ItemID.YellowPowerup:
+				case ItemID.WindRune:
 					return AirRune;
-				case ItemID.GreenPowerup:
+				case ItemID.EarthRune:
 					return EarthRune;
 			}
 

@@ -43,10 +43,10 @@ namespace Moxy.Skills
 		public TriShotSkill(PowerGenerator Gen)
 			: base(Gen)
 		{
-			MatchArray[0] = ItemID.RedPowerup;
-			MatchArray[1] = ItemID.RedPowerup;
-			MatchArray[2] = ItemID.RedPowerup;
-			MatchArray[3] = ItemID.RedPowerup;
+			MatchArray[0] = ItemID.FireRune;
+			MatchArray[1] = ItemID.FireRune;
+			MatchArray[2] = ItemID.FireRune;
+			MatchArray[3] = ItemID.FireRune;
 		}
 
 		public override bool OnSkillUsed(PowerGenerator Gen)
@@ -74,10 +74,10 @@ namespace Moxy.Skills
 		public ProtectionSkill(PowerGenerator Gen)
 			: base(Gen)
 		{
-			MatchArray[0] = ItemID.BluePowerup;
-			MatchArray[1] = ItemID.GreenPowerup;
-			MatchArray[2] = ItemID.GreenPowerup;
-			MatchArray[3] = ItemID.RedPowerup;
+			MatchArray[0] = ItemID.WaterRune;
+			MatchArray[1] = ItemID.EarthRune;
+			MatchArray[2] = ItemID.EarthRune;
+			MatchArray[3] = ItemID.FireRune;
 		}
 
 
@@ -106,10 +106,10 @@ namespace Moxy.Skills
 		public RageSkill(PowerGenerator Gen)
 			: base(Gen)
 		{
-			MatchArray[0] = ItemID.BluePowerup;
-			MatchArray[1] = ItemID.YellowPowerup;
-			MatchArray[2] = ItemID.GreenPowerup;
-			MatchArray[3] = ItemID.GreenPowerup;
+			MatchArray[0] = ItemID.WaterRune;
+			MatchArray[1] = ItemID.WindRune;
+			MatchArray[2] = ItemID.EarthRune;
+			MatchArray[3] = ItemID.EarthRune;
 		}
 
 		public override bool OnSkillUsed(PowerGenerator Gen)
@@ -136,10 +136,10 @@ namespace Moxy.Skills
 		public PowerSKill(PowerGenerator Gen)
 			: base(Gen)
 		{
-			MatchArray[0] = ItemID.YellowPowerup;
-			MatchArray[1] = ItemID.GreenPowerup;
-			MatchArray[2] = ItemID.RedPowerup;
-			MatchArray[3] = ItemID.BluePowerup;
+			MatchArray[0] = ItemID.WindRune;
+			MatchArray[1] = ItemID.EarthRune;
+			MatchArray[2] = ItemID.FireRune;
+			MatchArray[3] = ItemID.WaterRune;
 		}
 
 

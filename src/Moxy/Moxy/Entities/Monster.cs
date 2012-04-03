@@ -96,17 +96,17 @@ namespace Moxy.Entities
 			{
 				switch (id)
 				{
-					case ItemID.GreenPowerup:
-						item = new GreenSkillUp();
+					case ItemID.EarthRune:
+						item = new EarthRuneItem();
 						break;
-					case ItemID.RedPowerup:
-						item = new RedSkillUp();
+					case ItemID.FireRune:
+						item = new FireRuneItem();
 						break;
-					case ItemID.YellowPowerup:
-						item = new YellowSkillUp();
+					case ItemID.WindRune:
+						item = new WindRuneItem();
 						break;
-					case ItemID.BluePowerup:
-						item = new BlueSkillUp();
+					case ItemID.WaterRune:
+						item = new WaterRuneItem();
 						break;
 				}
 				if (item != null)
@@ -119,10 +119,10 @@ namespace Moxy.Entities
 
 		public static ItemID[] DropTable = new ItemID[] 
 		{
-			ItemID.GreenPowerup,
-			ItemID.BluePowerup,
-			ItemID.YellowPowerup,
-			ItemID.RedPowerup
+			ItemID.EarthRune,
+			ItemID.WaterRune,
+			ItemID.WindRune,
+			ItemID.FireRune
 		};
 
 

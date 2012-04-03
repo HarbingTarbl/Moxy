@@ -65,10 +65,10 @@ namespace Moxy.Entities
 	public enum ItemID
 	{
 		None,
-		GreenPowerup,
-		RedPowerup,
-		YellowPowerup,
-		BluePowerup,
+		EarthRune,
+		FireRune,
+		WindRune,
+		WaterRune,
 		HealthPowerup,
 		ManaPowerup
 

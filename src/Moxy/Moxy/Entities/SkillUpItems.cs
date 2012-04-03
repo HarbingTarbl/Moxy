@@ -7,14 +7,13 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace Moxy.Entities
 {
-	public class RedSkillUp
+	public class FireRuneItem
 		: Item
 	{
-		public RedSkillUp()
+		public FireRuneItem()
 		{
 			CollisionRadius = 25;
-			base.Color = Color.Red;
-			ItemID = ItemID.RedPowerup;
+			ItemID = ItemID.FireRune;
 			Bounds = new Rectangle(132, 100, 24, 24);
 		}
 
@@ -30,14 +29,13 @@ namespace Moxy.Entities
 		}
 	}
 
-	public class BlueSkillUp
+	public class WaterRuneItem
 		: Item
 	{
-		public BlueSkillUp()
+		public WaterRuneItem()
 		{
 			CollisionRadius = 25;
-			base.Color = Color.Aquamarine;
-			ItemID = ItemID.BluePowerup;
+			ItemID = ItemID.WaterRune;
 			Bounds = new Rectangle(132, 4, 24, 24);
 		}
 
@@ -53,14 +51,13 @@ namespace Moxy.Entities
 		}
 	}
 
-	public class YellowSkillUp
+	public class WindRuneItem
 		: Item
 	{
-		public YellowSkillUp()
+		public WindRuneItem()
 		{
 			CollisionRadius = 25;
-			base.Color = Color.Yellow;
-			ItemID = ItemID.YellowPowerup;
+			ItemID = ItemID.WindRune;
 			Bounds = new Rectangle(292, 68, 24, 24);
 		}
 
@@ -76,14 +73,13 @@ namespace Moxy.Entities
 		}
 	}
 
-	public class GreenSkillUp
+	public class EarthRuneItem
 		: Item
 	{
-		public GreenSkillUp()
+		public EarthRuneItem()
 		{
 			CollisionRadius = 25;
-			base.Color = Color.Green;
-			ItemID = ItemID.GreenPowerup;
+			ItemID = ItemID.EarthRune;
 			Bounds = new Rectangle(292, 4, 24, 24);
 		}
 
