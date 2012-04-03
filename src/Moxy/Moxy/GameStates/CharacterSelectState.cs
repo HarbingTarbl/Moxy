@@ -40,7 +40,7 @@ namespace Moxy.GameStates
 					readyCount++;
 			}
 
-			if (allReady && readyCount >= 2)
+			if (allReady)
 			{
 				Gunner1 = frames[0].PlayerIndex;
 				PowerGenerator1 = frames[1].PlayerIndex;
@@ -49,6 +49,16 @@ namespace Moxy.GameStates
 
 				CharactersSelected = true;
 				Moxy.StateManager.Set ("Game");
+			}
+
+			// Lock certain portraits
+			int controllerCount = selecters.Where (s => s.IsConnected).Count ();
+			for (int i = 0; i < 4; i++)
+			{
+				if (i < controllerCount)
+					frames[i].Unlock ();
+				else
+					frames[i].Lock ();
 			}
 		}
 
@@ -77,6 +87,7 @@ namespace Moxy.GameStates
 			powerFrame = Moxy.ContentManager.Load<Texture2D> ("powerFrame");
 			checkTexture = Moxy.ContentManager.Load<Texture2D> ("checkmark");
 			panelTexture = Moxy.ContentManager.Load<Texture2D> ("cspanel");
+			lockTexture = Moxy.ContentManager.Load<Texture2D> ("lock");
 
 			acceptSound = Moxy.ContentManager.Load<SoundEffect> ("Sounds//accept");
 			declineSound = Moxy.ContentManager.Load<SoundEffect> ("Sounds//decline");
@@ -86,22 +97,21 @@ namespace Moxy.GameStates
 			selecters = new ControllerSelector[4];
 
 			for (int i = 0; i < 4; i++)
-			{
 				frames[i] = new CharacterFrame
 				{
 					FrameTexture = Moxy.ContentManager.Load<Texture2D> ("cf" + i),
 					CheckTexture = checkTexture,
+					LockTexture = lockTexture,
 					Location = new Vector2 (i * 200, 0)
 				};
-			}
 
 			for (int i = 0; i < 4; i++)
-				selecters[i] = new ControllerSelector ((PlayerIndex)i, frames, selecters, i)
-					{
-						AcceptSound = acceptSound,
-						DeclineSound = declineSound,
-						MoveSound = moveSound,
-					};
+				selecters[i] = new ControllerSelector ((PlayerIndex) i, frames, selecters, i)
+				{
+					AcceptSound = acceptSound,
+					DeclineSound = declineSound,
+					MoveSound = moveSound,
+				};
 		}
 
 		public override void OnFocus()
@@ -122,6 +132,7 @@ namespace Moxy.GameStates
 		private Texture2D frameTexture;
 		private Texture2D gunnerFrame;
 		private Texture2D powerFrame;
+		private Texture2D lockTexture;
 		private Texture2D panelTexture;
 		private Texture2D checkTexture;
 		private CharacterFrame[] frames;
@@ -137,9 +148,12 @@ namespace Moxy.GameStates
 			public Texture2D CharacterTexture;
 			public Texture2D FrameTexture;
 			public Texture2D CheckTexture;
+			public Texture2D LockTexture;
 			public Rectangle Framebounds;
 			public Vector2 checkOrigin;
+			public Vector2 lockOrigin;
 			public bool IsReady;
+			public bool IsLocked;
 			public ControllerSelector Selecter;
 
 			public PlayerIndex PlayerIndex
@@ -149,7 +163,7 @@ namespace Moxy.GameStates
 
 			public void Draw(SpriteBatch batch)
 			{
-				Color color = IsReady ? Color.Gray : Color.White;
+				Color color = IsReady || IsLocked ? Color.Gray : Color.White;
 
 				batch.Draw (FrameTexture, Location, color);
 
@@ -157,10 +171,26 @@ namespace Moxy.GameStates
 				{
 					Framebounds = new Rectangle ((int) Location.X, (int) Location.Y, FrameTexture.Width, FrameTexture.Height);
 					checkOrigin = new Vector2 (CheckTexture.Width / 2, CheckTexture.Height / 2);
+					lockOrigin = new Vector2 (LockTexture.Width / 2, LockTexture.Height / 2);
 				}
 
 				if (IsReady)
 					batch.Draw (CheckTexture, Framebounds.Center.ToVector2(), null, Color.White, 0f, checkOrigin, 1f, SpriteEffects.None, 1f);
+				if (IsLocked)
+					batch.Draw (LockTexture, Framebounds.Center.ToVector2 (), null, Color.White, 0f, lockOrigin, 1f, SpriteEffects.None, 1f);
+			}
+
+			public void Lock()
+			{
+				IsLocked = true;
+				if (Selecter != null)
+					Selecter.IsReady = false;
+			}
+
+			public void Unlock()
+			{
+				IsLocked = false;
+
 			}
 		}
 
@@ -198,7 +228,7 @@ namespace Moxy.GameStates
 				GamePadState lastState = Moxy.LastPadStates[PlayerIndex];
 				IsConnected = padState.IsConnected;
 
-				if (padState.Buttons.A.WasButtonPressed (lastState.Buttons.A) && !frames[SelectedIndex].IsReady)
+				if (padState.Buttons.A.WasButtonPressed (lastState.Buttons.A) && !frames[SelectedIndex].IsReady && !frames[SelectedIndex].IsLocked)
 				{
 					frames[SelectedIndex].IsReady = true;
 					frames[SelectedIndex].Selecter = this;

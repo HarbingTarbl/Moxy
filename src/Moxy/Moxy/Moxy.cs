@@ -101,8 +101,11 @@ namespace Moxy
 		{
 			Moxy.GameTime = gameTime;
 
-			foreach (PlayerIndex padIndex in CurrentPadStates.Keys.ToArray())
-				CurrentPadStates[padIndex] = GamePad.GetState (padIndex);
+			foreach (PlayerIndex padIndex in CurrentPadStates.Keys.ToArray ())
+			{
+				if ((int)padIndex < 4)
+					CurrentPadStates[padIndex] = GamePad.GetState (padIndex);
+			}
 
 			Moxy.StateManager.Update (gameTime);
 			Moxy.Dialog.Update (gameTime);

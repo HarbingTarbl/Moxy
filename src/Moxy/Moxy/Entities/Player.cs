@@ -25,14 +25,9 @@ namespace Moxy.Entities
 			//Moxy.StateManager.Set("MainMenu");
 		}
 
-
 		public string Animation
 		{
-			get
-			{
-				return animation;
-			}
-
+			get { return animation; }
 			set
 			{
 				animation = value;
@@ -41,17 +36,13 @@ namespace Moxy.Entities
 		}
 		public int Level
 		{
-			get
-			{
-				return level;
-			}
+			get { return level; }
 			set
 			{
 				level = value;
 				Animations.SetAnimation(animation + "_" + level.ToString());
 			}
 		}
-
 
 		protected string animation;
 		protected int level = 1;
@@ -62,18 +53,25 @@ namespace Moxy.Entities
 		public Color Color;
 		public Team Team;
 		public Light Light;
-
+		public bool AIControlled;
 		public bool MovementDisabled;
 
 		public void Damage(float amount)
 		{
-			GamePad.SetVibration(PadIndex, 0, MathHelper.Lerp(amount, 100, 1));
+			if (Health > 0 && !AIControlled)
+			{
+				GamePad.SetVibration (PadIndex, 0, MathHelper.Lerp (amount, 100, 1));
+				GamePad.SetVibration (PadIndex, 0, 0);
+			}
+
 			Health -= Math.Max (0, (amount - Defence));
-			GamePad.SetVibration(PadIndex, 0, 0);
 		}
 
 		public override void Update (GameTime gameTime)
 		{
+			if (AIControlled)
+				ProcessAI (gameTime);
+
 			HandleInput (gameTime);
 
 			Light.Location = Location + new Vector2(32, 32);
@@ -91,9 +89,13 @@ namespace Moxy.Entities
 			batch.Draw (texture, new Rectangle((int)Location.X, (int)Location.Y, 64, 64), null, Color);
 		}
 
+		protected virtual void ProcessAI(GameTime gameTime)
+		{
+		}
+
 		private void HandleInput (GameTime gameTime)
 		{
-			GamePadState currentPad = GamePad.GetState (PadIndex);
+			GamePadState currentPad = Moxy.CurrentPadStates[PadIndex];
 
 			Vector2 moveVector = currentPad.ThumbSticks.Left;
 			if (moveVector.Length() > 0)
@@ -108,7 +110,7 @@ namespace Moxy.Entities
 
 			Health = MathHelper.Clamp(Health, 0, MaxHealth);
 
-			var playerMoveEventArgs = new PlayerMovementEventArgs()
+			var playerMoveEventArgs = new PlayerMovementEventArgs
 			{
 				NewLocation = this.Location + moveVector * Speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds,
 				Handled = false,

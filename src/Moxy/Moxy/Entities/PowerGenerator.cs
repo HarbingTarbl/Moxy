@@ -73,7 +73,6 @@ namespace Moxy.Entities
 			ActiveSkills = new List<SkillEffect>();
 			CurrentItem = 0;
 		}
-
 		
 		public Gunner Gunner;
 		public ItemID[] CurrentRunes;
@@ -162,7 +161,10 @@ namespace Moxy.Entities
 		public override void Update(GameTime gameTime)
 		{
 			Health = Math.Min(Gunner.Health, Health);
-			HandleInput(gameTime);
+			
+			if (!AIControlled)
+				HandleInput(gameTime);
+
 			for (var x = 0; x < ActiveSkills.Count; x++)
 			{
 				ActiveSkills[x].Update(gameTime);
@@ -176,5 +178,26 @@ namespace Moxy.Entities
 		}
 
 		private Vector2 oldPosition;
+
+		protected override void ProcessAI(GameTime gameTime)
+		{
+			Vector2 moveDirection = Vector2.Zero;
+
+			if (Vector2.Distance (Gunner.Location, Location) > 200)
+			{
+				moveDirection = Gunner.Location - Location;
+				moveDirection.Normalize();
+				moveDirection.Y *= -1;
+			}
+
+			GamePadThumbSticks sticks = new GamePadThumbSticks (moveDirection, Vector2.Zero);
+			GamePadDPad pad = new GamePadDPad (ButtonState.Released, ButtonState.Released, ButtonState.Released, ButtonState.Released);
+			Buttons buttons = default (Buttons);
+
+			Moxy.CurrentPadStates[PadIndex] = new GamePadState (sticks,
+				new GamePadTriggers (0f, 0f),
+				new GamePadButtons (buttons),
+				pad);
+		}
 	}
 }

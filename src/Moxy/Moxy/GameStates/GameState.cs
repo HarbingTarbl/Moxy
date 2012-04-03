@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Moxy.Entities;
 using Moxy.Levels;
 using Moxy.ParticleSystems;
@@ -292,6 +293,7 @@ namespace Moxy.GameStates
 		public int Team1Score;
 		public int Team2Score;
 		public int[] ExperienceTable;
+		private int lastAIID = 6;
 
 		private bool fadingLight;
 		private Color startFadeColor;
@@ -405,8 +407,16 @@ namespace Moxy.GameStates
 					Speed = gunnerSpeed,
 					Light = new Light (Color.White, lightTexture) { Scale = 1.5f },
 					Team = Team.Red,
-					FireballEmitter = FireballEmitter
+					FireballEmitter = FireballEmitter,
+					AIControlled = characterSelectState.Gunner1 == invalidPlayerIndex,
 				};
+
+				// Gunner 1 is controlled by AI
+				if (gunner1.PadIndex == invalidPlayerIndex)
+				{
+					gunner1.PadIndex = GenerateAIIndex();
+					gunner1.AIControlled = true;
+				}
 
 				powerGenerator1 = new PowerGenerator
 				{
@@ -417,7 +427,15 @@ namespace Moxy.GameStates
 					Light = new Light (Color.White, lightTexture) { Scale = 1.5f },
 					Team = Team.Red,
 					Gunner = gunner1,
+					AIControlled = characterSelectState.PowerGenerator1 == invalidPlayerIndex,
 				};
+
+				// Power gen 1 is controlled by AI
+				if (powerGenerator1.PadIndex == invalidPlayerIndex)
+				{
+					powerGenerator1.PadIndex = GenerateAIIndex ();
+					powerGenerator1.AIControlled = true;
+				}
 
 				gunner1.OnMovement += (Player_OnMovement);
 				powerGenerator1.OnMovement += (Player_OnMovement);
@@ -480,6 +498,16 @@ namespace Moxy.GameStates
 			}
 
 			uiOverlay.ActivePlayers = players;
+		}
+
+
+		private PlayerIndex GenerateAIIndex()
+		{
+			PlayerIndex index = (PlayerIndex)(++lastAIID);
+			Moxy.CurrentPadStates.Add (index, default (GamePadState));
+			Moxy.LastPadStates.Add (index, default(GamePadState));
+
+			return index;
 		}
 
 		void Player_OnDeath(object sender, EventArgs e)
