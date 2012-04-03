@@ -141,6 +141,8 @@
     <Compile Include="GameStates\TestGameState.cs" />
     <Compile Include="GameStates\UIOverlay.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="Interface\CharacterFrame.cs" />
+    <Compile Include="Interface\ControllerSelecter.cs" />
     <Compile Include="Levels\BaseLevel.cs" />
     <Compile Include="Levels\LevelFive.cs" />
     <Compile Include="Levels\LevelFour.cs" />

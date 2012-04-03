@@ -78,7 +78,7 @@ namespace Moxy.GameStates
 
 		public override void Load()
 		{
-			Map.Texture = Moxy.ContentManager.Load<Texture2D>("lofi_tiles");
+			Map.Texture = Moxy.ContentManager.Load<Texture2D>("tileset");
 			Map.MapSize = new Vector2(50, 50);
 			Map.TileSize = new Vector2(8, 8);
 			Map.CreateTiles();

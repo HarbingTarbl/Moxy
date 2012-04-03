@@ -12,7 +12,7 @@ namespace Moxy.Entities
 	{
 		public Slime()
 		{
-			Texture = Moxy.ContentManager.Load<Texture2D>("EnemySpriteSheet");
+			Texture = Moxy.ContentManager.Load<Texture2D>("Characters//EnemySpriteSheet");
 			Animations = new AnimationManager(Texture, new Animation[]
 			{
 				new Animation("Idle_Ice", new Rectangle[]

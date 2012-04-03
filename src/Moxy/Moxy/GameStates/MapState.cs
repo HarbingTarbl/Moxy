@@ -70,8 +70,8 @@ namespace Moxy.GameStates
 
 		public override void Load()
 		{
-			font = Moxy.ContentManager.Load<SpriteFont> ("font");
-			highlightTexture = Moxy.ContentManager.Load<Texture2D> ("highlight");
+			font = Moxy.ContentManager.Load<SpriteFont> ("Fonts//font");
+			highlightTexture = Moxy.ContentManager.Load<Texture2D> ("Interface//highlight");
 			texture = new Texture2D (Moxy.Graphics, 1, 1);
 			texture.SetData (new[] { new Color (100, 100, 100, 100) });
 		}

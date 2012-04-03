@@ -13,7 +13,7 @@ namespace Moxy
 		public DialogRunner()
 		{
 			messages = new Queue<CharacterMessage> ();
-			font = Moxy.ContentManager.Load<SpriteFont> ("scorefont");
+			font = Moxy.ContentManager.Load<SpriteFont> ("Fonts//scorefont");
 			chatBox = Moxy.ContentManager.Load<Texture2D> ("dialogBox");
 
 			chatBoxLocation = new Vector2 (0, Moxy.ScreenHeight - chatBox.Height);

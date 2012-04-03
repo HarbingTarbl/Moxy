@@ -51,8 +51,8 @@ namespace Moxy.GameStates
 
 		public override void Load()
 		{
-			titleTexture = Moxy.ContentManager.Load<Texture2D> ("titlescreen");
-			startTexture = Moxy.ContentManager.Load<Texture2D> ("startButton");
+			titleTexture = Moxy.ContentManager.Load<Texture2D> ("Interface//titlescreen");
+			startTexture = Moxy.ContentManager.Load<Texture2D> ("Interface//startButton");
 			acceptSound = Moxy.ContentManager.Load<SoundEffect> ("Sounds\\accept");
 			music = Moxy.ContentManager.Load<Song> ("Sounds\\titlemusic");
 		}

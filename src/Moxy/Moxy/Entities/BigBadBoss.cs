@@ -12,7 +12,7 @@ namespace Moxy.Entities
 	{
 		public BigBadBoss(Vector2 Location)
 		{
-			Texture = Moxy.ContentManager.Load<Texture2D>("BossSpriteSheet");
+			Texture = Moxy.ContentManager.Load<Texture2D>("Characters//BossSpriteSheet");
 			Animations = new AnimationManager(Texture, new Animation[]
 			{
 				new Animation("Spawn", new Rectangle[]

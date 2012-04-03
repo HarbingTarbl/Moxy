@@ -12,7 +12,7 @@ namespace Moxy.Entities
 	{
 		public Demon()
 		{
-			Texture = Moxy.ContentManager.Load<Texture2D>("demonSpriteSheet");
+			Texture = Moxy.ContentManager.Load<Texture2D>("Characters//demonSpriteSheet");
 			Animations = new AnimationManager(Texture, new Animation[]
 			{
 				new Animation("Idle", new Rectangle[]

@@ -18,7 +18,7 @@ namespace Moxy.Entities
 		public Gunner()
 		{
 			PowerCircleTexture = Moxy.ContentManager.Load<Texture2D>("Radius");
-			Texture = Moxy.ContentManager.Load<Texture2D>("Team1SpriteSheet");
+			Texture = Moxy.ContentManager.Load<Texture2D>("Characters//Team1SpriteSheet");
 			Animations = new AnimationManager(Texture,
 				new Animation[] 
 				{

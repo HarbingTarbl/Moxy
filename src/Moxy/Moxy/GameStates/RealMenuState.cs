@@ -22,12 +22,12 @@ namespace Moxy.GameStates
 
 		public override void Load()
 		{
-			Background = Moxy.ContentManager.Load<Texture2D>("ArcanaBG");
-			Credits = Moxy.ContentManager.Load<Texture2D>("Credits");
-			Play = Moxy.ContentManager.Load<Texture2D>("PlayMenu");
-			Exit = Moxy.ContentManager.Load<Texture2D>("Exit");
-			Title = Moxy.ContentManager.Load<Texture2D>("Arcana");
-			Selector = Moxy.ContentManager.Load<Texture2D>("MasterRune");
+			Background = Moxy.ContentManager.Load<Texture2D> ("Interface//ArcanaBG");
+			Credits = Moxy.ContentManager.Load<Texture2D> ("Interface//Credits");
+			Play = Moxy.ContentManager.Load<Texture2D> ("Interface//PlayMenu");
+			Exit = Moxy.ContentManager.Load<Texture2D> ("Interface//Exit");
+			Title = Moxy.ContentManager.Load<Texture2D> ("Interface//Arcana");
+			Selector = Moxy.ContentManager.Load<Texture2D> ("Interface//MasterRune");
 			AcceptSound = Moxy.ContentManager.Load<SoundEffect>("Sounds/accept");
 
 

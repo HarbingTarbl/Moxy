@@ -27,9 +27,9 @@ namespace Moxy.GameStates
 			StatusBar.Pixel = new Texture2D (Moxy.Graphics, 1, 1, false, SurfaceFormat.Color);
 			StatusBar.Pixel.SetData (new [] { Color.White });
 
-			getReadyTexture = Moxy.ContentManager.Load<Texture2D> ("getready");
-			font = Moxy.ContentManager.Load<SpriteFont> ("spookyfont");
-			scorefont = Moxy.ContentManager.Load<SpriteFont> ("scorefont");
+			getReadyTexture = Moxy.ContentManager.Load<Texture2D> ("Interface//getready");
+			font = Moxy.ContentManager.Load<SpriteFont> ("Fonts//spookyfont");
+			scorefont = Moxy.ContentManager.Load<SpriteFont> ("Fonts//scorefont");
 
 			EnergyBar.UI = this;
 			StatusBars = new List<StatusBar> ();
@@ -168,7 +168,7 @@ namespace Moxy.GameStates
 	{
 		public static Rectangle BoxSize = new Rectangle(0, 0, 150, 150);
 		public static Rectangle ItemSize = new Rectangle(0, 0, 50, 50);
-		public static Texture2D SkillTextures = Moxy.ContentManager.Load<Texture2D>("icons");
+		public static Texture2D SkillTextures = Moxy.ContentManager.Load<Texture2D> ("Interface//icons");
 		public static Color ActiveColor = Color.White;
 		public static Color InActiveColor = new Color(128, 128, 128, 128);
 
@@ -227,10 +227,10 @@ namespace Moxy.GameStates
 	{
 		public static Rectangle BarSize = new Rectangle(0, 0, 100, 440);
 		public static Rectangle RuneSize = new Rectangle(0, 0, 100, 50);
-		public static Texture2D FireRune = Moxy.ContentManager.Load<Texture2D>("FireRune");
-		public static Texture2D EarthRune = Moxy.ContentManager.Load<Texture2D>("EarthRune");
-		public static Texture2D WaterRune = Moxy.ContentManager.Load<Texture2D>("WaterRune");
-		public static Texture2D AirRune = Moxy.ContentManager.Load<Texture2D>("AirRune");
+		public static Texture2D FireRune = Moxy.ContentManager.Load<Texture2D> ("Interface//FireRune");
+		public static Texture2D EarthRune = Moxy.ContentManager.Load<Texture2D> ("Interface//EarthRune");
+		public static Texture2D WaterRune = Moxy.ContentManager.Load<Texture2D> ("Interface//WaterRune");
+		public static Texture2D AirRune = Moxy.ContentManager.Load<Texture2D> ("Interface//AirRune");
 		public static Color Active = Color.Transparent;
 		public static Color Inactive = Color.White;
 
@@ -281,7 +281,7 @@ namespace Moxy.GameStates
 	{
 		public static Rectangle BarSize = new Rectangle(0, 0, 64, 256);
 		public static Rectangle BarFrame = new Rectangle(0, 2, 31, 158);
-		public static Texture2D Texture = Moxy.ContentManager.Load<Texture2D>("powerbarspritesheet");
+		public static Texture2D Texture = Moxy.ContentManager.Load<Texture2D> ("Interface//powerbarspritesheet");
 		public static UIOverlay UI;
 
 		public Gunner Player;
