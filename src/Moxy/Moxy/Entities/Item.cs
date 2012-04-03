@@ -13,7 +13,7 @@ namespace Moxy.Entities
 		public Item()
 		{
 			Texture = Moxy.ContentManager.Load<Texture2D>("Gems");
-			Light = new Light(new Color());
+			Light = new Light(Color.Transparent);
 			Light.Scale = 0.1f;
 		}
 
@@ -25,7 +25,6 @@ namespace Moxy.Entities
 		public float CollisionRadius = 10f;
 		public Color Color = Color.White;
 		public ItemID ItemID;
-		public bool IsPowerup = false;
 		public Light Light;
 		public bool Enabled = true;
 

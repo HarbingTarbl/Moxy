@@ -15,6 +15,8 @@ namespace Moxy.Entities
 			CollisionRadius = 25;
 			ItemID = ItemID.FireRune;
 			Bounds = new Rectangle(132, 100, 24, 24);
+			Light.Color = Color.Red;
+			Light.Color.A = 60;
 		}
 
 		public override bool OnPlayerCollision(Player p)
@@ -37,6 +39,8 @@ namespace Moxy.Entities
 			CollisionRadius = 25;
 			ItemID = ItemID.WaterRune;
 			Bounds = new Rectangle(132, 4, 24, 24);
+			Light.Color = Color.Blue;
+			Light.Color.A = 60;
 		}
 
 		public override bool OnPlayerCollision(Player p)
@@ -59,6 +63,8 @@ namespace Moxy.Entities
 			CollisionRadius = 25;
 			ItemID = ItemID.WindRune;
 			Bounds = new Rectangle(292, 68, 24, 24);
+			Light.Color = Color.Aquamarine;
+			Light.Color.A = 60;
 		}
 
 		public override bool OnPlayerCollision(Player p)
@@ -81,6 +87,8 @@ namespace Moxy.Entities
 			CollisionRadius = 25;
 			ItemID = ItemID.EarthRune;
 			Bounds = new Rectangle(292, 4, 24, 24);
+			Light.Color = Color.Green;
+			Light.Color.A = 60;
 		}
 
 		public override bool OnPlayerCollision(Player p)

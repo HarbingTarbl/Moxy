@@ -87,19 +87,14 @@ namespace Moxy.Entities
 
 		public void ApplyPowerup(Item item)
 		{
-			if (item.IsPowerup == false)
+			if (item.ItemID == CurrentSkill.MatchArray[CurrentItem] && item.Enabled)
 			{
-				if (item.ItemID == CurrentSkill.MatchArray[CurrentItem] && item.Enabled)
-				{
-					item.Enabled = false;
-					CurrentRunes[CurrentItem] = item.ItemID;
-					CurrentItem++;
-					CurrentItem %= 4;
-					Console.WriteLine("Picked up an item {0}", Enum.GetName(typeof(ItemID), item.ItemID));
-				}
+				item.Enabled = false;
+				CurrentRunes[CurrentItem] = item.ItemID;
+				CurrentItem++;
+				CurrentItem %= 4;
+				Console.WriteLine("Picked up an item {0}", Enum.GetName(typeof(ItemID), item.ItemID));
 			}
-			//else
-
 		}
 
 		public void SetCurrentSkill(GeneratorSkill NewSkill)
