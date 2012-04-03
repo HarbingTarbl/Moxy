@@ -379,6 +379,9 @@ namespace Moxy.GameStates
 			uiOverlay.RedSkillBar = null;
 			uiOverlay.RedRuneBar = null;
 			uiOverlay.BlueEnergyBar = null;
+
+			boss = null;
+			Moxy.CurrentLevelIndex = -1;
 			//TODO: Add blue removable here
 		}
 

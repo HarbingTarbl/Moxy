@@ -12,8 +12,8 @@ namespace Moxy.Levels
 		public LevelFour()
 		{
 			AmbientLight = new Color (10, 10, 10, 200);
-			WaveLength = 5;
-			MaxMonsters = 10;
+			WaveLength = 30;
+			MaxMonsters = 25;
 			SpawnIntervalLow = 0.5f;
 			SpawnIntervalHigh = 0.8f;
 

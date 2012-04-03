@@ -13,11 +13,12 @@ namespace Moxy.Levels
 		{
 			AmbientLight = new Color (10, 10, 10, 200);
 			WaveLength = 30;
-			MaxMonsters = 10;
-			SpawnIntervalLow = 0.5f;
-			SpawnIntervalHigh = 0.8f;
+			MaxMonsters = 15;
+			SpawnIntervalLow = 0.8f;
+			SpawnIntervalHigh = 1f;
 
-			AddMonster (1, "Slime");
+			AddMonster (5, "Slime");
+			AddMonster (1, "EyeBall");
 
 		}
 	}
