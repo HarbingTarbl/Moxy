@@ -132,7 +132,6 @@ namespace Moxy.GameStates
 								{
 									Location = new Vector2(20, 200),
 									Player = (PowerGenerator)player,
-									IsShown = true,
 									UI = this
 								};
 							}
@@ -190,13 +189,12 @@ namespace Moxy.GameStates
 		public UIOverlay UI;
 		public TimeSpan fadeTime, maxTime = new TimeSpan(0, 0, 1);
 		public Vector2 Location;
-		public bool IsShown = false;
 
 		public void Draw(SpriteBatch batch)
 		{
 			var currentIcon = new Rectangle(105, 170, 50, 50);
 			batch.Draw(SkillTextures, currentIcon, Bounding[Player.Skills.IndexOf(Player.CurrentSkill)], InActiveColor);
-			if (IsShown)
+			if (Player.SkillShown || fadeTime.TotalSeconds <= maxTime.TotalSeconds)
 			{
 				var screenPos = UI.OwningState.camera.WorldToScreen(Player.Location);
 				var drawRectangle = new Rectangle((int)screenPos.X, (int)screenPos.Y, ItemSize.Width, ItemSize.Height);
@@ -205,29 +203,24 @@ namespace Moxy.GameStates
 				{
 					drawRectangle.X = DrawLocations[i].X + (int)screenPos.X;
 					drawRectangle.Y = DrawLocations[i].Y + (int)screenPos.Y;
-					batch.Draw(SkillTextures, drawRectangle, Bounding[i], Color.Lerp(((Player.CurrentSkill == Player.Skills[i]) ? ActiveColor : InActiveColor), Color.Transparent, (float)(fadeTime.TotalSeconds / maxTime.TotalSeconds)));
+					batch.Draw(SkillTextures, drawRectangle, Bounding[i], Color.Lerp(((i == Player.SelectedSkill) ? ActiveColor : InActiveColor), Color.Transparent, (float)(fadeTime.TotalSeconds / maxTime.TotalSeconds)));
 				}
 			}
 		}
 
 		public void Update(GameTime gameTime)
 		{
-			fadeTime += gameTime.ElapsedGameTime;
-			if (fadeTime >= maxTime)
-				IsShown = false;
-			else
-				IsShown = true;
-
-			var pad = GamePad.GetState(Player.PadIndex);
-			if (pad.DPad.Right == ButtonState.Pressed ||
-				pad.DPad.Up == ButtonState.Pressed ||
-				pad.DPad.Down == ButtonState.Pressed ||
-				pad.DPad.Left == ButtonState.Pressed)
+			if(Player.SkillShown)
 			{
 				fadeTime = TimeSpan.Zero;
-				IsShown = true;
 			}
+			else
+			{
+				fadeTime += gameTime.ElapsedGameTime;
+			}
+			
 		}
+
 	}
 
 	public class RuneBar

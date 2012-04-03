@@ -74,7 +74,7 @@ namespace Moxy
 			Moxy.Dialog = new DialogRunner();
 
 			Moxy.StateManager.Load (Assembly.GetExecutingAssembly());
-			Moxy.StateManager.Set("MapState");
+			Moxy.StateManager.Set("MainMenu");
 
 			Moxy.Maps = new MapBuilder[]
 			{

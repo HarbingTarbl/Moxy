@@ -84,6 +84,8 @@ namespace Moxy.Entities
 		public float ParticleDelay;
 		public float ParticleTimePassed;
 		public bool PowerDisabled;
+		public int SelectedSkill;
+		public bool SkillShown;
 
 		public void ApplyPowerup(Item item)
 		{
@@ -108,20 +110,40 @@ namespace Moxy.Entities
 
 		public void HandleInput(GameTime gameTime)
 		{
-			var gamePad = GamePad.GetState(this.PadIndex);
+			var currentPadState = Moxy.CurrentPadStates[PadIndex];
+			var lastPadState = Moxy.LastPadStates[PadIndex];
 
-			if (gamePad.IsButtonDown(Buttons.A))
+			if (currentPadState.ThumbSticks.Right.Length() > .1)
+			{
+				SkillShown = true;
+				var angle = -(float)Math.Atan2(currentPadState.ThumbSticks.Right.Y, currentPadState.ThumbSticks.Right.X);
+
+				if (angle == -MathHelper.Pi)
+				{
+					SelectedSkill = 1;
+				}
+				else if (angle == -MathHelper.PiOver2)
+				{
+					SelectedSkill = 0;
+				}
+				else if (angle == MathHelper.PiOver2)
+				{
+					SelectedSkill = 3;
+				}
+				else if (angle == 0)
+				{
+					SelectedSkill = 2;
+				}
+
+				if(currentPadState.IsButtonDown(Buttons.RightShoulder) && lastPadState.IsButtonUp(Buttons.RightShoulder))
+					SetCurrentSkill(Skills[SelectedSkill]);
+			}
+			else
+				SkillShown = false;
+
+
+			if (currentPadState.IsButtonDown(Buttons.RightShoulder) && lastPadState.IsButtonUp(Buttons.RightShoulder) && SkillShown)
 				CurrentSkill.Activate(this.CurrentRunes);
-
-
-			if (gamePad.DPad.Left == ButtonState.Pressed)
-				SetCurrentSkill(Skills[1]);
-			if (gamePad.DPad.Up == ButtonState.Pressed)
-				SetCurrentSkill(Skills[0]);
-			if (gamePad.DPad.Down == ButtonState.Pressed)
-				SetCurrentSkill(Skills[3]);
-			if (gamePad.DPad.Right == ButtonState.Pressed)
-				SetCurrentSkill(Skills[2]);
 
 		}
 

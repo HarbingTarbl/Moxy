@@ -102,13 +102,25 @@ namespace Moxy.GameStates
 				if (i == currentTileID)
 					batch.Draw (highlightTexture, new Vector2 (368 + (modifier * 64), 2), Color.White);
 			}
+#region "Remove Me"
+				var pad = GamePad.GetState(0);
+			if(pad.IsConnected)
+			{
+				var angle = -(float)Math.Atan2(pad.ThumbSticks.Right.Y, pad.ThumbSticks.Right.X);
+				var center = camera.ScreenToWorld(new Vector2(Moxy.ScreenWidth / 2, Moxy.ScreenHeight / 2));
+				batch.Draw(StatusBar.Pixel, new Rectangle((int)center.X, (int)center.Y - 1, 30, 3), null, Color.Red, angle,
+						   Vector2.Zero, SpriteEffects.None, 0f);
+				batch.DrawString(font, "Angle: " + MathHelper.ToDegrees(angle).ToString(), new Vector2(10, 220), Color.Red);
 
+			}
+			#endregion
 			batch.DrawString (font, "Tile At Cursor: " + TileAtCursor.ToString (), new Vector2 (10, 80), Color.Red);
 			batch.DrawString (font, "Current TileID: " + currentTileID, new Vector2 (10, 100), Color.Red);
 			batch.DrawString (font, "Current Layer: " + Enum.GetName (typeof(MapLayerType), currentLayer), new Vector2 (10, 120), Color.Red);
 			batch.DrawString (font, "World at Cursor: " + WorldAtCursor.ToString(), new Vector2 (10, 140), Color.Red);
 			batch.DrawString (font, "TIles Drawn: " + map.TilesDrawn, new Vector2(10, 180),Color.Red);
 			batch.DrawString (font, "FPS: " + (1/Moxy.GameTime.ElapsedGameTime.TotalSeconds).ToString(), new Vector2(10, 200),Color.Red) ;
+
 			
 			batch.End();
 		}
