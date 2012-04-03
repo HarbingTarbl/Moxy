@@ -23,8 +23,8 @@ namespace Moxy
 
 		public Vector2 ScreenToWorld(Vector2 screenVector)
 		{
-			return new Vector2((screenVector.X/Zoom) + Position.X,
-			                   (screenVector.Y/Zoom) + Position.Y);
+			return new Vector2((screenVector.X / Zoom) + Position.X,
+							   (screenVector.Y / Zoom) + Position.Y);
 		}
 
 		public Vector2 WorldToScreen(Vector2 WorldPos)

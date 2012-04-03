@@ -67,7 +67,9 @@ namespace Moxy.Entities
 
 		public void Damage(float amount)
 		{
+			GamePad.SetVibration(PadIndex, 0, MathHelper.Lerp(amount, 100, 1));
 			Health -= Math.Max (0, (amount - Defence));
+			GamePad.SetVibration(PadIndex, 0, 0);
 		}
 
 		public override void Update (GameTime gameTime)
