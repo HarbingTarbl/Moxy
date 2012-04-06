@@ -141,7 +141,7 @@ namespace Moxy.Entities
 				SkillShown = false;
 
 
-			if (currentPadState.IsButtonDown(Buttons.RightShoulder) && lastPadState.IsButtonUp(Buttons.RightShoulder) && SkillShown)
+			if (currentPadState.IsButtonDown(Buttons.RightShoulder) && lastPadState.IsButtonUp(Buttons.RightShoulder) && !SkillShown)
 				CurrentSkill.Activate(this.CurrentRunes);
 
 		}
